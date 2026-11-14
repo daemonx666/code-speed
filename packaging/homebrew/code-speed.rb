@@ -16,7 +16,7 @@ cask "code-speed" do
 
   # the app can install its own updates (Settings → System)
   auto_updates true
-  depends_on macos: ">= :ventura"
+  depends_on macos: :ventura
 
   app "code-speed.app"
 
@@ -32,7 +32,8 @@ cask "code-speed" do
   ]
 
   caveats <<~EOS
-    code-speed is not notarized yet. If macOS refuses to open it, install with
-      brew install --cask --no-quarantine daemonx666/tap/code-speed
+    Code Speed is not notarized yet. If macOS refuses to open it, allow it in
+    System Settings → Privacy & Security → Open Anyway, or run
+      xattr -dr com.apple.quarantine "#{appdir}/code-speed.app"
   EOS
 end

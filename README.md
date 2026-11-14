@@ -78,11 +78,14 @@ It picks the build for your system and chip (macOS: one universal app for Apple 
 With a package manager:
 
 ```sh
-brew install --cask daemonx666/tap/code-speed            # macOS (Homebrew)
+# macOS (Homebrew; Homebrew 7 loads another tap's casks only once you trust it)
+brew tap daemonx666/tap
+brew trust daemonx666/tap
+brew install --cask daemonx666/tap/code-speed
+
+# Windows (Scoop)
 scoop bucket add code-speed https://github.com/daemonx666/scoop-bucket
-scoop install code-speed                                 # Windows (Scoop)
-winget install daemonx666.code-speed                     # Windows (winget)
-yay -S code-speed-bin                                    # Arch Linux (AUR)
+scoop install code-speed
 ```
 
 Or download from [Releases](https://github.com/daemonx666/code-speed/releases):

@@ -78,11 +78,14 @@ curl -fsSL https://raw.githubusercontent.com/daemonx666/code-speed/main/install.
 用包管理器安装：
 
 ```sh
-brew install --cask daemonx666/tap/code-speed            # macOS（Homebrew）
+# macOS（Homebrew；Homebrew 7 起要先信任第三方 tap 才会加载它的 cask）
+brew tap daemonx666/tap
+brew trust daemonx666/tap
+brew install --cask daemonx666/tap/code-speed
+
+# Windows（Scoop）
 scoop bucket add code-speed https://github.com/daemonx666/scoop-bucket
-scoop install code-speed                                 # Windows（Scoop）
-winget install daemonx666.code-speed                     # Windows（winget）
-yay -S code-speed-bin                                    # Arch Linux（AUR）
+scoop install code-speed
 ```
 
 或者从 [Releases](https://github.com/daemonx666/code-speed/releases) 下载：
