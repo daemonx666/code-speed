@@ -16,6 +16,19 @@ Agent Speed's specification (`spec/METRICS.md`, `spec/QUOTAS.md`).
     MIT License
     Copyright (c) 2026 zoefix
 
+## magpie — Windows WebView2 handling
+
+The Windows desktop app's WebView2 handling is ported from magpie
+(https://github.com/yetone/magpie, commit 27e43ed): the missing-runtime
+box, the wait for the profile folder and the retried start
+(`internal/gui/webview2*.go`), the mending of failed WebView2 processes
+(`internal/gui/webviewmend.go`), the console borrowed by the desktop build
+(`internal/cli/console_windows.go`) and the tray .ico writer
+(`build/icon/gen.go`).
+
+    MIT License
+    Copyright (c) 2026 yetone
+
 ## Wails v3
 
 The desktop app is built on Wails (https://github.com/wailsapp/wails).

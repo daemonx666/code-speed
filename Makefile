@@ -53,6 +53,7 @@ dev-ui:
 icons:
 	go run build/icon/gen.go tray 36 internal/gui/tray.png
 	go run build/icon/gen.go dot 64 internal/gui/tray-color.png
+	go run build/icon/gen.go dot-ico internal/gui/tray-color.ico
 	go run build/icon/gen.go app 512 internal/gui/icon.png
 	go run build/icon/gen.go app 1024 build/icon/icon-1024.png
 
@@ -109,12 +110,12 @@ release-cli:
 # --- Windows (any host) ----------------------------------------------------
 
 # Wails reaches WebView2 without cgo, so both arches cross-compile. Linked
-# as a GUI program (no console window), with the icon and version from
-# go-winres. The installer is built by makensis where it is installed.
+# as a GUI program (no console window), with the icon, version and manifest
+# (per-monitor DPI, long paths, Windows 10 on) from build/windows/winres.json
+# by go-winres. The installer is built by makensis where it is installed.
 release-windows:
 	@mkdir -p dist/windows
-	$(WINRES) simply --icon build/icon/icon-1024.png --manifest gui --arch amd64,arm64 \
-		--product-name code-speed --file-description "code-speed" \
+	$(WINRES) make --in build/windows/winres.json --arch amd64,arm64 --out rsrc \
 		--file-version $(NUMVER).0 --product-version $(NUMVER).0
 	@for arch in amd64 arm64; do \
 		echo "  windows/$$arch"; \

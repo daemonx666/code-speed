@@ -32,7 +32,14 @@ import (
 var trayTemplate []byte // black glyph; macOS tints it for the menu bar
 
 //go:embed tray-color.png
-var trayColor []byte // Windows and Linux
+var trayColor []byte // Linux
+
+// trayColorICO is the same disc drawn at each size Windows asks a tray
+// icon for (16px at 100% scaling up to 64): Wails picks the one it needs,
+// where one PNG was scaled down by the system and blurred.
+//
+//go:embed tray-color.ico
+var trayColorICO []byte
 
 //go:embed icon.png
 var appIcon []byte
@@ -42,6 +49,9 @@ var menuText = map[string][3]string{
 	settings.LangEN: {"Open Code Speed", "Quit", "Floating speed orb"},
 	settings.LangZH: {"打开 Code Speed", "退出", "悬浮球"},
 }
+
+// instanceID is the single instance lock's id.
+const instanceID = "io.github.daemonx666.code-speed"
 
 // Run starts the app and blocks until it quits.
 func Run(version string) error {
@@ -57,11 +67,16 @@ func Run(version string) error {
 		mu       sync.Mutex
 		pageLang = os.Getenv("LANG") // until the panel tells its own
 	)
-	relabel := func() {
+	if pageLang == "" {
+		pageLang = sysLang() // Windows sets no LANG
+	}
+	lang := func() string {
 		mu.Lock()
-		lang := Lang(svc.Settings(), pageLang)
-		mu.Unlock()
-		t := menuText[lang]
+		defer mu.Unlock()
+		return Lang(svc.Settings(), pageLang)
+	}
+	relabel := func() {
+		t := menuText[lang()]
 		application.InvokeAsync(func() {
 			openItem.SetLabel(t[0])
 			orbItem.SetLabel(t[2])
@@ -69,6 +84,8 @@ func Run(version string) error {
 		})
 	}
 
+	// a start right after another waits for its WebView2 to let go
+	webView2Prepare(instanceID)
 	app = application.New(application.Options{
 		Name:        "code-speed",
 		Description: "Live token speed, usage, cost and quotas of your coding agents",
@@ -79,13 +96,17 @@ func Run(version string) error {
 			mu.Unlock()
 			relabel()
 		})},
-		Mac:      application.MacOptions{ActivationPolicy: application.ActivationPolicyAccessory},
-		Services: []application.Service{application.NewService(ns)},
+		Mac:     application.MacOptions{ActivationPolicy: application.ActivationPolicyAccessory},
+		Windows: windowsOptions(),
+		// Wails exits on some webview errors; say why before it does, and
+		// on Windows try a start that failed again
+		ErrorHandler: func(err error) { webView2Failed(app, lang(), err) },
+		Services:     []application.Service{application.NewService(ns)},
 		// a second launch (the app opened again, or the login item firing
 		// while it runs) opens this one's panel and quits, before it has
 		// read a log or written a file
 		SingleInstance: &application.SingleInstanceOptions{
-			UniqueID: "io.github.daemonx666.code-speed",
+			UniqueID: instanceID,
 			OnSecondInstanceLaunch: func(application.SecondInstanceData) {
 				application.InvokeAsync(func() {
 					if tray != nil {
@@ -95,6 +116,13 @@ func Run(version string) error {
 			},
 		},
 	})
+
+	// Windows without the WebView2 runtime can make no window: Wails would
+	// exit on the first, with nothing on screen to say why. A box of
+	// Windows' own says so instead, and the launch ends.
+	if !webView2Check(app, lang()) {
+		return nil
+	}
 
 	if exe, err := os.Executable(); err == nil {
 		if real, err := filepath.EvalSymlinks(exe); err == nil {
@@ -122,6 +150,8 @@ func Run(version string) error {
 	tray = app.SystemTray.New()
 	if runtime.GOOS == "darwin" {
 		tray.SetTemplateIcon(trayTemplate)
+	} else if runtime.GOOS == "windows" {
+		tray.SetIcon(trayColorICO)
 	} else {
 		tray.SetIcon(trayColor)
 	}
@@ -149,6 +179,11 @@ func Run(version string) error {
 	OpenPanel = func() { application.InvokeAsync(tray.ShowWindow) }
 	ob := newOrb(app, svc)
 	PlaceOrb = ob.place
+	// WebView2's failed processes are mended, not left white (Windows)
+	md := newMender(app)
+	md.watch(panel)
+	md.watch(ob.win)
+	md.redrawOnWake()
 	orbItem = menu.AddCheckbox(t[2], svc.Settings().Orb.On).OnClick(func(*application.Context) {
 		st := svc.Settings()
 		st.Orb.On = !st.Orb.On
@@ -284,9 +319,9 @@ func Run(version string) error {
 			tray.SetTooltip(cli.Line(s))
 
 			mu.Lock()
-			lang, canNotify := Lang(svc.Settings(), pageLang), notifyOK
+			canNotify := notifyOK
 			mu.Unlock()
-			for _, a := range svc.Alerts().Check(s, svc.Settings(), lang) {
+			for _, a := range svc.Alerts().Check(s, svc.Settings(), lang()) {
 				if !canNotify {
 					continue // still in the panel's list
 				}

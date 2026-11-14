@@ -3,11 +3,14 @@
 // gen draws code-speed's icons: a speedometer gauge.
 //
 //	go run build/icon/gen.go tray <size> <out.png>   black glyph, macOS template
-//	go run build/icon/gen.go dot  <size> <out.png>   coloured disc, Windows and Linux tray
+//	go run build/icon/gen.go dot  <size> <out.png>   coloured disc, Linux tray
+//	go run build/icon/gen.go dot-ico <out.ico>       the disc at each Windows tray size
 //	go run build/icon/gen.go app  <size> <out.png>   the app icon
 package main
 
 import (
+	"bytes"
+	"encoding/binary"
 	"image"
 	"image/color"
 	"image/png"
@@ -57,19 +60,66 @@ func (c *canvas) fill(s shape, col color.NRGBA) {
 	}
 }
 
-func (c *canvas) png(path string) {
+func (c *canvas) image() image.Image {
 	img := image.NewNRGBA(image.Rect(0, 0, c.n, c.n))
 	for i, p := range c.acc {
 		img.Set(i%c.n, i/c.n, p)
 	}
+	return img
+}
+
+func (c *canvas) png(path string) {
 	f, err := os.Create(path)
 	if err != nil {
 		panic(err)
 	}
 	defer f.Close()
-	if err := png.Encode(f, img); err != nil {
+	if err := png.Encode(f, c.image()); err != nil {
 		panic(err)
 	}
+}
+
+// trayICOSizes are the sizes Windows asks a tray icon for (SM_CXSMICON):
+// 16px at 100% scaling, 20, 24, 32 and 40 at 125% to 250%, and 48 and 64
+// beyond. (After magpie's build/icon/gen.go, MIT.)
+var trayICOSizes = []int{16, 20, 24, 32, 40, 48, 64}
+
+// ico writes draw's picture at each size into one .ico, each image a PNG
+// (which Windows Vista on reads).
+func ico(path string, sizes []int, draw func(*canvas)) {
+	var pngs [][]byte
+	for _, n := range sizes {
+		c := &canvas{n: n, acc: make([]color.NRGBA, n*n)}
+		draw(c)
+		var b bytes.Buffer
+		if err := png.Encode(&b, c.image()); err != nil {
+			panic(err)
+		}
+		pngs = append(pngs, b.Bytes())
+	}
+	le := binary.LittleEndian
+	out := le.AppendUint16(le.AppendUint16(le.AppendUint16(nil, 0), 1), uint16(len(sizes)))
+	at := 6 + 16*len(sizes)
+	for i, n := range sizes {
+		d := byte(n) // 0 means 256
+		out = append(out, d, d, 0, 0)
+		out = le.AppendUint16(out, 1)  // colour planes
+		out = le.AppendUint16(out, 32) // bits per pixel
+		out = le.AppendUint32(out, uint32(len(pngs[i])))
+		out = le.AppendUint32(out, uint32(at))
+		at += len(pngs[i])
+	}
+	for _, p := range pngs {
+		out = append(out, p...)
+	}
+	if err := os.WriteFile(path, out, 0o644); err != nil {
+		panic(err)
+	}
+}
+
+func dot(c *canvas) {
+	c.fill(disc(0.5, 0.5, 0.5), accent)
+	gauge(c, 0.5, 0.55, 0.3, 0.1, white)
 }
 
 // the gauge: a 270° ring open at the bottom, a needle at 70 % and a hub
@@ -122,8 +172,12 @@ var (
 )
 
 func main() {
+	if len(os.Args) == 3 && os.Args[1] == "dot-ico" {
+		ico(os.Args[2], trayICOSizes, dot)
+		return
+	}
 	if len(os.Args) != 4 {
-		panic("usage: gen tray|dot|app <size> <out.png>")
+		panic("usage: gen tray|dot|app <size> <out.png> | gen dot-ico <out.ico>")
 	}
 	n, err := strconv.Atoi(os.Args[2])
 	if err != nil {
@@ -134,8 +188,7 @@ func main() {
 	case "tray":
 		gauge(c, 0.5, 0.54, 0.38, 0.12, black)
 	case "dot":
-		c.fill(disc(0.5, 0.5, 0.5), accent)
-		gauge(c, 0.5, 0.55, 0.3, 0.1, white)
+		dot(c)
 	case "app":
 		c.fill(roundRect(0.06, 0.2), deep)
 		c.fill(func(x, y float64) bool { return roundRect(0.06, 0.2)(x, y) && y < 0.62 }, accent)
