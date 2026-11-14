@@ -1,0 +1,25 @@
+# Maintainer: daemonx666 <https://github.com/daemonx666>
+# The prebuilt desktop app from the GitHub release. packaging/render.sh
+# fills in the version and checksums.
+pkgname=code-speed-bin
+pkgver=@VERSION@
+pkgrel=1
+pkgdesc="Live token speed, usage, cost and quotas of coding agents, in the system tray"
+arch=('x86_64' 'aarch64')
+url="https://github.com/daemonx666/code-speed"
+license=('MIT')
+depends=('gtk3' 'webkit2gtk-4.1')
+provides=('code-speed')
+conflicts=('code-speed')
+source_x86_64=("code-speed-v${pkgver}-linux-amd64.tar.gz::${url}/releases/download/v${pkgver}/code-speed-v${pkgver}-linux-amd64.tar.gz")
+source_aarch64=("code-speed-v${pkgver}-linux-arm64.tar.gz::${url}/releases/download/v${pkgver}/code-speed-v${pkgver}-linux-arm64.tar.gz")
+sha256sums_x86_64=('@SHA_LINUX_AMD64@')
+sha256sums_aarch64=('@SHA_LINUX_ARM64@')
+
+package() {
+  install -Dm755 code-speed "${pkgdir}/usr/bin/code-speed"
+  install -Dm644 build/linux/code-speed.desktop "${pkgdir}/usr/share/applications/code-speed.desktop"
+  install -Dm644 code-speed.png "${pkgdir}/usr/share/icons/hicolor/1024x1024/apps/code-speed.png"
+  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -Dm644 THIRD_PARTY_NOTICES.md "${pkgdir}/usr/share/licenses/${pkgname}/THIRD_PARTY_NOTICES.md"
+}

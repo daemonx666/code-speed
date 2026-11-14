@@ -1,0 +1,1548 @@
+{
+ "omp/agent/sessions/-projects-legacy-tool/2026-10-20T10-46-00-000Z_01a158eb-0640-72f1-81d3-00009e3779b1.jsonl": {
+  "source": "omp",
+  "project": "legacy-tool",
+  "model": "claude-sonnet-4-5",
+  "isSubagent": false,
+  "phase": "idle",
+  "inFlightStartMs": null,
+  "lastLineMs": 1792493173000,
+  "responses": [
+   {
+    "key": "omp:1e9a0004:1792493165006",
+    "startMs": 1792493165006,
+    "endMs": 1792493169400,
+    "firstMs": null,
+    "input": 9812,
+    "cachedInput": 0,
+    "cacheWriteInput": 9800,
+    "cacheWrite1hInput": 0,
+    "output": 180,
+    "reasoning": 0,
+    "model": "claude-sonnet-4-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:1e9a0006:1792493170205",
+    "startMs": 1792493170205,
+    "endMs": 1792493173000,
+    "firstMs": null,
+    "input": 9928,
+    "cachedInput": 9800,
+    "cacheWriteInput": 120,
+    "cacheWrite1hInput": 0,
+    "output": 95,
+    "reasoning": 0,
+    "model": "claude-sonnet-4-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   }
+  ]
+ },
+ "omp/agent/sessions/-projects-comet/2026-10-20T10-48-00-000Z_01a158ec-db00-75e2-83a6-00013c6ef362.jsonl": {
+  "source": "omp",
+  "project": "comet",
+  "model": "gpt-5.5",
+  "isSubagent": false,
+  "phase": "generating",
+  "inFlightStartMs": 1792493370000,
+  "lastLineMs": 1792493370000,
+  "responses": [
+   {
+    "key": "omp:c0e70003:1792493282005",
+    "startMs": 1792493282005,
+    "endMs": 1792493288405,
+    "firstMs": null,
+    "input": 5200,
+    "cachedInput": 0,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 4096,
+    "reasoning": 3000,
+    "model": "gpt-5.5",
+    "provider": "openai",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:c0e70005:1792493288436",
+    "startMs": 1792493288436,
+    "endMs": 1792493291536,
+    "firstMs": null,
+    "input": 5400,
+    "cachedInput": 5100,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 410,
+    "reasoning": 120,
+    "model": "gpt-5.5",
+    "provider": "openai",
+    "fast": false,
+    "final": true
+   }
+  ]
+ },
+ "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4/ScanCallSites/VerifyImports.jsonl": {
+  "source": "omp",
+  "project": "pulsar",
+  "model": "claude-haiku-5",
+  "isSubagent": true,
+  "phase": "idle",
+  "inFlightStartMs": null,
+  "lastLineMs": 1792493429800,
+  "responses": [
+   {
+    "key": "omp:9e570003:1792493425604",
+    "startMs": 1792493425604,
+    "endMs": 1792493427104,
+    "firstMs": null,
+    "input": 2503,
+    "cachedInput": 0,
+    "cacheWriteInput": 2500,
+    "cacheWrite1hInput": 0,
+    "output": 45,
+    "reasoning": 10,
+    "model": "claude-haiku-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:9e570005:1792493428004",
+    "startMs": 1792493428004,
+    "endMs": 1792493429704,
+    "firstMs": null,
+    "input": 2502,
+    "cachedInput": 2500,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 30,
+    "reasoning": 0,
+    "model": "claude-haiku-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   }
+  ]
+ },
+ "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4/ScanCallSites.jsonl": {
+  "source": "omp",
+  "project": "pulsar",
+  "model": "claude-sonnet-5-5",
+  "isSubagent": true,
+  "phase": "idle",
+  "inFlightStartMs": null,
+  "lastLineMs": 1792493443100,
+  "responses": [
+   {
+    "key": "omp:5ca10003:1792493416705",
+    "startMs": 1792493416705,
+    "endMs": 1792493419705,
+    "firstMs": null,
+    "input": 7006,
+    "cachedInput": 0,
+    "cacheWriteInput": 7000,
+    "cacheWrite1hInput": 0,
+    "output": 140,
+    "reasoning": 0,
+    "model": "claude-sonnet-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:5ca10006:1792493420305",
+    "startMs": 1792493420305,
+    "endMs": 1792493423105,
+    "firstMs": null,
+    "input": 7304,
+    "cachedInput": 7000,
+    "cacheWriteInput": 300,
+    "cacheWrite1hInput": 0,
+    "output": 60,
+    "reasoning": 0,
+    "model": "claude-sonnet-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:5ca10008:1792493423205",
+    "startMs": 1792493423205,
+    "endMs": 1792493425405,
+    "firstMs": null,
+    "input": 7303,
+    "cachedInput": 7300,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 85,
+    "reasoning": 25,
+    "model": "claude-sonnet-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:5ca1000a:1792493441004",
+    "startMs": 1792493441004,
+    "endMs": 1792493443004,
+    "firstMs": null,
+    "input": 7402,
+    "cachedInput": 7400,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 48,
+    "reasoning": 0,
+    "model": "claude-sonnet-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   }
+  ]
+ },
+ "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl": {
+  "source": "omp",
+  "project": "pulsar",
+  "model": "claude-opus-5-5",
+  "isSubagent": false,
+  "phase": "idle",
+  "inFlightStartMs": null,
+  "lastLineMs": 1792493899520,
+  "responses": [
+   {
+    "key": "omp:c0de0004:1792493405006",
+    "startMs": 1792493405006,
+    "endMs": 1792493411206,
+    "firstMs": null,
+    "input": 18003,
+    "cachedInput": 0,
+    "cacheWriteInput": 18000,
+    "cacheWrite1hInput": 0,
+    "output": 420,
+    "reasoning": 150,
+    "model": "claude-opus-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:c0de0005:1792493411300",
+    "startMs": null,
+    "endMs": 1792493411300,
+    "firstMs": null,
+    "input": 900,
+    "cachedInput": 0,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 40,
+    "reasoning": 0,
+    "model": "claude-haiku-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:c0de0009:1792493412405",
+    "startMs": 1792493412405,
+    "endMs": 1792493416505,
+    "firstMs": null,
+    "input": 18605,
+    "cachedInput": 18000,
+    "cacheWriteInput": 600,
+    "cacheWrite1hInput": 0,
+    "output": 260,
+    "reasoning": 0,
+    "model": "claude-opus-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:c0de000c:1792493444004",
+    "startMs": 1792493444004,
+    "endMs": 1792493446504,
+    "firstMs": null,
+    "input": 18604,
+    "cachedInput": 18600,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 90,
+    "reasoning": 0,
+    "model": "claude-opus-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:c0de000d:1792493446530",
+    "startMs": 1792493446530,
+    "endMs": 1792493449530,
+    "firstMs": null,
+    "input": 18702,
+    "cachedInput": 18700,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 152,
+    "reasoning": 0,
+    "model": "claude-opus-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:c0de0012:1792493520006",
+    "startMs": null,
+    "endMs": 1792493521806,
+    "firstMs": null,
+    "input": 18803,
+    "cachedInput": 18800,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 12,
+    "reasoning": 0,
+    "model": "claude-opus-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:c0de0015:1792493540005",
+    "startMs": null,
+    "endMs": 1792493542605,
+    "firstMs": null,
+    "input": 18804,
+    "cachedInput": 18800,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 33,
+    "reasoning": 0,
+    "model": "claude-opus-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:c0de0017:1792493580006",
+    "startMs": 1792493580006,
+    "endMs": 1792493584006,
+    "firstMs": null,
+    "input": 19206,
+    "cachedInput": 18900,
+    "cacheWriteInput": 300,
+    "cacheWrite1hInput": 0,
+    "output": 75,
+    "reasoning": 20,
+    "model": "claude-opus-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:c0de001c:1792493890006",
+    "startMs": 1792493890006,
+    "endMs": 1792493895006,
+    "firstMs": null,
+    "input": 19403,
+    "cachedInput": 0,
+    "cacheWriteInput": 19400,
+    "cacheWrite1hInput": 0,
+    "output": 110,
+    "reasoning": 0,
+    "model": "claude-opus-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:c0de001e:1792493896004",
+    "startMs": 1792493896004,
+    "endMs": 1792493899504,
+    "firstMs": null,
+    "input": 19902,
+    "cachedInput": 19400,
+    "cacheWriteInput": 500,
+    "cacheWrite1hInput": 0,
+    "output": 340,
+    "reasoning": 90,
+    "model": "claude-opus-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   }
+  ]
+ },
+ "omp/agent/sessions/-projects-pulsar/2026-10-20T11-00-00-000Z_01a158f7-d780-7497-8cc5-0004538453d7/ScanCallSites.jsonl": {
+  "source": "omp",
+  "project": "pulsar",
+  "model": null,
+  "isSubagent": true,
+  "phase": "idle",
+  "inFlightStartMs": null,
+  "lastLineMs": 1792493443100,
+  "responses": []
+ },
+ "omp/agent/sessions/-projects-pulsar/2026-10-20T11-00-00-000Z_01a158f7-d780-7497-8cc5-0004538453d7/ScanCallSites/VerifyImports.jsonl": {
+  "source": "omp",
+  "project": "pulsar",
+  "model": null,
+  "isSubagent": true,
+  "phase": "idle",
+  "inFlightStartMs": null,
+  "lastLineMs": 1792493429800,
+  "responses": []
+ },
+ "omp/agent/sessions/-projects-pulsar/2026-10-20T11-00-00-000Z_01a158f7-d780-7497-8cc5-0004538453d7.jsonl": {
+  "source": "omp",
+  "project": "pulsar",
+  "model": "claude-opus-5-5",
+  "isSubagent": false,
+  "phase": "idle",
+  "inFlightStartMs": null,
+  "lastLineMs": 1792494009420,
+  "responses": [
+   {
+    "key": "omp:f04c0002:1792494005006",
+    "startMs": 1792494005006,
+    "endMs": 1792494009406,
+    "firstMs": null,
+    "input": 19403,
+    "cachedInput": 19000,
+    "cacheWriteInput": 400,
+    "cacheWrite1hInput": 0,
+    "output": 310,
+    "reasoning": 80,
+    "model": "claude-opus-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   }
+  ]
+ },
+ "omp/agent/sessions/-projects-pulsar/2026-10-20T11-10-00-000Z_01a15900-ff40-7788-8e98-0004f1bbcd88.jsonl": {
+  "source": "omp",
+  "project": "pulsar",
+  "model": "gpt-5.5",
+  "isSubagent": false,
+  "phase": "idle",
+  "inFlightStartMs": null,
+  "lastLineMs": 1792494612310,
+  "responses": [
+   {
+    "key": "omp:b4a70004:1792494612310",
+    "startMs": null,
+    "endMs": 1792494612300,
+    "firstMs": null,
+    "input": 9002,
+    "cachedInput": 9000,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 120,
+    "reasoning": 0,
+    "model": "gpt-5.5",
+    "provider": "openai",
+    "fast": false,
+    "final": true
+   }
+  ]
+ },
+ "omp/agent/sessions/-projects-nova/2026-10-20T11-20-00-000Z_01a1590a-2700-7d6a-923e-00062e2ac0ea.jsonl": {
+  "source": "omp",
+  "project": "nova",
+  "model": "claude-opus-5-5",
+  "isSubagent": false,
+  "phase": "idle",
+  "inFlightStartMs": null,
+  "lastLineMs": 1792495260000,
+  "responses": [
+   {
+    "key": "omp:1a900002:1792495230006",
+    "startMs": 1792495230006,
+    "endMs": 1792495235206,
+    "firstMs": null,
+    "input": 22004,
+    "cachedInput": 0,
+    "cacheWriteInput": 22000,
+    "cacheWrite1hInput": 0,
+    "output": 380,
+    "reasoning": 0,
+    "model": "claude-opus-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:1a900003:1792495235400",
+    "startMs": null,
+    "endMs": 1792495235400,
+    "firstMs": null,
+    "input": 1200,
+    "cachedInput": 0,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 64,
+    "reasoning": 32,
+    "model": "gpt-5.5-mini",
+    "provider": "openai",
+    "fast": false,
+    "final": true
+   }
+  ]
+ },
+ "omp/profiles/work/agent/sessions/-projects-orbit/2026-10-20T23-58-00-000Z_01a15bc0-1f40-705b-9411-0006cc623a9b.jsonl": {
+  "source": "omp",
+  "project": "orbit",
+  "model": "claude-sonnet-5-5",
+  "isSubagent": false,
+  "phase": "idle",
+  "inFlightStartMs": null,
+  "lastLineMs": 1792540814012,
+  "responses": [
+   {
+    "key": "omp:0b170003:1792540790004",
+    "startMs": 1792540790004,
+    "endMs": 1792540798250,
+    "firstMs": null,
+    "input": 1200,
+    "cachedInput": 0,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 90,
+    "reasoning": 0,
+    "model": "duo-chat-sonnet-5-5",
+    "provider": "gitlab-duo",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:0b170005:1792540799905",
+    "startMs": null,
+    "endMs": 1792540805505,
+    "firstMs": null,
+    "input": 1300,
+    "cachedInput": 0,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 20,
+    "reasoning": 0,
+    "model": "duo-chat-sonnet-5-5",
+    "provider": "gitlab-duo",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:0b170008:1792540810100",
+    "startMs": null,
+    "endMs": 1792540810100,
+    "firstMs": null,
+    "input": 400,
+    "cachedInput": 0,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 12,
+    "reasoning": 8,
+    "model": "gpt-5.5-mini",
+    "provider": "openai",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:0b170009:1792540810205",
+    "startMs": 1792540810205,
+    "endMs": 1792540814005,
+    "firstMs": null,
+    "input": 2600,
+    "cachedInput": 1200,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 210,
+    "reasoning": 60,
+    "model": "claude-sonnet-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   }
+  ]
+ },
+ "omp/profiles/work/agent/sessions/-projects-orbit/2026-10-21T00-10-00-000Z_01a15bcb-1bc0-734c-95e4-00076a99b44c.jsonl": {
+  "source": "omp",
+  "project": "orbit",
+  "model": null,
+  "isSubagent": false,
+  "phase": "idle",
+  "inFlightStartMs": null,
+  "lastLineMs": 1792541400000,
+  "responses": []
+ },
+ "omp/agent/sessions/-projects-branch/2026-10-20T11-30-00-000Z_01a15913-4ec0-792e-998a-0008a708a7ae.jsonl": {
+  "source": "omp",
+  "project": "branch",
+  "model": "claude-opus-5-5",
+  "isSubagent": false,
+  "phase": "idle",
+  "inFlightStartMs": null,
+  "lastLineMs": 1792495862000,
+  "responses": [
+   {
+    "key": "omp:b4a70004:1792495801005",
+    "startMs": 1792495801005,
+    "endMs": 1792495802505,
+    "firstMs": null,
+    "input": 100,
+    "cachedInput": 0,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 50,
+    "reasoning": 0,
+    "model": "gpt-5.5",
+    "provider": "openai",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:b4a70006:1792495804005",
+    "startMs": 1792495804005,
+    "endMs": 1792495805505,
+    "firstMs": null,
+    "input": 110,
+    "cachedInput": 0,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 60,
+    "reasoning": 0,
+    "model": "claude-opus-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:b4a70008:1792495807005",
+    "startMs": 1792495807005,
+    "endMs": 1792495808505,
+    "firstMs": null,
+    "input": 120,
+    "cachedInput": 0,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 70,
+    "reasoning": 0,
+    "model": "claude-opus-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:b4a7000b:1792495810005",
+    "startMs": 1792495810005,
+    "endMs": 1792495811505,
+    "firstMs": null,
+    "input": 130,
+    "cachedInput": 0,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 80,
+    "reasoning": 0,
+    "model": "gpt-5.5",
+    "provider": "openai",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:b4a7000d:1792495860500",
+    "startMs": null,
+    "endMs": 1792495860500,
+    "firstMs": null,
+    "input": 40,
+    "cachedInput": 0,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 5,
+    "reasoning": 0,
+    "model": "gpt-5.5-mini",
+    "provider": "openai",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "omp:b4a7000e:1792495860505",
+    "startMs": 1792495860505,
+    "endMs": 1792495861905,
+    "firstMs": null,
+    "input": 140,
+    "cachedInput": 0,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 90,
+    "reasoning": 0,
+    "model": "claude-opus-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   }
+  ]
+ },
+ "pi/agent/sessions/--Users-dev-projects-halo--/2026-10-20T12-00-00-000Z_01a1592e-c600-7b2f-b88d-001328b7bc6f.jsonl": {
+  "source": "pi",
+  "project": "halo",
+  "model": "claude-opus-5-5",
+  "isSubagent": false,
+  "phase": "generating",
+  "inFlightStartMs": 1792497790000,
+  "lastLineMs": 1792497790000,
+  "responses": [
+   {
+    "key": "pi:a1f00004:1792497605006",
+    "startMs": 1792497605006,
+    "endMs": 1792497611206,
+    "firstMs": null,
+    "input": 18003,
+    "cachedInput": 0,
+    "cacheWriteInput": 18000,
+    "cacheWrite1hInput": 18000,
+    "output": 420,
+    "reasoning": 150,
+    "model": "claude-opus-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "pi:a1f00006:1792497612400",
+    "startMs": null,
+    "endMs": 1792497612400,
+    "firstMs": null,
+    "input": 900,
+    "cachedInput": 0,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 40,
+    "reasoning": 0,
+    "model": null,
+    "provider": null,
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "pi:a1f00007:1792497612405",
+    "startMs": 1792497612405,
+    "endMs": 1792497616505,
+    "firstMs": null,
+    "input": 18605,
+    "cachedInput": 18000,
+    "cacheWriteInput": 600,
+    "cacheWrite1hInput": 0,
+    "output": 260,
+    "reasoning": 0,
+    "model": "claude-opus-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "pi:a1f00008:1792497620000",
+    "startMs": null,
+    "endMs": 1792497620000,
+    "firstMs": null,
+    "input": 18600,
+    "cachedInput": 18600,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 1,
+    "reasoning": 0,
+    "model": "claude-opus-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "pi:a1f0000a:1792497660000",
+    "startMs": null,
+    "endMs": 1792497660000,
+    "firstMs": null,
+    "input": 12000,
+    "cachedInput": 0,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 800,
+    "reasoning": 0,
+    "model": null,
+    "provider": null,
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "pi:a1f0000d:1792497720006",
+    "startMs": null,
+    "endMs": 1792497720506,
+    "firstMs": null,
+    "input": 18610,
+    "cachedInput": 18600,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 0,
+    "reasoning": 0,
+    "model": "claude-opus-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   }
+  ]
+ },
+ "pi/agent/sessions/--Users-dev-projects-halo--/2026-10-20T12-00-00-000Z_01a1592e-c600-7b2f-b88d-001328b7bc6f/reviewer.jsonl": {
+  "source": "pi",
+  "project": "halo",
+  "model": "claude-sonnet-5-5",
+  "isSubagent": true,
+  "phase": "idle",
+  "inFlightStartMs": null,
+  "lastLineMs": 1792497729300,
+  "responses": [
+   {
+    "key": "pi:b2e10002:1792497720206",
+    "startMs": 1792497720206,
+    "endMs": 1792497729296,
+    "firstMs": null,
+    "input": 2400,
+    "cachedInput": 0,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 310,
+    "reasoning": 0,
+    "model": "claude-sonnet-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   }
+  ]
+ },
+ "pi/agent/sessions/--Users-dev-projects-ember--/2026-10-20T12-10-00-000Z_01a15937-edc0-7111-bc33-00146526afd1.jsonl": {
+  "source": "pi",
+  "project": "ember",
+  "model": "gpt-5.5",
+  "isSubagent": false,
+  "phase": "idle",
+  "inFlightStartMs": null,
+  "lastLineMs": 1792498220000,
+  "responses": [
+   {
+    "key": "pi:c3d20003:1792498202005",
+    "startMs": 1792498202005,
+    "endMs": 1792498208400,
+    "firstMs": null,
+    "input": 5200,
+    "cachedInput": 0,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 900,
+    "reasoning": 300,
+    "model": "gpt-5.5",
+    "provider": "openai",
+    "fast": false,
+    "final": true
+   },
+   {
+    "key": "pi:c3d20005:1792498208436",
+    "startMs": 1792498208436,
+    "endMs": 1792498211560,
+    "firstMs": null,
+    "input": 5400,
+    "cachedInput": 5100,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 410,
+    "reasoning": 0,
+    "model": "gpt-5.5",
+    "provider": "openai",
+    "fast": false,
+    "final": true
+   }
+  ]
+ },
+ "pi/agent/sessions/--Users-dev-projects-halo--/2026-10-20T12-20-00-000Z_01a15941-1580-7402-be06-0015035e2982.jsonl": {
+  "source": "pi",
+  "project": "halo",
+  "model": "claude-opus-5-5",
+  "isSubagent": false,
+  "phase": "idle",
+  "inFlightStartMs": null,
+  "lastLineMs": 1792498809000,
+  "responses": [
+   {
+    "key": "pi:d4c30002:1792498805006",
+    "startMs": 1792498805006,
+    "endMs": 1792498808996,
+    "firstMs": null,
+    "input": 18604,
+    "cachedInput": 18600,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 330,
+    "reasoning": 0,
+    "model": "claude-opus-5-5",
+    "provider": "anthropic",
+    "fast": false,
+    "final": true
+   }
+  ]
+ },
+ "pi/custom-sessions/2026-10-20T12-30-00-000Z_01a1594a-3d40-76f3-bfd9-0015a195a333.jsonl": {
+  "source": "pi",
+  "project": "flat",
+  "model": "gpt-5.5",
+  "isSubagent": false,
+  "phase": "idle",
+  "inFlightStartMs": null,
+  "lastLineMs": 1792499404100,
+  "responses": [
+   {
+    "key": "pi:e5b40002:1792499402006",
+    "startMs": 1792499402006,
+    "endMs": 1792499404096,
+    "firstMs": null,
+    "input": 1200,
+    "cachedInput": 0,
+    "cacheWriteInput": 0,
+    "cacheWrite1hInput": 0,
+    "output": 140,
+    "reasoning": 0,
+    "model": "gpt-5.5",
+    "provider": "openai",
+    "fast": false,
+    "final": true
+   }
+  ]
+ },
+ "pi/custom-sessions/2026-10-20T12-30-00-000Z_01a1594a-3d40-76f3-bfd9-0015a195a333/helper.jsonl": {
+  "source": "pi",
+  "project": "flat",
+  "model": null,
+  "isSubagent": true,
+  "phase": "generating",
+  "inFlightStartMs": 1792499403100,
+  "lastLineMs": 1792499403100,
+  "responses": []
+ },
+ "_traces": {
+  "omp": [
+   {
+    "file": "omp/agent/sessions/-projects-legacy-tool/2026-10-20T10-46-00-000Z_01a158eb-0640-72f1-81d3-00009e3779b1.jsonl",
+    "afterLine": 4,
+    "phase": "generating",
+    "inFlightStartMs": 1792493165000
+   },
+   {
+    "file": "omp/agent/sessions/-projects-legacy-tool/2026-10-20T10-46-00-000Z_01a158eb-0640-72f1-81d3-00009e3779b1.jsonl",
+    "afterLine": 5,
+    "phase": "tools",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-legacy-tool/2026-10-20T10-46-00-000Z_01a158eb-0640-72f1-81d3-00009e3779b1.jsonl",
+    "afterLine": 6,
+    "phase": "generating",
+    "inFlightStartMs": 1792493170200
+   },
+   {
+    "file": "omp/agent/sessions/-projects-legacy-tool/2026-10-20T10-46-00-000Z_01a158eb-0640-72f1-81d3-00009e3779b1.jsonl",
+    "afterLine": 7,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-legacy-tool/2026-10-20T10-46-00-000Z_01a158eb-0640-72f1-81d3-00009e3779b1.jsonl",
+    "afterLine": 8,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-comet/2026-10-20T10-48-00-000Z_01a158ec-db00-75e2-83a6-00013c6ef362.jsonl",
+    "afterLine": 3,
+    "phase": "generating",
+    "inFlightStartMs": 1792493282000
+   },
+   {
+    "file": "omp/agent/sessions/-projects-comet/2026-10-20T10-48-00-000Z_01a158ec-db00-75e2-83a6-00013c6ef362.jsonl",
+    "afterLine": 4,
+    "phase": "tools",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-comet/2026-10-20T10-48-00-000Z_01a158ec-db00-75e2-83a6-00013c6ef362.jsonl",
+    "afterLine": 5,
+    "phase": "generating",
+    "inFlightStartMs": 1792493288430
+   },
+   {
+    "file": "omp/agent/sessions/-projects-comet/2026-10-20T10-48-00-000Z_01a158ec-db00-75e2-83a6-00013c6ef362.jsonl",
+    "afterLine": 6,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-comet/2026-10-20T10-48-00-000Z_01a158ec-db00-75e2-83a6-00013c6ef362.jsonl",
+    "afterLine": 7,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-comet/2026-10-20T10-48-00-000Z_01a158ec-db00-75e2-83a6-00013c6ef362.jsonl",
+    "afterLine": 8,
+    "phase": "generating",
+    "inFlightStartMs": 1792493370000
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 2,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 5,
+    "phase": "generating",
+    "inFlightStartMs": 1792493405000
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 6,
+    "phase": "tools",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 7,
+    "phase": "tools",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 8,
+    "phase": "tools",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 9,
+    "phase": "generating",
+    "inFlightStartMs": 1792493412400
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 10,
+    "phase": "generating",
+    "inFlightStartMs": 1792493412400
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 11,
+    "phase": "tools",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 12,
+    "phase": "tools",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 13,
+    "phase": "generating",
+    "inFlightStartMs": 1792493444000
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 14,
+    "phase": "generating",
+    "inFlightStartMs": 1792493446504
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 15,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 16,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 17,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 20,
+    "phase": "generating",
+    "inFlightStartMs": 1792493520000
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 21,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 22,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 23,
+    "phase": "generating",
+    "inFlightStartMs": 1792493540000
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 24,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 25,
+    "phase": "generating",
+    "inFlightStartMs": 1792493580000
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 26,
+    "phase": "tools",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 27,
+    "phase": "tools",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 28,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 29,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 30,
+    "phase": "generating",
+    "inFlightStartMs": 1792493890000
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 31,
+    "phase": "tools",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 32,
+    "phase": "generating",
+    "inFlightStartMs": 1792493896000
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+    "afterLine": 33,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4/ScanCallSites.jsonl",
+    "afterLine": 2,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4/ScanCallSites.jsonl",
+    "afterLine": 4,
+    "phase": "generating",
+    "inFlightStartMs": 1792493416700
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4/ScanCallSites.jsonl",
+    "afterLine": 5,
+    "phase": "tools",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4/ScanCallSites.jsonl",
+    "afterLine": 6,
+    "phase": "tools",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4/ScanCallSites.jsonl",
+    "afterLine": 7,
+    "phase": "generating",
+    "inFlightStartMs": 1792493420300
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4/ScanCallSites.jsonl",
+    "afterLine": 8,
+    "phase": "tools",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4/ScanCallSites.jsonl",
+    "afterLine": 9,
+    "phase": "generating",
+    "inFlightStartMs": 1792493423200
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4/ScanCallSites.jsonl",
+    "afterLine": 10,
+    "phase": "tools",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4/ScanCallSites.jsonl",
+    "afterLine": 11,
+    "phase": "generating",
+    "inFlightStartMs": 1792493441000
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4/ScanCallSites.jsonl",
+    "afterLine": 12,
+    "phase": "tools",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4/ScanCallSites.jsonl",
+    "afterLine": 13,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T11-00-00-000Z_01a158f7-d780-7497-8cc5-0004538453d7.jsonl",
+    "afterLine": 2,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T11-00-00-000Z_01a158f7-d780-7497-8cc5-0004538453d7.jsonl",
+    "afterLine": 33,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T11-00-00-000Z_01a158f7-d780-7497-8cc5-0004538453d7.jsonl",
+    "afterLine": 34,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T11-00-00-000Z_01a158f7-d780-7497-8cc5-0004538453d7.jsonl",
+    "afterLine": 35,
+    "phase": "generating",
+    "inFlightStartMs": 1792494005000
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T11-00-00-000Z_01a158f7-d780-7497-8cc5-0004538453d7.jsonl",
+    "afterLine": 36,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T11-00-00-000Z_01a158f7-d780-7497-8cc5-0004538453d7/ScanCallSites.jsonl",
+    "afterLine": 4,
+    "phase": "generating",
+    "inFlightStartMs": 1792493416700
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T11-00-00-000Z_01a158f7-d780-7497-8cc5-0004538453d7/ScanCallSites.jsonl",
+    "afterLine": 5,
+    "phase": "generating",
+    "inFlightStartMs": 1792493416700
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T11-00-00-000Z_01a158f7-d780-7497-8cc5-0004538453d7/ScanCallSites.jsonl",
+    "afterLine": 7,
+    "phase": "generating",
+    "inFlightStartMs": 1792493416700
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T11-00-00-000Z_01a158f7-d780-7497-8cc5-0004538453d7/ScanCallSites.jsonl",
+    "afterLine": 9,
+    "phase": "generating",
+    "inFlightStartMs": 1792493416700
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T11-00-00-000Z_01a158f7-d780-7497-8cc5-0004538453d7/ScanCallSites.jsonl",
+    "afterLine": 13,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T11-10-00-000Z_01a15900-ff40-7788-8e98-0004f1bbcd88.jsonl",
+    "afterLine": 6,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T11-10-00-000Z_01a15900-ff40-7788-8e98-0004f1bbcd88.jsonl",
+    "afterLine": 7,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T11-10-00-000Z_01a15900-ff40-7788-8e98-0004f1bbcd88.jsonl",
+    "afterLine": 9,
+    "phase": "generating",
+    "inFlightStartMs": 1792494605000
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T11-10-00-000Z_01a15900-ff40-7788-8e98-0004f1bbcd88.jsonl",
+    "afterLine": 10,
+    "phase": "generating",
+    "inFlightStartMs": 1792494605000
+   },
+   {
+    "file": "omp/agent/sessions/-projects-pulsar/2026-10-20T11-10-00-000Z_01a15900-ff40-7788-8e98-0004f1bbcd88.jsonl",
+    "afterLine": 11,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-nova/2026-10-20T11-20-00-000Z_01a1590a-2700-7d6a-923e-00062e2ac0ea.jsonl",
+    "afterLine": 6,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-nova/2026-10-20T11-20-00-000Z_01a1590a-2700-7d6a-923e-00062e2ac0ea.jsonl",
+    "afterLine": 7,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-nova/2026-10-20T11-20-00-000Z_01a1590a-2700-7d6a-923e-00062e2ac0ea.jsonl",
+    "afterLine": 9,
+    "phase": "generating",
+    "inFlightStartMs": 1792495230000
+   },
+   {
+    "file": "omp/agent/sessions/-projects-nova/2026-10-20T11-20-00-000Z_01a1590a-2700-7d6a-923e-00062e2ac0ea.jsonl",
+    "afterLine": 10,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-nova/2026-10-20T11-20-00-000Z_01a1590a-2700-7d6a-923e-00062e2ac0ea.jsonl",
+    "afterLine": 11,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/profiles/work/agent/sessions/-projects-orbit/2026-10-20T23-58-00-000Z_01a15bc0-1f40-705b-9411-0006cc623a9b.jsonl",
+    "afterLine": 4,
+    "phase": "generating",
+    "inFlightStartMs": 1792540790000
+   },
+   {
+    "file": "omp/profiles/work/agent/sessions/-projects-orbit/2026-10-20T23-58-00-000Z_01a15bc0-1f40-705b-9411-0006cc623a9b.jsonl",
+    "afterLine": 5,
+    "phase": "tools",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/profiles/work/agent/sessions/-projects-orbit/2026-10-20T23-58-00-000Z_01a15bc0-1f40-705b-9411-0006cc623a9b.jsonl",
+    "afterLine": 6,
+    "phase": "generating",
+    "inFlightStartMs": 1792540799900
+   },
+   {
+    "file": "omp/profiles/work/agent/sessions/-projects-orbit/2026-10-20T23-58-00-000Z_01a15bc0-1f40-705b-9411-0006cc623a9b.jsonl",
+    "afterLine": 7,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/profiles/work/agent/sessions/-projects-orbit/2026-10-20T23-58-00-000Z_01a15bc0-1f40-705b-9411-0006cc623a9b.jsonl",
+    "afterLine": 9,
+    "phase": "generating",
+    "inFlightStartMs": 1792540810000
+   },
+   {
+    "file": "omp/profiles/work/agent/sessions/-projects-orbit/2026-10-20T23-58-00-000Z_01a15bc0-1f40-705b-9411-0006cc623a9b.jsonl",
+    "afterLine": 10,
+    "phase": "generating",
+    "inFlightStartMs": 1792540810000
+   },
+   {
+    "file": "omp/profiles/work/agent/sessions/-projects-orbit/2026-10-20T23-58-00-000Z_01a15bc0-1f40-705b-9411-0006cc623a9b.jsonl",
+    "afterLine": 11,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/profiles/work/agent/sessions/-projects-orbit/2026-10-21T00-10-00-000Z_01a15bcb-1bc0-734c-95e4-00076a99b44c.jsonl",
+    "afterLine": 2,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-branch/2026-10-20T11-30-00-000Z_01a15913-4ec0-792e-998a-0008a708a7ae.jsonl",
+    "afterLine": 13,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "omp/agent/sessions/-projects-branch/2026-10-20T11-30-00-000Z_01a15913-4ec0-792e-998a-0008a708a7ae.jsonl",
+    "afterLine": 14,
+    "phase": "generating",
+    "inFlightStartMs": 1792495860000
+   }
+  ],
+  "pi": [
+   {
+    "file": "pi/agent/sessions/--Users-dev-projects-halo--/2026-10-20T12-00-00-000Z_01a1592e-c600-7b2f-b88d-001328b7bc6f.jsonl",
+    "afterLine": 2,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "pi/agent/sessions/--Users-dev-projects-halo--/2026-10-20T12-00-00-000Z_01a1592e-c600-7b2f-b88d-001328b7bc6f.jsonl",
+    "afterLine": 4,
+    "phase": "generating",
+    "inFlightStartMs": 1792497605000
+   },
+   {
+    "file": "pi/agent/sessions/--Users-dev-projects-halo--/2026-10-20T12-00-00-000Z_01a1592e-c600-7b2f-b88d-001328b7bc6f.jsonl",
+    "afterLine": 5,
+    "phase": "tools",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "pi/agent/sessions/--Users-dev-projects-halo--/2026-10-20T12-00-00-000Z_01a1592e-c600-7b2f-b88d-001328b7bc6f.jsonl",
+    "afterLine": 6,
+    "phase": "tools",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "pi/agent/sessions/--Users-dev-projects-halo--/2026-10-20T12-00-00-000Z_01a1592e-c600-7b2f-b88d-001328b7bc6f.jsonl",
+    "afterLine": 7,
+    "phase": "generating",
+    "inFlightStartMs": 1792497612400
+   },
+   {
+    "file": "pi/agent/sessions/--Users-dev-projects-halo--/2026-10-20T12-00-00-000Z_01a1592e-c600-7b2f-b88d-001328b7bc6f.jsonl",
+    "afterLine": 8,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "pi/agent/sessions/--Users-dev-projects-halo--/2026-10-20T12-00-00-000Z_01a1592e-c600-7b2f-b88d-001328b7bc6f.jsonl",
+    "afterLine": 13,
+    "phase": "generating",
+    "inFlightStartMs": 1792497720000
+   },
+   {
+    "file": "pi/agent/sessions/--Users-dev-projects-halo--/2026-10-20T12-00-00-000Z_01a1592e-c600-7b2f-b88d-001328b7bc6f.jsonl",
+    "afterLine": 14,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "pi/agent/sessions/--Users-dev-projects-halo--/2026-10-20T12-00-00-000Z_01a1592e-c600-7b2f-b88d-001328b7bc6f.jsonl",
+    "afterLine": 15,
+    "phase": "generating",
+    "inFlightStartMs": 1792497780000
+   },
+   {
+    "file": "pi/agent/sessions/--Users-dev-projects-halo--/2026-10-20T12-00-00-000Z_01a1592e-c600-7b2f-b88d-001328b7bc6f.jsonl",
+    "afterLine": 16,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "pi/agent/sessions/--Users-dev-projects-halo--/2026-10-20T12-00-00-000Z_01a1592e-c600-7b2f-b88d-001328b7bc6f.jsonl",
+    "afterLine": 17,
+    "phase": "generating",
+    "inFlightStartMs": 1792497790000
+   },
+   {
+    "file": "pi/agent/sessions/--Users-dev-projects-ember--/2026-10-20T12-10-00-000Z_01a15937-edc0-7111-bc33-00146526afd1.jsonl",
+    "afterLine": 3,
+    "phase": "generating",
+    "inFlightStartMs": 1792498202000
+   },
+   {
+    "file": "pi/agent/sessions/--Users-dev-projects-ember--/2026-10-20T12-10-00-000Z_01a15937-edc0-7111-bc33-00146526afd1.jsonl",
+    "afterLine": 4,
+    "phase": "tools",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "pi/agent/sessions/--Users-dev-projects-ember--/2026-10-20T12-10-00-000Z_01a15937-edc0-7111-bc33-00146526afd1.jsonl",
+    "afterLine": 5,
+    "phase": "generating",
+    "inFlightStartMs": 1792498208430
+   },
+   {
+    "file": "pi/agent/sessions/--Users-dev-projects-ember--/2026-10-20T12-10-00-000Z_01a15937-edc0-7111-bc33-00146526afd1.jsonl",
+    "afterLine": 6,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "pi/agent/sessions/--Users-dev-projects-ember--/2026-10-20T12-10-00-000Z_01a15937-edc0-7111-bc33-00146526afd1.jsonl",
+    "afterLine": 7,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "pi/agent/sessions/--Users-dev-projects-halo--/2026-10-20T12-20-00-000Z_01a15941-1580-7402-be06-0015035e2982.jsonl",
+    "afterLine": 8,
+    "phase": "idle",
+    "inFlightStartMs": null
+   },
+   {
+    "file": "pi/agent/sessions/--Users-dev-projects-halo--/2026-10-20T12-20-00-000Z_01a15941-1580-7402-be06-0015035e2982.jsonl",
+    "afterLine": 9,
+    "phase": "generating",
+    "inFlightStartMs": 1792498805000
+   },
+   {
+    "file": "pi/custom-sessions/2026-10-20T12-30-00-000Z_01a1594a-3d40-76f3-bfd9-0015a195a333.jsonl",
+    "afterLine": 2,
+    "phase": "generating",
+    "inFlightStartMs": 1792499402000
+   }
+  ]
+ },
+ "_order": [
+  "omp/agent/sessions/-projects-legacy-tool/2026-10-20T10-46-00-000Z_01a158eb-0640-72f1-81d3-00009e3779b1.jsonl",
+  "omp/agent/sessions/-projects-comet/2026-10-20T10-48-00-000Z_01a158ec-db00-75e2-83a6-00013c6ef362.jsonl",
+  "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4/ScanCallSites/VerifyImports.jsonl",
+  "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4/ScanCallSites.jsonl",
+  "omp/agent/sessions/-projects-pulsar/2026-10-20T10-50-00-000Z_01a158ee-afc0-7bc4-874c-000278dde6c4.jsonl",
+  "omp/agent/sessions/-projects-pulsar/2026-10-20T11-00-00-000Z_01a158f7-d780-7497-8cc5-0004538453d7/ScanCallSites.jsonl",
+  "omp/agent/sessions/-projects-pulsar/2026-10-20T11-00-00-000Z_01a158f7-d780-7497-8cc5-0004538453d7/ScanCallSites/VerifyImports.jsonl",
+  "omp/agent/sessions/-projects-pulsar/2026-10-20T11-00-00-000Z_01a158f7-d780-7497-8cc5-0004538453d7.jsonl",
+  "omp/agent/sessions/-projects-pulsar/2026-10-20T11-10-00-000Z_01a15900-ff40-7788-8e98-0004f1bbcd88.jsonl",
+  "omp/agent/sessions/-projects-nova/2026-10-20T11-20-00-000Z_01a1590a-2700-7d6a-923e-00062e2ac0ea.jsonl",
+  "omp/profiles/work/agent/sessions/-projects-orbit/2026-10-20T23-58-00-000Z_01a15bc0-1f40-705b-9411-0006cc623a9b.jsonl",
+  "omp/profiles/work/agent/sessions/-projects-orbit/2026-10-21T00-10-00-000Z_01a15bcb-1bc0-734c-95e4-00076a99b44c.jsonl",
+  "omp/agent/sessions/-projects-branch/2026-10-20T11-30-00-000Z_01a15913-4ec0-792e-998a-0008a708a7ae.jsonl",
+  "pi/agent/sessions/--Users-dev-projects-halo--/2026-10-20T12-00-00-000Z_01a1592e-c600-7b2f-b88d-001328b7bc6f.jsonl",
+  "pi/agent/sessions/--Users-dev-projects-halo--/2026-10-20T12-00-00-000Z_01a1592e-c600-7b2f-b88d-001328b7bc6f/reviewer.jsonl",
+  "pi/agent/sessions/--Users-dev-projects-ember--/2026-10-20T12-10-00-000Z_01a15937-edc0-7111-bc33-00146526afd1.jsonl",
+  "pi/agent/sessions/--Users-dev-projects-halo--/2026-10-20T12-20-00-000Z_01a15941-1580-7402-be06-0015035e2982.jsonl",
+  "pi/custom-sessions/2026-10-20T12-30-00-000Z_01a1594a-3d40-76f3-bfd9-0015a195a333.jsonl",
+  "pi/custom-sessions/2026-10-20T12-30-00-000Z_01a1594a-3d40-76f3-bfd9-0015a195a333/helper.jsonl"
+ ]
+}

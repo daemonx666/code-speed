@@ -1,0 +1,38 @@
+# Homebrew cask for code-speed. packaging/render.sh fills in the version
+# and checksum; the release workflow pushes it to daemonx666/homebrew-tap.
+cask "code-speed" do
+  version "@VERSION@"
+  sha256 "@SHA_MAC@"
+
+  url "https://github.com/daemonx666/code-speed/releases/download/v#{version}/code-speed-v#{version}-macos-universal.zip"
+  name "code-speed"
+  desc "Live token speed, usage, cost and quotas of coding agents"
+  homepage "https://github.com/daemonx666/code-speed"
+
+  livecheck do
+    url :url
+    strategy :github_latest
+  end
+
+  # the app can install its own updates (Settings → System)
+  auto_updates true
+  depends_on macos: ">= :ventura"
+
+  app "code-speed.app"
+
+  uninstall quit:       "io.github.daemonx666.code-speed",
+            launchctl:  "io.github.daemonx666.code-speed",
+            login_item: "code-speed"
+
+  zap trash: [
+    "~/Library/Application Support/code-speed",
+    "~/Library/Caches/io.github.daemonx666.code-speed",
+    "~/Library/LaunchAgents/io.github.daemonx666.code-speed.plist",
+    "~/Library/WebKit/io.github.daemonx666.code-speed",
+  ]
+
+  caveats <<~EOS
+    code-speed is not notarized yet. If macOS refuses to open it, install with
+      brew install --cask --no-quarantine daemonx666/tap/code-speed
+  EOS
+end

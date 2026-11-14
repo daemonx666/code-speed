@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: test (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, macos-14, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Linux webview headers
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev
+
+      - name: gofmt
+        if: runner.os == 'Linux'
+        run: test -z "$(gofmt -l .)" || { gofmt -l .; exit 1; }
+
+      - name: install.sh parses in a strict POSIX shell
+        if: runner.os == 'Linux'
+        run: dash -n install.sh && dash -n packaging/render.sh
+
+      - name: vet
+        shell: bash
+        run: |
+          go vet -tags nogui ./...
+          if [ "$RUNNER_OS" = Linux ]; then go vet -tags "production gtk3" ./...; else go vet -tags production ./...; fi
+
+      - name: test
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" = Windows ]; then go test -tags nogui ./...; else go test -race -tags nogui ./...; fi
+
+      - name: build the desktop app
+        shell: bash
+        run: |
+          case "$RUNNER_OS" in
+            Linux)   go build -tags "production gtk3" -o /dev/null . ;;
+            macOS)   go build -tags production -o /dev/null . ;;
+            Windows) go build -tags production -ldflags "-H windowsgui" -o code-speed.exe . ;;
+          esac
+
+      - name: build the terminal binary everywhere
+        if: runner.os == 'Linux'
+        run: make release-cli VERSION=ci

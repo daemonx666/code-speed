@@ -1,0 +1,197 @@
+# Push a tag v* to build every package and publish them as a GitHub
+# release: macOS .dmg/.zip (universal), Windows installer and portable zip
+# (x64, arm64), Linux .deb/.rpm/.tar.gz (x64, arm64), and the terminal-only
+# binaries for all six targets; SHA256SUMS, signed with the release key
+# (SHA256SUMS.sig), and a build attestation for every file.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  cli:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - run: make release-cli VERSION=${{ github.ref_name }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cli
+          path: |
+            dist/*.tar.gz
+            dist/*.zip
+
+  macos:
+    runs-on: macos-14
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - run: make dmg VERSION=${{ github.ref_name }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos
+          path: |
+            dist/*.dmg
+            dist/*.zip
+
+  windows:
+    # WebView2 needs no cgo, so Windows cross-compiles; NSIS builds the installer
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - run: sudo apt-get update && sudo apt-get install -y nsis zip
+      - run: make release-windows VERSION=${{ github.ref_name }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: |
+            dist/*-setup.exe
+            dist/*-portable.zip
+
+  linux:
+    # the webview links through cgo, so each arch builds on its own runner;
+    # 22.04 keeps the glibc floor low
+    strategy:
+      matrix:
+        runner: [ubuntu-22.04, ubuntu-22.04-arm]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - run: sudo apt-get update && sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev
+      - run: make release-linux VERSION=${{ github.ref_name }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-${{ matrix.runner }}
+          path: |
+            dist/*.deb
+            dist/*.rpm
+            dist/*.tar.gz
+
+  publish:
+    needs: [cli, macos, windows, linux]
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+      id-token: write     # build attestations
+      attestations: write
+    env:
+      CODE_SPEED_SIGNING_KEY: ${{ secrets.CODE_SPEED_SIGNING_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - uses: actions/download-artifact@v4
+        with:
+          path: out
+          merge-multiple: true
+      - name: checksums
+        run: cd out && sha256sum * > SHA256SUMS && cat SHA256SUMS
+      # the app's updater installs only a release whose SHA256SUMS the
+      # release key signed (internal/update/signed.go); without the secret
+      # the release still goes out, and updates are left to the user
+      - name: sign the checksums
+        if: ${{ env.CODE_SPEED_SIGNING_KEY != '' }}
+        run: go run ./build/signsums out/SHA256SUMS
+      - name: no signing key
+        if: ${{ env.CODE_SPEED_SIGNING_KEY == '' }}
+        run: echo "::warning::CODE_SPEED_SIGNING_KEY is not set; this release can't update itself in place"
+      # every file can be checked with: gh attestation verify <file> -R daemonx666/code-speed
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: out/*
+      - name: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${{ github.ref_name }}" out/* --repo "${{ github.repository }}" --title "${{ github.ref_name }}" --generate-notes
+
+  # Package managers: fill the manifests in packaging/ with this release's
+  # checksums, attach them to the release, and publish each one whose
+  # secret is set (none are needed for the release itself):
+  #   TAP_TOKEN    a token that can push to daemonx666/homebrew-tap and
+  #                daemonx666/scoop-bucket
+  #   AUR_SSH_KEY  the private key of the AUR account that owns code-speed-bin
+  #   WINGET_TOKEN a classic token (public_repo) to open the winget-pkgs PR;
+  #                the first version is submitted by hand (see packaging/README.md)
+  packages:
+    needs: publish
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    env:
+      TAG: ${{ github.ref_name }}
+      GH_TOKEN: ${{ github.token }}
+      TAP_TOKEN: ${{ secrets.TAP_TOKEN }}
+      AUR_SSH_KEY: ${{ secrets.AUR_SSH_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: render
+        run: |
+          gh release download "$TAG" --repo "${{ github.repository }}" --pattern SHA256SUMS --dir /tmp/rel
+          packaging/render.sh "$TAG" /tmp/rel/SHA256SUMS /tmp/pkg
+          tar -C /tmp/pkg -czf "/tmp/code-speed-$TAG-packaging.tar.gz" .
+          gh release upload "$TAG" "/tmp/code-speed-$TAG-packaging.tar.gz" --repo "${{ github.repository }}" --clobber
+      - name: homebrew and scoop
+        if: ${{ env.TAP_TOKEN != '' }}
+        run: |
+          git config --global user.name "code-speed release"
+          git config --global user.email "actions@users.noreply.github.com"
+          push() { # repo, source, destination
+            rm -rf /tmp/repo && git clone --depth 1 "https://x-access-token:${TAP_TOKEN}@github.com/$1.git" /tmp/repo
+            mkdir -p "$(dirname "/tmp/repo/$3")" && cp "$2" "/tmp/repo/$3"
+            git -C /tmp/repo add -A
+            git -C /tmp/repo diff --cached --quiet || git -C /tmp/repo commit -m "code-speed $TAG"
+            git -C /tmp/repo push
+          }
+          push daemonx666/homebrew-tap /tmp/pkg/homebrew/code-speed.rb Casks/code-speed.rb
+          push daemonx666/scoop-bucket /tmp/pkg/scoop/code-speed.json bucket/code-speed.json
+      - name: aur
+        if: ${{ env.AUR_SSH_KEY != '' }}
+        run: |
+          mkdir -p ~/.ssh && printf '%s\n' "$AUR_SSH_KEY" > ~/.ssh/aur && chmod 600 ~/.ssh/aur
+          ssh-keyscan -t ed25519 aur.archlinux.org >> ~/.ssh/known_hosts
+          export GIT_SSH_COMMAND="ssh -i ~/.ssh/aur"
+          git config --global user.name "daemonx666"
+          git config --global user.email "actions@users.noreply.github.com"
+          git clone ssh://aur@aur.archlinux.org/code-speed-bin.git /tmp/aur
+          cp /tmp/pkg/aur/PKGBUILD /tmp/pkg/aur/.SRCINFO /tmp/aur/
+          git -C /tmp/aur add PKGBUILD .SRCINFO
+          git -C /tmp/aur diff --cached --quiet || git -C /tmp/aur commit -m "code-speed $TAG"
+          git -C /tmp/aur push origin HEAD:master
+
+  winget:
+    needs: publish
+    runs-on: windows-latest
+    env:
+      TAG: ${{ github.ref_name }}
+      WINGET_TOKEN: ${{ secrets.WINGET_TOKEN }}
+    steps:
+      - name: update the winget-pkgs manifest
+        if: ${{ env.WINGET_TOKEN != '' }}
+        shell: pwsh
+        run: |
+          $v = $env:TAG.TrimStart('v')
+          $base = "https://github.com/${{ github.repository }}/releases/download/$env:TAG"
+          Invoke-WebRequest https://aka.ms/wingetcreate/latest -OutFile wingetcreate.exe
+          .\wingetcreate.exe update daemonx666.code-speed --version $v `
+            --urls "$base/code-speed-$env:TAG-windows-amd64-setup.exe|x64" "$base/code-speed-$env:TAG-windows-arm64-setup.exe|arm64" `
+            --submit --token $env:WINGET_TOKEN

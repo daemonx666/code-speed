@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Code Speed</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="logo" aria-hidden="true"></span>Code Speed</div>
+  <div class="seg tabs" role="tablist" aria-label="Code Speed">
+    <button role="tab" id="tab-overview" aria-controls="view-overview" aria-selected="true" data-i18n="tab.overview"></button>
+    <button role="tab" id="tab-stats" aria-controls="view-stats" aria-selected="false" tabindex="-1" data-i18n="tab.stats"></button>
+    <button role="tab" id="tab-sessions" aria-controls="view-sessions" aria-selected="false" tabindex="-1" data-i18n="tab.sessions"></button>
+    <button role="tab" id="tab-settings" aria-controls="view-settings" aria-selected="false" tabindex="-1" data-i18n="tab.settings"></button>
+  </div>
+</header>
+
+<main>
+  <!-- Overview -->
+  <section id="view-overview" role="tabpanel" aria-labelledby="tab-overview">
+    <div class="card hero">
+      <div class="row between">
+        <span class="eyebrow" data-i18n="live"></span>
+        <span id="est" class="chip" hidden data-i18n="live.est"></span>
+      </div>
+      <div class="speed"><span id="live">—</span><small>tok/s</small></div>
+      <div id="live-cost" class="muted small" hidden></div>
+      <svg id="spark" class="spark" viewBox="0 0 120 30" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div id="live-sources" class="legend"></div>
+    </div>
+    <div class="tiles">
+      <div class="tile"><span data-i18n="avgToday"></span><b id="avg">—</b></div>
+      <div class="tile"><span data-i18n="peakToday"></span><b id="peak">—</b></div>
+      <div class="tile"><span data-i18n="lastReply"></span><b id="last">—</b></div>
+    </div>
+    <p id="last-detail" class="muted small"></p>
+
+    <div class="card">
+      <div class="row between">
+        <h2 data-i18n="today"></h2>
+        <div class="seg small" id="today-by" role="radiogroup" data-i18n-label="by.label">
+          <button role="radio" data-v="source" data-i18n="dim.source"></button>
+          <button role="radio" data-v="model" data-i18n="dim.model"></button>
+        </div>
+      </div>
+      <div class="totals">
+        <div><b id="t-tokens">—</b><span data-i18n="tokens"></span></div>
+        <div><b id="t-cost">—</b><span data-i18n="cost"></span></div>
+        <div><b id="t-req">—</b><span data-i18n="requests"></span></div>
+      </div>
+      <p id="t-cache" class="muted small"></p>
+      <div id="today-sources" class="share"></div>
+      <p id="unpriced" class="muted small" hidden></p>
+      <p id="pending" class="muted small" hidden></p>
+    </div>
+
+    <div class="card" id="quota-card" hidden>
+      <h2 data-i18n="quotas"></h2>
+      <div id="quotas"></div>
+    </div>
+
+    <div class="card" id="budget-card" hidden>
+      <h2 data-i18n="budget.title"></h2>
+      <div id="budgets"></div>
+    </div>
+
+    <div class="card" id="subs-card">
+      <h2 data-i18n="subs.title"></h2>
+      <div id="subs"></div>
+    </div>
+
+    <div class="card" id="status-card" hidden>
+      <div class="row between"><h2 data-i18n="status.title"></h2><span class="row"><span id="status-sub" class="muted small"></span><button id="status-refresh" class="mini" type="button" data-i18n-label="status.refresh">↻</button></span></div>
+      <ul id="status-list" class="status-list"></ul>
+    </div>
+
+    <div class="card" id="alerts-card" hidden>
+      <h2 data-i18n="alerts.recent"></h2>
+      <ul id="alert-list" class="alert-list"></ul>
+    </div>
+
+    <div class="card">
+      <div class="row between"><h2 data-i18n="sessions.active"></h2><button class="link" id="to-sessions" type="button" data-i18n="sessions.all"></button></div>
+      <ul id="overview-sessions" class="sessions"></ul>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section id="view-stats" role="tabpanel" aria-labelledby="tab-stats" hidden>
+    <div class="seg wide" id="period" role="radiogroup">
+      <button role="radio" data-v="day" data-i18n="period.day"></button>
+      <button role="radio" data-v="week" data-i18n="period.week"></button>
+      <button role="radio" data-v="month" data-i18n="period.month"></button>
+      <button role="radio" data-v="year" data-i18n="period.year"></button>
+      <button role="radio" data-v="all" data-i18n="period.all"></button>
+    </div>
+    <div class="tiles four">
+      <div class="tile" id="tile-tokens"><span data-i18n="stats.tokens"></span><b id="s-tokens">—</b><small class="delta" id="d-tokens"></small></div>
+      <div class="tile" id="tile-cost"><span data-i18n="stats.cost"></span><b id="s-cost">—</b><small class="delta" id="d-cost"></small></div>
+      <div class="tile" id="tile-req"><span data-i18n="stats.requests"></span><b id="s-req">—</b><small class="delta" id="d-req"></small></div>
+      <div class="tile" id="tile-avg"><span data-i18n="stats.avg"></span><b id="s-avg">—</b><small class="delta" id="d-avg"></small></div>
+    </div>
+    <p id="s-sub" class="muted small"></p>
+
+    <div class="card">
+      <div class="row between">
+        <h2 id="chart-title"></h2>
+        <div class="row segs">
+          <div class="seg small" id="chart-by" role="radiogroup" data-i18n-label="by.label">
+            <button role="radio" data-v="source" data-i18n="dim.source"></button>
+            <button role="radio" data-v="model" data-i18n="dim.model"></button>
+          </div>
+          <div class="seg small" id="metric" role="radiogroup">
+            <button role="radio" data-v="cost" data-i18n="metric.cost"></button>
+            <button role="radio" data-v="tokens" data-i18n="metric.tokens"></button>
+          </div>
+        </div>
+      </div>
+      <div id="chart" class="chart"></div>
+      <div id="chart-legend" class="legend"></div>
+    </div>
+
+    <div class="card">
+      <div class="row between"><h2 data-i18n="stats.breakdown"></h2><span id="s-cache" class="muted small"></span></div>
+      <div id="mix" class="mix"></div>
+      <div id="mix-legend" class="legend"></div>
+    </div>
+
+    <div class="card">
+      <div class="seg wide" id="dim" role="radiogroup">
+        <button role="radio" data-v="source" data-i18n="dim.source"></button>
+        <button role="radio" data-v="model" data-i18n="dim.model"></button>
+        <button role="radio" data-v="project" data-i18n="dim.project"></button>
+        <button role="radio" data-v="effort" data-i18n="dim.effort"></button>
+      </div>
+      <div id="focus-chip" class="focus-chip" hidden></div>
+      <input id="dim-filter" class="filter" type="search" autocomplete="off">
+      <table class="rows sortable" id="dim-rows"></table>
+      <button id="dim-more" class="link small-link" type="button" hidden></button>
+      <p id="stats-empty" class="muted small" hidden data-i18n="stats.empty"></p>
+    </div>
+    <div class="card" id="speed-card">
+      <div class="row between"><h2 data-i18n="speedRank.title"></h2><span id="speed-sub" class="muted small"></span></div>
+      <div id="speed-rows" class="speed-rows"></div>
+      <button id="speed-more" class="link small-link" type="button" hidden></button>
+      <p id="speed-empty" class="muted small" hidden data-i18n="speedRank.empty"></p>
+    </div>
+
+    <div class="card" id="activity-card">
+      <div class="row between"><h2 data-i18n="activity.title"></h2><span id="activity-sub" class="muted small"></span></div>
+      <div id="heatmap" class="heatmap"></div>
+      <div class="tiles four streaks">
+        <div class="tile"><span data-i18n="activity.current"></span><b id="a-current">—</b></div>
+        <div class="tile"><span data-i18n="activity.longest"></span><b id="a-longest">—</b></div>
+        <div class="tile"><span data-i18n="activity.days"></span><b id="a-days">—</b></div>
+        <div class="tile"><span data-i18n="activity.best"></span><b id="a-best">—</b></div>
+      </div>
+    </div>
+
+    <div class="row between foot">
+      <span id="export-status" class="muted small" role="status"></span>
+      <span class="row">
+        <button id="export-csv" class="btn" type="button">CSV</button>
+        <button id="export-json" class="btn" type="button">JSON</button>
+      </span>
+    </div>
+  </section>
+
+  <!-- Sessions -->
+  <section id="view-sessions" role="tabpanel" aria-labelledby="tab-sessions" hidden>
+    <div id="session-list-view">
+      <div id="session-groups"></div>
+      <p id="sessions-none" class="muted small" hidden data-i18n="sessions.none"></p>
+      <div class="card">
+        <div class="row between">
+          <h2 id="sessions-title" data-i18n="sessions.today"></h2>
+          <div class="seg small" id="sessions-range" role="radiogroup">
+            <button role="radio" data-v="today" data-i18n="sessions.rangeToday"></button>
+            <button role="radio" data-v="week" data-i18n="sessions.rangeWeek"></button>
+          </div>
+        </div>
+        <ul id="session-list" class="sessions clickable"></ul>
+      </div>
+    </div>
+    <div id="session-detail" hidden>
+      <button id="session-back" class="link" type="button" data-i18n="session.back"></button>
+      <div class="card">
+        <div class="row"><span id="sd-dot" class="dot"></span><strong id="sd-title"></strong></div>
+        <p id="sd-meta" class="muted small"></p>
+        <div class="totals four">
+          <div><b id="sd-tokens">—</b><span data-i18n="tokens"></span></div>
+          <div><b id="sd-cost">—</b><span data-i18n="cost"></span></div>
+          <div><b id="sd-req">—</b><span data-i18n="requests"></span></div>
+          <div><b id="sd-speed">—</b><span data-i18n="stats.avg"></span></div>
+        </div>
+        <p id="sd-from" class="muted small"></p>
+      </div>
+      <div class="card">
+        <h2 data-i18n="session.requests"></h2>
+        <svg id="sd-chart" class="sd-chart" viewBox="0 0 360 60" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <table class="rows" id="sd-rows"></table>
+        <button id="sd-more" class="link small-link" type="button" hidden></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Settings -->
+  <section id="view-settings" role="tabpanel" aria-labelledby="tab-settings" hidden>
+    <div class="card form">
+      <label class="field"><span data-i18n="settings.language"></span>
+        <select id="set-language">
+          <option value="auto" data-i18n="lang.auto"></option>
+          <option value="en">English</option>
+          <option value="zh-CN">简体中文</option>
+        </select>
+      </label>
+      <label class="field"><span data-i18n="settings.menubar"></span>
+        <select id="set-menubar">
+          <option value="speed" data-i18n="menubar.speed"></option>
+          <option value="speed-cost" data-i18n="menubar.speed-cost"></option>
+          <option value="cost" data-i18n="menubar.cost"></option>
+          <option value="icon" data-i18n="menubar.icon"></option>
+        </select>
+      </label>
+      <p class="muted small" data-i18n="menubar.note"></p>
+      <label class="field"><span data-i18n="settings.numbers"></span>
+        <select id="set-numbers">
+          <option value="metric" data-i18n="numbers.metric"></option>
+          <option value="cjk" data-i18n="numbers.cjk"></option>
+        </select>
+      </label>
+      <label class="field"><span data-i18n="settings.theme"></span>
+        <select id="set-theme">
+          <option value="auto" data-i18n="theme.auto"></option>
+          <option value="light" data-i18n="theme.light"></option>
+          <option value="dark" data-i18n="theme.dark"></option>
+        </select>
+      </label>
+    </div>
+
+    <div class="card form">
+      <h2 data-i18n="alerts.title"></h2>
+      <label class="field"><span data-i18n="alerts.quota"></span><input id="set-alert-quota" class="short" type="text" inputmode="decimal" placeholder="80, 95"></label>
+      <label class="field"><span data-i18n="alerts.pace"></span><input id="set-alert-pace" type="checkbox" class="switch" role="switch"></label>
+      <label class="field"><span data-i18n="alerts.budget"></span><input id="set-alert-budget" type="checkbox" class="switch" role="switch"></label>
+      <label class="field"><span data-i18n="alerts.peak"></span><input id="set-alert-peak" type="checkbox" class="switch" role="switch"></label>
+      <p class="muted small" data-i18n="alerts.note"></p>
+    </div>
+
+    <div class="card form">
+      <h2 data-i18n="budget.settings"></h2>
+      <label class="field"><span data-i18n="currency.title"></span>
+        <span class="row"><select id="set-currency"></select><input id="set-rate" class="short" type="number" min="0" step="0.0001"></span>
+      </label>
+      <p id="rate-note" class="muted small"></p>
+      <label class="field"><span data-i18n="budget.daily"></span><span class="row"><span class="muted cur-sym"></span><input id="set-budget-daily" class="short" type="number" min="0" step="1" placeholder="0"></span></label>
+      <label class="field"><span data-i18n="budget.monthly"></span><span class="row"><span class="muted cur-sym"></span><input id="set-budget-monthly" class="short" type="number" min="0" step="1" placeholder="0"></span></label>
+    </div>
+
+    <div class="card form">
+      <h2 data-i18n="system.title"></h2>
+      <label class="field"><span data-i18n="system.login"></span><input id="set-login" type="checkbox" class="switch" role="switch"></label>
+      <label class="field"><span data-i18n="orb.label"></span><input id="set-orb" type="checkbox" class="switch" role="switch" aria-describedby="orb-note"></label>
+      <p id="orb-note" class="muted small" data-i18n="orb.note"></p>
+      <label class="field"><span data-i18n="system.shortcut"></span>
+        <select id="set-shortcut">
+          <option value="" data-i18n="system.shortcutOff"></option>
+          <option value="CmdOrCtrl+Shift+K">⇧⌘K / Ctrl+Shift+K</option>
+          <option value="CmdOrCtrl+Alt+S">⌥⌘S / Ctrl+Alt+S</option>
+          <option value="CmdOrCtrl+Shift+Space">⇧⌘Space / Ctrl+Shift+Space</option>
+        </select>
+      </label>
+      <label class="field"><span data-i18n="system.updates"></span><input id="set-updates" type="checkbox" class="switch" role="switch"></label>
+      <div class="row between"><span id="update-status" class="muted small" role="status"></span><span class="row"><button id="update-install" class="btn" type="button" hidden data-i18n="update.install"></button><button id="update-get" class="btn" type="button" hidden data-i18n="system.download"></button></span></div>
+      <label class="field"><span data-i18n="update.auto"></span><input id="set-auto-update" type="checkbox" class="switch" role="switch" aria-describedby="auto-update-note"></label>
+      <p id="auto-update-note" class="muted small" data-i18n="update.autoNote"></p>
+      <label class="field"><span data-i18n="priceSync.label"></span><input id="set-price-sync" type="checkbox" class="switch" role="switch" aria-describedby="price-sync-note"></label>
+      <div class="row between"><span id="price-sync-status" class="muted small" role="status"></span><button id="price-sync-now" class="btn" type="button" data-i18n="priceSync.now"></button></div>
+      <p id="price-sync-note" class="muted small" data-i18n="priceSync.note"></p>
+    </div>
+
+    <div class="card">
+      <div class="row between">
+        <div class="meta"><strong data-i18n="settings.claudeQuota"></strong><br><small id="bridge-status" class="muted"></small></div>
+        <input type="checkbox" class="switch" role="switch" id="set-claude-quota" aria-describedby="bridge-note">
+      </div>
+      <p id="bridge-note" class="muted small" data-i18n="settings.claudeQuota.note"></p>
+    </div>
+
+    <div class="card">
+      <h2 data-i18n="settings.subs"></h2>
+      <div id="set-subs" class="subs-form"></div>
+      <p class="muted small" data-i18n="settings.subs.note"></p>
+    </div>
+
+    <div class="card">
+      <h2 data-i18n="settings.sources"></h2>
+      <ul id="set-sources" class="sources"></ul>
+      <p class="muted small" data-i18n="settings.sources.note"></p>
+      <p class="muted small" data-i18n="order.note"></p>
+    </div>
+
+    <div class="card form">
+      <h2 data-i18n="status.title"></h2>
+      <label class="field"><span data-i18n="status.check"></span><input id="set-status-check" type="checkbox" class="switch" role="switch" aria-describedby="status-note"></label>
+      <p id="status-note" class="muted small" data-i18n="status.note"></p>
+      <label class="field"><span data-i18n="status.auto"></span><input id="set-status-auto" type="checkbox" class="switch" role="switch"></label>
+      <div id="status-pick" class="chips"></div>
+    </div>
+
+    <div class="card form">
+      <h2 data-i18n="places.title"></h2>
+      <label class="field" id="wsl-field" hidden><span data-i18n="places.wsl"></span><input id="set-wsl" type="checkbox" class="switch" role="switch" aria-describedby="wsl-note"></label>
+      <p id="wsl-note" class="muted small" hidden data-i18n="places.wslNote"></p>
+      <label class="stack"><span data-i18n="places.homes"></span>
+        <textarea id="set-homes" class="paths" rows="2" spellcheck="false" autocomplete="off"></textarea>
+      </label>
+      <p class="muted small" data-i18n="places.homesNote"></p>
+      <div id="set-paths"></div>
+      <p class="muted small" data-i18n="places.note"></p>
+    </div>
+
+    <div class="card">
+      <div class="row between"><h2 data-i18n="settings.plugins"></h2><button class="btn" id="reload" type="button" data-i18n="plugins.reload"></button></div>
+      <dl class="kv">
+        <dt data-i18n="plugins.dir"></dt><dd id="plugin-dir" class="mono"></dd>
+        <dt data-i18n="prices.file"></dt><dd id="prices-file"></dd>
+      </dl>
+      <ul id="plugin-list" class="sources"></ul>
+      <div class="row">
+        <button id="open-plugins" class="btn" type="button" data-i18n="open.plugins"></button>
+        <button id="open-data" class="btn" type="button" data-i18n="open.data"></button>
+      </div>
+      <details id="prices-editor">
+        <summary data-i18n="prices.edit"></summary>
+        <p class="muted small" data-i18n="prices.editNote"></p>
+        <table class="rows price-table" id="price-rows"></table>
+        <button id="price-add" class="link small-link" type="button" data-i18n="prices.add"></button>
+        <h2 class="sub-h" data-i18n="prices.multipliers"></h2>
+        <div id="mult-rows" class="subs-form"></div>
+        <div class="row between foot"><span id="prices-status" class="muted small" role="status"></span><button id="prices-save" class="btn" type="button" data-i18n="prices.save"></button></div>
+      </details>
+    </div>
+
+    <div class="card">
+      <h2 data-i18n="settings.data"></h2>
+      <dl class="kv">
+        <dt data-i18n="settings.dataDir"></dt><dd id="set-datadir" class="mono"></dd>
+        <dt data-i18n="settings.prices"></dt><dd id="set-prices"></dd>
+        <dt data-i18n="settings.version"></dt><dd id="set-version"></dd>
+      </dl>
+      <p class="muted small" data-i18n="settings.privacy"></p>
+    </div>
+    <div class="row between foot">
+      <span id="saved" class="muted small" role="status"></span>
+      <button id="quit" type="button" class="btn" data-i18n="quit"></button>
+    </div>
+  </section>
+</main>
+
+<div id="tip" role="tooltip" hidden></div>
+<div id="loading" class="loading" hidden><div><p id="loading-text"></p><p class="muted small" data-i18n="loading.first"></p></div></div>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

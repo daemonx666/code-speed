@@ -1,0 +1,6 @@
+/code-speed
+/code-speed.exe
+/dist/
+rsrc_windows_*.syso
+.DS_Store
+.state/

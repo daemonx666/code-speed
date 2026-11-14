@@ -1,0 +1,4 @@
+{"ts":"2026-11-14T10:00:00.000Z","kind":"user","cwd":"/work/shop"}
+{"ts":"2026-11-14T10:00:04.000Z","kind":"reply","id":"r1","model":"claude-sonnet-5-5","cwd":"/work/shop","usage":{"input_tokens":12,"cache_read_input_tokens":9000,"cache_creation_input_tokens":300,"output_tokens":400}}
+{"ts":"2026-11-14T10:00:05.000Z","kind":"tool_result","cwd":"/work/shop"}
+{"ts":"2026-11-14T10:00:07.500Z","kind":"reply","id":"r2","model":"claude-sonnet-5-5","cwd":"/work/shop","usage":{"input_tokens":20,"cache_read_input_tokens":9700,"cache_creation_input_tokens":0,"output_tokens":250}}

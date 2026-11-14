@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.6.0.schema.json
+PackageIdentifier: daemonx666.code-speed
+PackageVersion: "@VERSION@"
+InstallerType: nullsoft
+Scope: user
+UpgradeBehavior: install
+InstallModes:
+  - interactive
+  - silent
+Installers:
+  - Architecture: x64
+    InstallerUrl: https://github.com/daemonx666/code-speed/releases/download/v@VERSION@/code-speed-v@VERSION@-windows-amd64-setup.exe
+    InstallerSha256: "@SHA_WIN_AMD64_SETUP@"
+  - Architecture: arm64
+    InstallerUrl: https://github.com/daemonx666/code-speed/releases/download/v@VERSION@/code-speed-v@VERSION@-windows-arm64-setup.exe
+    InstallerSha256: "@SHA_WIN_ARM64_SETUP@"
+ManifestType: installer
+ManifestVersion: 1.6.0

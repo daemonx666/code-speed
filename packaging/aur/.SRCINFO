@@ -1,0 +1,18 @@
+pkgbase = code-speed-bin
+	pkgdesc = Live token speed, usage, cost and quotas of coding agents, in the system tray
+	pkgver = @VERSION@
+	pkgrel = 1
+	url = https://github.com/daemonx666/code-speed
+	arch = x86_64
+	arch = aarch64
+	license = MIT
+	depends = gtk3
+	depends = webkit2gtk-4.1
+	provides = code-speed
+	conflicts = code-speed
+	source_x86_64 = code-speed-v@VERSION@-linux-amd64.tar.gz::https://github.com/daemonx666/code-speed/releases/download/v@VERSION@/code-speed-v@VERSION@-linux-amd64.tar.gz
+	sha256sums_x86_64 = @SHA_LINUX_AMD64@
+	source_aarch64 = code-speed-v@VERSION@-linux-arm64.tar.gz::https://github.com/daemonx666/code-speed/releases/download/v@VERSION@/code-speed-v@VERSION@-linux-arm64.tar.gz
+	sha256sums_aarch64 = @SHA_LINUX_ARM64@
+
+pkgname = code-speed-bin

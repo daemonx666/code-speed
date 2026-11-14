@@ -1,0 +1,36 @@
+# .deb and .rpm of the Linux desktop build. Paths are relative to the
+# repository root; VERSION and ARCH come from the Makefile.
+name: code-speed
+arch: ${ARCH}
+platform: linux
+version: ${VERSION}
+section: devel
+priority: optional
+maintainer: daemonx666 <https://github.com/daemonx666>
+description: |
+  Live token speed, usage, cost and quotas of your coding agents
+  (Claude Code, Codex), in the system tray and the terminal.
+homepage: https://github.com/daemonx666/code-speed
+license: MIT
+contents:
+  - src: dist/linux/code-speed
+    dst: /usr/bin/code-speed
+    file_info:
+      mode: 0755
+  - src: build/linux/code-speed.desktop
+    dst: /usr/share/applications/code-speed.desktop
+  - src: build/icon/icon-1024.png
+    dst: /usr/share/icons/hicolor/1024x1024/apps/code-speed.png
+  - src: LICENSE
+    dst: /usr/share/doc/code-speed/LICENSE
+  - src: THIRD_PARTY_NOTICES.md
+    dst: /usr/share/doc/code-speed/THIRD_PARTY_NOTICES.md
+overrides:
+  deb:
+    depends:
+      - libgtk-3-0 | libgtk-3-0t64
+      - libwebkit2gtk-4.1-0
+  rpm:
+    depends:
+      - gtk3
+      - webkit2gtk4.1

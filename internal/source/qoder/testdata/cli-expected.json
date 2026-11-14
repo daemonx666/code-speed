@@ -1,0 +1,298 @@
+{
+ "order": [
+  "qoder-cli/projects/-Users-dev-projects-atlas/3f2c9a10-7b1e-4c8d-9a21-5e6f70819a2b.jsonl",
+  "qoder-cli/projects/-Users-dev-projects-atlas/3f2c9a10-7b1e-4c8d-9a21-5e6f70819a2b/subagents/agent-5d1e7a.jsonl",
+  "qoder-cli/projects/-Users-dev-projects-borealis/8c41d2e7-2f90-4b6a-a3c5-91e07d4b6f18.jsonl",
+  "qoder-cli/projects/-Users-dev-projects-atlas/c7a9e3f1-5b2d-4e8a-9c10-2d3f4a5b6c7d.jsonl",
+  "qoder-cli/projects/-Users-dev-projects-borealis/e2b8f4a6-1c3d-4f5e-8a7b-9c0d1e2f3a4b.jsonl"
+ ],
+ "files": {
+  "qoder-cli/projects/-Users-dev-projects-atlas/3f2c9a10-7b1e-4c8d-9a21-5e6f70819a2b.jsonl": {
+   "source": "qoderCli",
+   "project": "atlas",
+   "model": "auto",
+   "isSubagent": false,
+   "parentFile": null,
+   "phase": "idle",
+   "inFlightStartMs": null,
+   "lastLineMs": 1792674201662,
+   "malformedLines": 0,
+   "responses": [
+    {
+     "key": "qodercli:6f1d2c3b-0001-4001-8001-00009e3779b9",
+     "startMs": 1792674194903,
+     "endMs": 1792674198025,
+     "firstMs": null,
+     "input": 20341,
+     "cachedInput": 20096,
+     "cacheWriteInput": 0,
+     "cacheWrite1hInput": 0,
+     "output": 92,
+     "reasoning": 0,
+     "model": "auto",
+     "provider": null,
+     "final": true,
+     "fast": false
+    },
+    {
+     "key": "qodercli:6f1d2c3b-0002-4001-8002-00013c6ef372",
+     "startMs": 1792674198131,
+     "endMs": 1792674201662,
+     "firstMs": null,
+     "input": 20478,
+     "cachedInput": 20096,
+     "cacheWriteInput": 0,
+     "cacheWrite1hInput": 0,
+     "output": 107,
+     "reasoning": 0,
+     "model": "auto",
+     "provider": null,
+     "final": true,
+     "fast": false
+    }
+   ],
+   "actions": [],
+   "effort": null,
+   "speed": null,
+   "responseModes": {
+    "qodercli:6f1d2c3b-0001-4001-8001-00009e3779b9": {
+     "effort": null,
+     "speed": null
+    },
+    "qodercli:6f1d2c3b-0002-4001-8002-00013c6ef372": {
+     "effort": null,
+     "speed": null
+    }
+   }
+  },
+  "qoder-cli/projects/-Users-dev-projects-atlas/3f2c9a10-7b1e-4c8d-9a21-5e6f70819a2b/subagents/agent-5d1e7a.jsonl": {
+   "source": "qoderCli",
+   "project": "atlas",
+   "model": "claude-sonnet-4-5",
+   "isSubagent": true,
+   "parentFile": "qoder-cli/projects/-Users-dev-projects-atlas/3f2c9a10-7b1e-4c8d-9a21-5e6f70819a2b.jsonl",
+   "phase": "idle",
+   "inFlightStartMs": null,
+   "lastLineMs": 1792674201300,
+   "malformedLines": 0,
+   "responses": [
+    {
+     "key": "qodercli:6f1d2c3b-0003-4001-8003-0001daa66d2b",
+     "startMs": 1792674198200,
+     "endMs": 1792674199950,
+     "firstMs": null,
+     "input": 5812,
+     "cachedInput": 4000,
+     "cacheWriteInput": 1800,
+     "cacheWrite1hInput": 600,
+     "output": 64,
+     "reasoning": 0,
+     "model": "claude-sonnet-4-5",
+     "provider": null,
+     "final": true,
+     "fast": false
+    },
+    {
+     "key": "qodercli:6f1d2c3d-000e-4003-800e-0008a708a81e",
+     "startMs": 1792674200010,
+     "endMs": 1792674201300,
+     "firstMs": null,
+     "input": 3000,
+     "cachedInput": 2500,
+     "cacheWriteInput": 500,
+     "cacheWrite1hInput": 0,
+     "output": 41,
+     "reasoning": 0,
+     "model": "claude-sonnet-4-5",
+     "provider": null,
+     "final": true,
+     "fast": false
+    }
+   ],
+   "actions": [],
+   "effort": null,
+   "speed": null,
+   "responseModes": {
+    "qodercli:6f1d2c3b-0003-4001-8003-0001daa66d2b": {
+     "effort": null,
+     "speed": null
+    },
+    "qodercli:6f1d2c3d-000e-4003-800e-0008a708a81e": {
+     "effort": null,
+     "speed": null
+    }
+   }
+  },
+  "qoder-cli/projects/-Users-dev-projects-borealis/8c41d2e7-2f90-4b6a-a3c5-91e07d4b6f18.jsonl": {
+   "source": "qoderCli",
+   "project": "borealis",
+   "model": "auto",
+   "isSubagent": false,
+   "parentFile": null,
+   "phase": "idle",
+   "inFlightStartMs": null,
+   "lastLineMs": 1792675502000,
+   "malformedLines": 0,
+   "responses": [],
+   "actions": [],
+   "effort": null,
+   "speed": null,
+   "responseModes": {}
+  },
+  "qoder-cli/projects/-Users-dev-projects-atlas/c7a9e3f1-5b2d-4e8a-9c10-2d3f4a5b6c7d.jsonl": {
+   "source": "qoderCli",
+   "project": "atlas",
+   "model": "auto",
+   "isSubagent": false,
+   "parentFile": null,
+   "phase": "idle",
+   "inFlightStartMs": null,
+   "lastLineMs": 1792676407200,
+   "malformedLines": 0,
+   "responses": [
+    {
+     "key": "qodercli:6f1d2c3b-0007-4001-8007-00045384540f",
+     "startMs": 1792676400000,
+     "endMs": 1792676405500,
+     "firstMs": null,
+     "input": 20900,
+     "cachedInput": 20480,
+     "cacheWriteInput": 0,
+     "cacheWrite1hInput": 0,
+     "output": 310,
+     "reasoning": 0,
+     "model": "auto",
+     "provider": null,
+     "final": true,
+     "fast": false
+    },
+    {
+     "key": "qodercli:6f1d2c3b-0008-4001-8008-0004f1bbcdc8",
+     "startMs": 1792676405700,
+     "endMs": 1792676407200,
+     "firstMs": null,
+     "input": 21250,
+     "cachedInput": 20736,
+     "cacheWriteInput": 0,
+     "cacheWrite1hInput": 0,
+     "output": 58,
+     "reasoning": 0,
+     "model": "auto",
+     "provider": null,
+     "final": true,
+     "fast": false
+    }
+   ],
+   "actions": [],
+   "effort": null,
+   "speed": null,
+   "responseModes": {
+    "qodercli:6f1d2c3b-0007-4001-8007-00045384540f": {
+     "effort": null,
+     "speed": null
+    },
+    "qodercli:6f1d2c3b-0008-4001-8008-0004f1bbcdc8": {
+     "effort": null,
+     "speed": null
+    }
+   }
+  },
+  "qoder-cli/projects/-Users-dev-projects-borealis/e2b8f4a6-1c3d-4f5e-8a7b-9c0d1e2f3a4b.jsonl": {
+   "source": "qoderCli",
+   "project": "borealis",
+   "model": "auto",
+   "isSubagent": false,
+   "parentFile": null,
+   "phase": "tools",
+   "inFlightStartMs": null,
+   "lastLineMs": 1792677004000,
+   "malformedLines": 0,
+   "responses": [],
+   "actions": [],
+   "effort": null,
+   "speed": null,
+   "responseModes": {}
+  }
+ },
+ "mtimes": {
+  "qoder-cli/projects/-Users-dev-projects-atlas/3f2c9a10-7b1e-4c8d-9a21-5e6f70819a2b.jsonl": 1792674203000,
+  "qoder-cli/projects/-Users-dev-projects-atlas/3f2c9a10-7b1e-4c8d-9a21-5e6f70819a2b/subagents/agent-5d1e7a.jsonl": 1792674204000,
+  "qoder-cli/projects/-Users-dev-projects-borealis/8c41d2e7-2f90-4b6a-a3c5-91e07d4b6f18.jsonl": 1792675504000,
+  "qoder-cli/projects/-Users-dev-projects-atlas/c7a9e3f1-5b2d-4e8a-9c10-2d3f4a5b6c7d.jsonl": 1792676409000,
+  "qoder-cli/projects/-Users-dev-projects-borealis/e2b8f4a6-1c3d-4f5e-8a7b-9c0d1e2f3a4b.jsonl": 1792677006000
+ },
+ "traces": [
+  {
+   "file": "qoder-cli/projects/-Users-dev-projects-atlas/3f2c9a10-7b1e-4c8d-9a21-5e6f70819a2b.jsonl",
+   "afterLine": 4,
+   "phase": "generating",
+   "inFlightStartMs": 1792674194903
+  },
+  {
+   "file": "qoder-cli/projects/-Users-dev-projects-atlas/3f2c9a10-7b1e-4c8d-9a21-5e6f70819a2b.jsonl",
+   "afterLine": 5,
+   "phase": "tools",
+   "inFlightStartMs": null
+  },
+  {
+   "file": "qoder-cli/projects/-Users-dev-projects-atlas/3f2c9a10-7b1e-4c8d-9a21-5e6f70819a2b.jsonl",
+   "afterLine": 6,
+   "phase": "generating",
+   "inFlightStartMs": 1792674198131
+  },
+  {
+   "file": "qoder-cli/projects/-Users-dev-projects-borealis/8c41d2e7-2f90-4b6a-a3c5-91e07d4b6f18.jsonl",
+   "afterLine": 3,
+   "phase": "tools",
+   "inFlightStartMs": null
+  },
+  {
+   "file": "qoder-cli/projects/-Users-dev-projects-borealis/8c41d2e7-2f90-4b6a-a3c5-91e07d4b6f18.jsonl",
+   "afterLine": 4,
+   "phase": "generating",
+   "inFlightStartMs": 1792675203300
+  },
+  {
+   "file": "qoder-cli/projects/-Users-dev-projects-borealis/8c41d2e7-2f90-4b6a-a3c5-91e07d4b6f18.jsonl",
+   "afterLine": 5,
+   "phase": "idle",
+   "inFlightStartMs": null
+  },
+  {
+   "file": "qoder-cli/projects/-Users-dev-projects-borealis/8c41d2e7-2f90-4b6a-a3c5-91e07d4b6f18.jsonl",
+   "afterLine": 6,
+   "phase": "generating",
+   "inFlightStartMs": 1792675500000
+  },
+  {
+   "file": "qoder-cli/projects/-Users-dev-projects-atlas/c7a9e3f1-5b2d-4e8a-9c10-2d3f4a5b6c7d.jsonl",
+   "afterLine": 3,
+   "phase": "generating",
+   "inFlightStartMs": 1792674194903
+  },
+  {
+   "file": "qoder-cli/projects/-Users-dev-projects-atlas/c7a9e3f1-5b2d-4e8a-9c10-2d3f4a5b6c7d.jsonl",
+   "afterLine": 5,
+   "phase": "generating",
+   "inFlightStartMs": 1792674198131
+  },
+  {
+   "file": "qoder-cli/projects/-Users-dev-projects-borealis/e2b8f4a6-1c3d-4f5e-8a7b-9c0d1e2f3a4b.jsonl",
+   "afterLine": 2,
+   "phase": "generating",
+   "inFlightStartMs": 1792675200000
+  },
+  {
+   "file": "qoder-cli/projects/-Users-dev-projects-borealis/e2b8f4a6-1c3d-4f5e-8a7b-9c0d1e2f3a4b.jsonl",
+   "afterLine": 4,
+   "phase": "generating",
+   "inFlightStartMs": 1792675203300
+  },
+  {
+   "file": "qoder-cli/projects/-Users-dev-projects-borealis/e2b8f4a6-1c3d-4f5e-8a7b-9c0d1e2f3a4b.jsonl",
+   "afterLine": 5,
+   "phase": "generating",
+   "inFlightStartMs": 1792677000000
+  }
+ ]
+}

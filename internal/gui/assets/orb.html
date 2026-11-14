@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Code Speed</title>
+<style>
+  :root {
+    --pill: rgba(255, 255, 255, .96); --fg: #1c1c21; --muted: #85858d; --ring: #e6e6eb;
+    --edge: rgba(20, 22, 30, .16); --amber: #b45309; --red: #d64545;
+    --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --pill: rgba(35, 35, 39, .96); --fg: #ededf1; --muted: #8b8b94; --ring: #3a3a42; --edge: rgba(255, 255, 255, .12); color-scheme: dark; }
+  }
+  :root[data-theme="dark"] { --pill: rgba(35, 35, 39, .96); --fg: #ededf1; --muted: #8b8b94; --ring: #3a3a42; --edge: rgba(255, 255, 255, .12); color-scheme: dark; }
+  html, body { margin: 0; height: 100%; background: transparent; overflow: hidden; font: 12px/1.2 var(--font); -webkit-font-smoothing: antialiased; user-select: none; cursor: default; }
+  /* no backdrop-filter: in a transparent macOS window WebKit draws its
+     blur as a square behind the rounded pill */
+  .orb {
+    --wails-draggable: drag;
+    position: absolute; inset: 3px; display: flex; align-items: center; gap: 8px; padding: 0 6px 0 7px;
+    border-radius: 999px; background: var(--pill); color: var(--fg);
+    /* a hairline only: the window is 3px larger than the pill, so a soft
+       shadow would be cut off square at its edges and show as a box */
+    box-shadow: 0 0 0 1px var(--edge);
+  }
+  .ring { position: relative; width: 26px; height: 26px; flex: none; border-radius: 50%; background: var(--ring); }
+  .ring::after { content: ""; position: absolute; inset: 4px; border-radius: 50%; background: var(--pill); }
+  .ring i { position: absolute; right: -1px; top: -1px; width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 0 1.5px var(--pill); z-index: 1; }
+  .ring i.minor, .ring i.maintenance { background: var(--amber); }
+  .ring i.major, .ring i.critical { background: var(--red); }
+  .text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .speed { font-size: 15px; font-weight: 650; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .speed small { font-size: 10px; font-weight: 500; color: var(--muted); margin-left: 2px; }
+  .idle .speed { color: var(--muted); }
+  .cost { font-size: 10px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  button {
+    --wails-draggable: no-drag;
+    flex: none; width: 22px; height: 22px; border: 0; border-radius: 50%; padding: 0; cursor: pointer;
+    background: transparent; color: var(--muted); font: 13px/1 var(--font);
+  }
+  button:hover { background: var(--ring); color: var(--fg); }
+  button:focus-visible { outline: 2px solid #4f46e5; outline-offset: 1px; }
+</style>
+</head>
+<body>
+<div class="orb idle" id="orb" role="status" aria-live="off">
+  <div class="ring" id="ring" aria-hidden="true"><i id="st" hidden></i></div>
+  <div class="text">
+    <span class="speed"><span id="speed">—</span><small>tok/s</small></span>
+    <span class="cost" id="cost"></span>
+  </div>
+  <button id="open" type="button" aria-label="Open Code Speed" title="Code Speed">↗</button>
+</div>
+<script type="module" src="/wails/runtime.js"></script>
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const zh = (navigator.language || "").toLowerCase().startsWith("zh");
+$("open").setAttribute("aria-label", zh ? "打开 Code Speed" : "Open Code Speed");
+$("open").addEventListener("click", () => fetch("/api/panel", { method: "POST" }).catch(() => {}));
+
+let last = "";
+// the first time it shows, the orb goes to the top right of its screen
+let placing = false;
+function place() {
+  placing = true;
+  const s = window.screen;
+  const left = s.availLeft ?? 0, top = s.availTop ?? 0;
+  const w = Math.max(window.outerWidth || 0, 148); // 0 while the window is still being shown
+  const x = Math.round(left + s.availWidth - w - 24);
+  const y = Math.round(top + 24);
+  fetch("/api/orb/place", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ x, y }) }).catch(() => {});
+}
+async function tick() {
+  try {
+    const text = await (await fetch("/api/live", { cache: "no-store" })).text();
+    if (text === last) return;
+    last = text;
+    const v = JSON.parse(text);
+    if (!v.placed && !placing) place();
+    if (v.theme === "light" || v.theme === "dark") document.documentElement.dataset.theme = v.theme;
+    else delete document.documentElement.dataset.theme;
+    $("orb").classList.toggle("idle", !(v.live >= 0.5));
+    $("speed").textContent = v.speed;
+    $("cost").textContent = (zh ? "今日 " : "today ") + v.cost;
+    // the ring: each agent's share of the live rate, in its colour
+    let at = 0;
+    const stops = (v.parts || []).map((p) => {
+      const from = at;
+      at += p.share * 360;
+      return `${p.color} ${from.toFixed(1)}deg ${at.toFixed(1)}deg`;
+    });
+    $("ring").style.background = stops.length ? `conic-gradient(${stops.join(", ")}, var(--ring) ${at.toFixed(1)}deg)` : "";
+    const st = $("st");
+    st.hidden = !v.status;
+    st.className = v.status || "";
+    const words = { minor: zh ? "服务部分降级" : "a service is degraded", maintenance: zh ? "服务维护中" : "a service is in maintenance",
+      major: zh ? "服务故障" : "a service is down", critical: zh ? "服务严重故障" : "a service is down" };
+    $("orb").title = `${v.speed === "—" ? (zh ? "空闲" : "idle") : v.speed + " tok/s"} · ${$("cost").textContent}${v.status ? " · " + words[v.status] : ""}`;
+  } catch { /* the app is starting or quitting */ }
+}
+tick();
+setInterval(tick, 1000);
+</script>
+</body>
+</html>

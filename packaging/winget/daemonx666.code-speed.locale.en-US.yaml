@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.6.0.schema.json
+PackageIdentifier: daemonx666.code-speed
+PackageVersion: "@VERSION@"
+PackageLocale: en-US
+Publisher: daemonx666
+PublisherUrl: https://github.com/daemonx666
+PackageName: code-speed
+PackageUrl: https://github.com/daemonx666/code-speed
+License: MIT
+LicenseUrl: https://github.com/daemonx666/code-speed/blob/main/LICENSE
+ShortDescription: Live token speed, usage, cost and quotas of coding agents, in the system tray.
+Tags:
+  - ai
+  - claude-code
+  - codex
+  - tokens
+  - usage
+ReleaseNotesUrl: https://github.com/daemonx666/code-speed/releases/tag/v@VERSION@
+ManifestType: defaultLocale
+ManifestVersion: 1.6.0

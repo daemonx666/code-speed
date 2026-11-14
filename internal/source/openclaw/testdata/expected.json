@@ -1,0 +1,642 @@
+{
+ "_comment": "OpenClaw: the folder `openclaw` plays the home folder; its state folders are .openclaw and the profile .openclaw-work. Databases are read in `dbOrder` after the files of `order` with the same dedupe set; windows in created_at order. Reading must not create any file. `traceSeqs` lists, per database and window, the `seq` of every row the query on trajectory_runtime_events may return, in order: no other row of that table is read.",
+ "order": [
+  "openclaw/.openclaw/agents/main/agent/codex-home/sessions/2026/10/20/rollout-2026-10-20T13-10-00-019a0b1c-2d3e-7f40-8a51-c2d3e4f5a6b7.jsonl"
+ ],
+ "files": {
+  "openclaw/.openclaw/agents/main/agent/codex-home/sessions/2026/10/20/rollout-2026-10-20T13-10-00-019a0b1c-2d3e-7f40-8a51-c2d3e4f5a6b7.jsonl": {
+   "source": "codex",
+   "project": "workspace",
+   "model": "gpt-5.5",
+   "isSubagent": false,
+   "parentFile": null,
+   "phase": "idle",
+   "inFlightStartMs": null,
+   "lastLineMs": 1792501840000,
+   "malformedLines": 0,
+   "responses": [
+    {
+     "key": "resp-oc-1",
+     "startMs": 1792501800300,
+     "endMs": 1792501820000,
+     "firstMs": 1792501805000,
+     "input": 12000,
+     "cachedInput": 9000,
+     "cacheWriteInput": 0,
+     "cacheWrite1hInput": 0,
+     "output": 300,
+     "reasoning": 120,
+     "model": "gpt-5.5",
+     "provider": "openai",
+     "fast": false,
+     "final": true
+    },
+    {
+     "key": "resp-oc-2",
+     "startMs": 1792501830000,
+     "endMs": 1792501839900,
+     "firstMs": 1792501839000,
+     "input": 12500,
+     "cachedInput": 12000,
+     "cacheWriteInput": 0,
+     "cacheWrite1hInput": 0,
+     "output": 210,
+     "reasoning": 0,
+     "model": "gpt-5.5",
+     "provider": "openai",
+     "fast": false,
+     "final": true
+    }
+   ],
+   "effort": null,
+   "speed": null,
+   "responseModes": {
+    "resp-oc-1": {
+     "effort": null,
+     "speed": null
+    },
+    "resp-oc-2": {
+     "effort": null,
+     "speed": null
+    }
+   }
+  }
+ },
+ "mtimes": {
+  "openclaw/.openclaw/agents/main/agent/codex-home/sessions/2026/10/20/rollout-2026-10-20T13-10-00-019a0b1c-2d3e-7f40-8a51-c2d3e4f5a6b7.jsonl": 1792584010000,
+  "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite": 1792584011000,
+  "openclaw/.openclaw-work/agents/ops/agent/openclaw-agent.sqlite": 1792584012000,
+  "openclaw/.openclaw/agents/legacy/agent/openclaw-agent.sqlite": 1792584013000
+ },
+ "dbOrder": [
+  "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite",
+  "openclaw/.openclaw-work/agents/ops/agent/openclaw-agent.sqlite",
+  "openclaw/.openclaw/agents/legacy/agent/openclaw-agent.sqlite"
+ ],
+ "databases": {
+  "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite": {
+   "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite#0f1c2d3e-0001-4a00-8000-00000000c001": {
+    "source": "openclaw",
+    "project": "workspace",
+    "model": "gemini-3-pro",
+    "isSubagent": false,
+    "parentId": null,
+    "phase": "generating",
+    "inFlightStartMs": 1792501560000,
+    "lastLineMs": 1792501560000,
+    "malformedLines": 2,
+    "responses": [
+     {
+      "key": "openclaw:a1f00005:1792501205010",
+      "startMs": 1792501205010,
+      "endMs": 1792501211300,
+      "firstMs": null,
+      "input": 18003,
+      "cachedInput": 0,
+      "cacheWriteInput": 18000,
+      "cacheWrite1hInput": 18000,
+      "output": 420,
+      "reasoning": 0,
+      "model": "claude-opus-5-5",
+      "provider": "anthropic",
+      "fast": false,
+      "final": true
+     },
+     {
+      "key": "openclaw:a1f00008:1792501212405",
+      "startMs": 1792501212405,
+      "endMs": 1792501216520,
+      "firstMs": null,
+      "input": 18605,
+      "cachedInput": 18000,
+      "cacheWriteInput": 600,
+      "cacheWrite1hInput": 0,
+      "output": 260,
+      "reasoning": 0,
+      "model": "claude-opus-5-5",
+      "provider": "anthropic",
+      "fast": false,
+      "final": true
+     },
+     {
+      "key": "openclaw:a1f0000c:1792501260006",
+      "startMs": 1792501260006,
+      "endMs": 1792501266000,
+      "firstMs": null,
+      "input": 18604,
+      "cachedInput": 18600,
+      "cacheWriteInput": 0,
+      "cacheWrite1hInput": 0,
+      "output": 300,
+      "reasoning": 0,
+      "model": "claude-opus-5-5",
+      "provider": "anthropic",
+      "fast": false,
+      "final": true
+     },
+     {
+      "key": "openclaw:a1f00010:1792501380006",
+      "startMs": null,
+      "endMs": 1792501381200,
+      "firstMs": null,
+      "input": 18610,
+      "cachedInput": 18600,
+      "cacheWriteInput": 0,
+      "cacheWrite1hInput": 0,
+      "output": 0,
+      "reasoning": 0,
+      "model": "claude-opus-5-5",
+      "provider": "anthropic",
+      "fast": false,
+      "final": true
+     },
+     {
+      "key": "openclaw:a1f00014:1792501520000",
+      "startMs": null,
+      "endMs": 1792501520004,
+      "firstMs": null,
+      "input": 4000,
+      "cachedInput": 3000,
+      "cacheWriteInput": 0,
+      "cacheWrite1hInput": 0,
+      "output": 200,
+      "reasoning": 0,
+      "model": "gemini-3-pro",
+      "provider": "google-gemini-cli",
+      "fast": false,
+      "final": true
+     }
+    ],
+    "effort": {
+     "mode": "max",
+     "evidence": "recorded"
+    },
+    "speed": {
+     "mode": "fast",
+     "evidence": "selected"
+    },
+    "responseModes": {
+     "openclaw:a1f00005:1792501205010": {
+      "effort": {
+       "mode": "high",
+       "evidence": "recorded"
+      },
+      "speed": null
+     },
+     "openclaw:a1f00008:1792501212405": {
+      "effort": {
+       "mode": "high",
+       "evidence": "recorded"
+      },
+      "speed": null
+     },
+     "openclaw:a1f0000c:1792501260006": {
+      "effort": {
+       "mode": "xhigh",
+       "evidence": "recorded"
+      },
+      "speed": {
+       "mode": "fast",
+       "evidence": "selected"
+      }
+     },
+     "openclaw:a1f00010:1792501380006": {
+      "effort": {
+       "mode": "adaptive",
+       "evidence": "recorded"
+      },
+      "speed": null
+     },
+     "openclaw:a1f00014:1792501520000": {
+      "effort": null,
+      "speed": null
+     }
+    }
+   },
+   "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite#0f1c2d3e-0002-4a00-8000-00000000c002": {
+    "source": "openclaw",
+    "project": "workspace",
+    "model": "claude-sonnet-5-5",
+    "isSubagent": true,
+    "parentId": "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite#0f1c2d3e-0001-4a00-8000-00000000c001",
+    "phase": "idle",
+    "inFlightStartMs": null,
+    "lastLineMs": 1792501229300,
+    "malformedLines": 0,
+    "responses": [
+     {
+      "key": "openclaw:b2e10002:1792501220106",
+      "startMs": 1792501220106,
+      "endMs": 1792501229300,
+      "firstMs": null,
+      "input": 2400,
+      "cachedInput": 0,
+      "cacheWriteInput": 0,
+      "cacheWrite1hInput": 0,
+      "output": 310,
+      "reasoning": 0,
+      "model": "claude-sonnet-5-5",
+      "provider": "anthropic",
+      "fast": false,
+      "final": true
+     }
+    ],
+    "effort": {
+     "mode": "ultra",
+     "evidence": "recorded"
+    },
+    "speed": {
+     "mode": "fast",
+     "evidence": "selected"
+    },
+    "responseModes": {
+     "openclaw:b2e10002:1792501220106": {
+      "effort": {
+       "mode": "ultra",
+       "evidence": "recorded"
+      },
+      "speed": {
+       "mode": "fast",
+       "evidence": "selected"
+      }
+     }
+    }
+   },
+   "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite#0f1c2d3e-0004-4a00-8000-00000000c004": {
+    "source": "openclaw",
+    "project": "workspace",
+    "model": null,
+    "isSubagent": false,
+    "parentId": null,
+    "phase": "idle",
+    "inFlightStartMs": null,
+    "lastLineMs": 1792501840010,
+    "malformedLines": 0,
+    "responses": [],
+    "effort": null,
+    "speed": null,
+    "responseModes": {}
+   },
+   "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite#0f1c2d3e-0005-4a00-8000-00000000c005": {
+    "source": "openclaw",
+    "project": "workspace",
+    "model": null,
+    "isSubagent": false,
+    "parentId": null,
+    "phase": "idle",
+    "inFlightStartMs": null,
+    "lastLineMs": 1792502130004,
+    "malformedLines": 0,
+    "responses": [],
+    "effort": null,
+    "speed": null,
+    "responseModes": {}
+   },
+   "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite#0f1c2d3e-0006-4a00-8000-00000000c006": {
+    "source": "openclaw",
+    "project": "workspace",
+    "model": "gpt-5.5",
+    "isSubagent": false,
+    "parentId": null,
+    "phase": "idle",
+    "inFlightStartMs": null,
+    "lastLineMs": 1792502185000,
+    "malformedLines": 0,
+    "responses": [
+     {
+      "key": "openclaw:e5b40002:1792502180000",
+      "startMs": null,
+      "endMs": 1792502185000,
+      "firstMs": null,
+      "input": 2800,
+      "cachedInput": 2000,
+      "cacheWriteInput": 0,
+      "cacheWrite1hInput": 0,
+      "output": 120,
+      "reasoning": 0,
+      "model": "gpt-5.5",
+      "provider": "github-copilot",
+      "fast": false,
+      "final": true
+     }
+    ],
+    "effort": {
+     "mode": "off",
+     "evidence": "recorded"
+    },
+    "speed": null,
+    "responseModes": {
+     "openclaw:e5b40002:1792502180000": {
+      "effort": {
+       "mode": "off",
+       "evidence": "recorded"
+      },
+      "speed": null
+     }
+    }
+   },
+   "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite#0f1c2d3e-0003-4a00-8000-00000000c003": {
+    "source": "openclaw",
+    "project": "workspace",
+    "model": "claude-opus-5-5",
+    "isSubagent": false,
+    "parentId": null,
+    "phase": "idle",
+    "inFlightStartMs": null,
+    "lastLineMs": 1792502409000,
+    "malformedLines": 0,
+    "responses": [
+     {
+      "key": "openclaw:f6a50002:1792502405006",
+      "startMs": 1792502405006,
+      "endMs": 1792502409000,
+      "firstMs": null,
+      "input": 18604,
+      "cachedInput": 18600,
+      "cacheWriteInput": 0,
+      "cacheWrite1hInput": 0,
+      "output": 330,
+      "reasoning": 0,
+      "model": "claude-opus-5-5",
+      "provider": "anthropic",
+      "fast": false,
+      "final": true
+     }
+    ],
+    "effort": null,
+    "speed": null,
+    "responseModes": {
+     "openclaw:f6a50002:1792502405006": {
+      "effort": null,
+      "speed": null
+     }
+    }
+   }
+  },
+  "openclaw/.openclaw-work/agents/ops/agent/openclaw-agent.sqlite": {
+   "openclaw/.openclaw-work/agents/ops/agent/openclaw-agent.sqlite#6a7b8c9d-0001-4b00-9000-00000000d001": {
+    "source": "openclaw",
+    "project": "relay",
+    "model": "gpt-5.5",
+    "isSubagent": false,
+    "parentId": null,
+    "phase": "idle",
+    "inFlightStartMs": null,
+    "lastLineMs": 1792503020000,
+    "malformedLines": 0,
+    "responses": [
+     {
+      "key": "openclaw:a7f60002:1792503002005",
+      "startMs": 1792503002005,
+      "endMs": 1792503006400,
+      "firstMs": null,
+      "input": 5200,
+      "cachedInput": 0,
+      "cacheWriteInput": 0,
+      "cacheWrite1hInput": 0,
+      "output": 900,
+      "reasoning": 300,
+      "model": "gpt-5.5",
+      "provider": "openai",
+      "fast": false,
+      "final": true
+     },
+     {
+      "key": "openclaw:a7f60004:1792503006436",
+      "startMs": 1792503006436,
+      "endMs": 1792503009560,
+      "firstMs": null,
+      "input": 5400,
+      "cachedInput": 5100,
+      "cacheWriteInput": 0,
+      "cacheWrite1hInput": 0,
+      "output": 410,
+      "reasoning": 0,
+      "model": "gpt-5.5",
+      "provider": "openai",
+      "fast": false,
+      "final": true
+     }
+    ],
+    "effort": {
+     "mode": "medium",
+     "evidence": "recorded"
+    },
+    "speed": null,
+    "responseModes": {
+     "openclaw:a7f60002:1792503002005": {
+      "effort": {
+       "mode": "minimal",
+       "evidence": "recorded"
+      },
+      "speed": null
+     },
+     "openclaw:a7f60004:1792503006436": {
+      "effort": {
+       "mode": "medium",
+       "evidence": "recorded"
+      },
+      "speed": null
+     }
+    }
+   },
+   "openclaw/.openclaw-work/agents/ops/agent/openclaw-agent.sqlite#6a7b8c9d-0002-4b00-9000-00000000d002": {
+    "source": "openclaw",
+    "project": "workspace",
+    "model": null,
+    "isSubagent": false,
+    "parentId": null,
+    "phase": "idle",
+    "inFlightStartMs": null,
+    "lastLineMs": 1792501216520,
+    "malformedLines": 0,
+    "responses": [],
+    "effort": null,
+    "speed": null,
+    "responseModes": {}
+   },
+   "openclaw/.openclaw-work/agents/ops/agent/openclaw-agent.sqlite#6a7b8c9d-0003-4b00-9000-00000000d003": {
+    "source": "openclaw",
+    "project": "relay",
+    "model": null,
+    "isSubagent": false,
+    "parentId": null,
+    "phase": "idle",
+    "inFlightStartMs": null,
+    "lastLineMs": 1792503630003,
+    "malformedLines": 0,
+    "responses": [],
+    "effort": null,
+    "speed": null,
+    "responseModes": {}
+   }
+  },
+  "openclaw/.openclaw/agents/legacy/agent/openclaw-agent.sqlite": {
+   "unsupported": true
+  }
+ },
+ "discover": [
+  "openclaw/.openclaw-work/agents/ops/agent/openclaw-agent.sqlite",
+  "openclaw/.openclaw/agents/legacy/agent/openclaw-agent.sqlite",
+  "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite"
+ ],
+ "codexDiscover": [
+  "openclaw/.openclaw/agents/main/agent/codex-home/sessions/2026/10/20/rollout-2026-10-20T13-10-00-019a0b1c-2d3e-7f40-8a51-c2d3e4f5a6b7.jsonl"
+ ],
+ "traceSeqs": {
+  "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite": {
+   "0f1c2d3e-0001-4a00-8000-00000000c001": [
+    2,
+    7,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22
+   ],
+   "0f1c2d3e-0002-4a00-8000-00000000c002": [
+    2
+   ],
+   "0f1c2d3e-0006-4a00-8000-00000000c006": [
+    2
+   ]
+  },
+  "openclaw/.openclaw-work/agents/ops/agent/openclaw-agent.sqlite": {
+   "6a7b8c9d-0001-4b00-9000-00000000d001": [
+    2,
+    5,
+    6
+   ]
+  }
+ },
+ "traces": [
+  {
+   "database": "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite",
+   "window": "0f1c2d3e-0001-4a00-8000-00000000c001",
+   "afterSeq": 4,
+   "phase": "idle",
+   "inFlightStartMs": null
+  },
+  {
+   "database": "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite",
+   "window": "0f1c2d3e-0001-4a00-8000-00000000c001",
+   "afterSeq": 5,
+   "phase": "generating",
+   "inFlightStartMs": 1792501205000
+  },
+  {
+   "database": "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite",
+   "window": "0f1c2d3e-0001-4a00-8000-00000000c001",
+   "afterSeq": 6,
+   "phase": "tools",
+   "inFlightStartMs": null
+  },
+  {
+   "database": "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite",
+   "window": "0f1c2d3e-0001-4a00-8000-00000000c001",
+   "afterSeq": 7,
+   "phase": "tools",
+   "inFlightStartMs": null
+  },
+  {
+   "database": "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite",
+   "window": "0f1c2d3e-0001-4a00-8000-00000000c001",
+   "afterSeq": 8,
+   "phase": "generating",
+   "inFlightStartMs": 1792501212400
+  },
+  {
+   "database": "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite",
+   "window": "0f1c2d3e-0001-4a00-8000-00000000c001",
+   "afterSeq": 9,
+   "phase": "idle",
+   "inFlightStartMs": null
+  },
+  {
+   "database": "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite",
+   "window": "0f1c2d3e-0001-4a00-8000-00000000c001",
+   "afterSeq": 11,
+   "phase": "tools",
+   "inFlightStartMs": null
+  },
+  {
+   "database": "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite",
+   "window": "0f1c2d3e-0001-4a00-8000-00000000c001",
+   "afterSeq": 12,
+   "phase": "generating",
+   "inFlightStartMs": 1792501263000
+  },
+  {
+   "database": "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite",
+   "window": "0f1c2d3e-0001-4a00-8000-00000000c001",
+   "afterSeq": 13,
+   "phase": "idle",
+   "inFlightStartMs": null
+  },
+  {
+   "database": "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite",
+   "window": "0f1c2d3e-0001-4a00-8000-00000000c001",
+   "afterSeq": 15,
+   "phase": "idle",
+   "inFlightStartMs": null
+  },
+  {
+   "database": "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite",
+   "window": "0f1c2d3e-0001-4a00-8000-00000000c001",
+   "afterSeq": 18,
+   "phase": "generating",
+   "inFlightStartMs": 1792501440000
+  },
+  {
+   "database": "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite",
+   "window": "0f1c2d3e-0001-4a00-8000-00000000c001",
+   "afterSeq": 19,
+   "phase": "idle",
+   "inFlightStartMs": null
+  },
+  {
+   "database": "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite",
+   "window": "0f1c2d3e-0001-4a00-8000-00000000c001",
+   "afterSeq": 21,
+   "phase": "idle",
+   "inFlightStartMs": null
+  },
+  {
+   "database": "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite",
+   "window": "0f1c2d3e-0004-4a00-8000-00000000c004",
+   "afterSeq": 2,
+   "phase": "idle",
+   "inFlightStartMs": null
+  },
+  {
+   "database": "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite",
+   "window": "0f1c2d3e-0006-4a00-8000-00000000c006",
+   "afterSeq": 2,
+   "phase": "idle",
+   "inFlightStartMs": null
+  },
+  {
+   "database": "openclaw/.openclaw/agents/main/agent/openclaw-agent.sqlite",
+   "window": "0f1c2d3e-0003-4a00-8000-00000000c003",
+   "afterSeq": 6,
+   "phase": "idle",
+   "inFlightStartMs": null
+  },
+  {
+   "database": "openclaw/.openclaw-work/agents/ops/agent/openclaw-agent.sqlite",
+   "window": "6a7b8c9d-0001-4b00-9000-00000000d001",
+   "afterSeq": 3,
+   "phase": "tools",
+   "inFlightStartMs": null
+  },
+  {
+   "database": "openclaw/.openclaw-work/agents/ops/agent/openclaw-agent.sqlite",
+   "window": "6a7b8c9d-0001-4b00-9000-00000000d001",
+   "afterSeq": 4,
+   "phase": "generating",
+   "inFlightStartMs": 1792503006430
+  }
+ ]
+}

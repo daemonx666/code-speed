@@ -1,0 +1,9 @@
+{
+  "id": "my-usage",
+  "label": "My Usage Feed",
+  "color": "#a855f7",
+  "type": "command",
+  "command": ["./usage.sh"],
+  "every": 60,
+  "online": false
+}
