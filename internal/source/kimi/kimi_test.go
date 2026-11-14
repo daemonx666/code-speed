@@ -2,6 +2,7 @@ package kimi
 
 import (
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/daemonx666/code-speed/internal/source"
@@ -68,7 +69,7 @@ func TestMatchAndRoots(t *testing.T) {
 		t.Error("match")
 	}
 	t.Setenv("KIMI_CODE_HOME", "/k")
-	if r := roots("/h"); len(r) != 1 || r[0] != "/k/sessions" {
+	if r := roots("/h"); len(r) != 1 || r[0] != filepath.Join("/k", "sessions") {
 		t.Error(r)
 	}
 }

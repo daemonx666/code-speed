@@ -55,7 +55,7 @@ func TestInstallAndUninstallWithoutAPreviousStatusLine(t *testing.T) {
 	if !strings.HasPrefix(s, "{\n  \"model\": \"opus\",\n  \"permissions\": {\n    \"allow\": [\n      \"Bash(go test:*)\"\n    ],") {
 		t.Fatalf("settings rewritten differently:\n%s", s)
 	}
-	if !strings.Contains(s, `"statusLine": {`) || !strings.Contains(s, "code-speed' statusline") {
+	if !strings.Contains(s, `"statusLine": {`) || !strings.Contains(s, strings.TrimSuffix(strings.TrimPrefix(strconv.Quote(Command(exe)), `"`), `"`)) {
 		t.Fatalf("no status line:\n%s", s)
 	}
 	if Status() != StatusWaiting {

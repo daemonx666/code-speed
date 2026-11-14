@@ -3,6 +3,7 @@ package settings
 import (
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 
 	"github.com/daemonx666/code-speed/internal/usage"
@@ -37,14 +38,19 @@ func TestNormalizeAndFormat(t *testing.T) {
 func TestNormalizePaths(t *testing.T) {
 	home, _ := os.UserHomeDir()
 	s := Default()
-	s.Homes = []string{"~/mnt/box", "relative/x", " /srv/u/ ", "/srv/u"}
-	s.Paths = map[usage.Source][]string{"claude-code": {"", "nope"}, "codex": {"/a/b/../c"}}
+	root := string(filepath.Separator) // an absolute path's start here
+	if runtime.GOOS == "windows" {
+		root = `C:\`
+	}
+	srv := filepath.Join(root, "srv", "u")
+	s.Homes = []string{"~/mnt/box", "relative/x", " " + srv + string(filepath.Separator) + " ", srv}
+	s.Paths = map[usage.Source][]string{"claude-code": {"", "nope"}, "codex": {filepath.Join(root, "a", "b") + string(filepath.Separator) + ".." + string(filepath.Separator) + "c"}}
 	s.Order = []usage.Source{"codex", "codex", "claude-code"}
 	s = s.Normalize()
-	if len(s.Homes) != 2 || s.Homes[0] != filepath.Join(home, "mnt/box") || s.Homes[1] != "/srv/u" {
+	if len(s.Homes) != 2 || s.Homes[0] != filepath.Join(home, "mnt/box") || s.Homes[1] != srv {
 		t.Fatalf("homes %q", s.Homes)
 	}
-	if len(s.Paths) != 1 || s.Paths["codex"][0] != "/a/c" {
+	if len(s.Paths) != 1 || s.Paths["codex"][0] != filepath.Join(root, "a", "c") {
 		t.Fatalf("paths %q", s.Paths)
 	}
 	if len(s.Order) != 2 {

@@ -144,23 +144,23 @@ func TestCLIRoots(t *testing.T) {
 	env := map[string]string{}
 	get := func(k string) string { return env[k] }
 	got := cliRoots(get, "/h")
-	if got[0] != "/h/.qoder/projects" || got[1] != "/h/.qoder-cn/projects" {
+	if got[0] != filepath.FromSlash("/h/.qoder/projects") || got[1] != filepath.FromSlash("/h/.qoder-cn/projects") {
 		t.Errorf("default roots %v", got)
 	}
 	env["QODER_CONFIG_DIR"] = "/srv/q"
 	env["QODERCN_CONFIG_DIR"] = "/srv/cn"
 	got = cliRoots(get, "/h")
-	if got[0] != "/srv/q/projects" || got[1] != "/srv/cn/projects" {
+	if got[0] != filepath.FromSlash("/srv/q/projects") || got[1] != filepath.FromSlash("/srv/cn/projects") {
 		t.Errorf("env roots %v", got)
 	}
 }
 
 func TestDataDir(t *testing.T) {
 	none := func(string) string { return "" }
-	if g := dataDir("darwin", none, "/Users/dev"); g != "/Users/dev/Library/Application Support" {
+	if g := dataDir("darwin", none, "/Users/dev"); g != filepath.FromSlash("/Users/dev/Library/Application Support") {
 		t.Error(g)
 	}
-	if g := dataDir("linux", none, "/home/dev"); g != "/home/dev/.config" {
+	if g := dataDir("linux", none, "/home/dev"); g != filepath.FromSlash("/home/dev/.config") {
 		t.Error(g)
 	}
 	if g := dataDir("linux", func(string) string { return "/x" }, "/home/dev"); g != "/x" {

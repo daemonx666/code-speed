@@ -12,6 +12,8 @@ import (
 	"database/sql"
 	"net/url"
 	"os"
+	"runtime"
+	"strings"
 
 	_ "modernc.org/sqlite"
 )
@@ -35,8 +37,22 @@ func exists(path string) bool {
 	return err == nil
 }
 
+// uriPath is path as a file: URI's path. A Windows path needs forward
+// slashes and a leading one ("C:\\x\\y.db" → "/C:/x/y.db", so the URI
+// is file:///C:/x/y.db); left as it is, SQLite can't open it.
+func uriPath(path string, windows bool) string {
+	if !windows {
+		return path
+	}
+	path = strings.ReplaceAll(path, `\`, "/")
+	if !strings.HasPrefix(path, "/") {
+		path = "/" + path
+	}
+	return path
+}
+
 func open(path, mode string) (*sql.DB, error) {
-	u := url.URL{Scheme: "file", Path: path}
+	u := url.URL{Scheme: "file", Path: uriPath(path, runtime.GOOS == "windows")}
 	q := url.Values{}
 	if mode == "immutable" {
 		q.Set("immutable", "1")

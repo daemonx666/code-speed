@@ -33,7 +33,7 @@ func get(t *testing.T, h http.Handler, path string, v any) {
 
 func TestHandler(t *testing.T) {
 	t.Setenv("CODE_SPEED_HOME", t.TempDir())
-	t.Setenv("HOME", t.TempDir()) // no real logs
+	setHome(t, t.TempDir()) // no real logs
 	svc := service.New("v9")
 	quit := make(chan struct{}, 1)
 	var lang string
@@ -121,7 +121,7 @@ func TestTrayText(t *testing.T) {
 func TestSessionAPIReadsOnlyKnownSessions(t *testing.T) {
 	t.Setenv("CODE_SPEED_HOME", t.TempDir())
 	home := t.TempDir()
-	t.Setenv("HOME", home)
+	setHome(t, home)
 	t.Setenv("CLAUDE_CONFIG_DIR", "")
 	dir := filepath.Join(home, ".claude", "projects", "p")
 	os.MkdirAll(dir, 0o755)
@@ -160,7 +160,7 @@ func TestSessionAPIReadsOnlyKnownSessions(t *testing.T) {
 func TestExportPricesAndOpen(t *testing.T) {
 	t.Setenv("CODE_SPEED_HOME", t.TempDir())
 	home := t.TempDir()
-	t.Setenv("HOME", home)
+	setHome(t, home)
 	os.MkdirAll(filepath.Join(home, "Downloads"), 0o755)
 	svc := service.New("v9")
 	svc.SeedNow()
@@ -193,4 +193,10 @@ func TestExportPricesAndOpen(t *testing.T) {
 	}
 	var alerts []json.RawMessage
 	get(t, h, "/api/alerts", &alerts)
+}
+
+// setHome points the home folder at dir: HOME, and USERPROFILE on Windows.
+func setHome(t *testing.T, dir string) {
+	t.Setenv("HOME", dir)
+	t.Setenv("USERPROFILE", dir)
 }
