@@ -5,7 +5,7 @@ cask "code-speed" do
   sha256 "@SHA_MAC@"
 
   url "https://github.com/daemonx666/code-speed/releases/download/v#{version}/code-speed-v#{version}-macos-universal.zip"
-  name "code-speed"
+  name "Code Speed"
   desc "Live token speed, usage, cost and quotas of coding agents"
   homepage "https://github.com/daemonx666/code-speed"
 
