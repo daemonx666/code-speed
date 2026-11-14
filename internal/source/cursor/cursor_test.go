@@ -165,13 +165,13 @@ func TestUnauthorizedDoesNotLeakToken(t *testing.T) {
 }
 
 func TestStatePaths(t *testing.T) {
-	if got := StatePaths("darwin", "/h", "")[0]; got != "/h/Library/Application Support/Cursor/User/globalStorage/state.vscdb" {
+	if got := StatePaths("darwin", "/h", "")[0]; got != filepath.FromSlash("/h/Library/Application Support/Cursor/User/globalStorage/state.vscdb") {
 		t.Error(got)
 	}
-	if got := StatePaths("linux", "/h", "")[0]; got != "/h/.config/Cursor/User/globalStorage/state.vscdb" {
+	if got := StatePaths("linux", "/h", "")[0]; got != filepath.FromSlash("/h/.config/Cursor/User/globalStorage/state.vscdb") {
 		t.Error(got)
 	}
-	if got := StatePaths("windows", "/h", "/ad"); len(got) != 2 || !strings.HasPrefix(got[0], "/ad") {
+	if got := StatePaths("windows", "/h", "/ad"); len(got) != 2 || !strings.HasPrefix(got[0], filepath.FromSlash("/ad")) {
 		t.Error(got)
 	}
 }

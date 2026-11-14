@@ -217,7 +217,7 @@ func runIDE(t *testing.T, sc ideScenario, since time.Time) (*sourcetest.Sink, st
 	if err := p.Poll(context.Background(), since, since, source.NewDedup(), sink); err != nil {
 		t.Fatal(err)
 	}
-	return sink, root + "/"
+	return sink, root + string(filepath.Separator)
 }
 
 func TestIDEFixtures(t *testing.T) {
@@ -240,7 +240,7 @@ func TestIDEFixtures(t *testing.T) {
 			sink, prefix := runIDE(t, sc, since)
 			wantResp := map[string]expResp{}
 			for id, a := range sc.Agents {
-				full := prefix + id
+				full := prefix + filepath.FromSlash(id)
 				st, ok := sink.Agents[full]
 				if !ok {
 					t.Errorf("agent %s missing", id)
@@ -275,7 +275,7 @@ func TestIDEFixtures(t *testing.T) {
 					t.Errorf("response %s missing", k)
 					continue
 				}
-				if got.Agent != prefix+w.AgentID {
+				if got.Agent != prefix+filepath.FromSlash(w.AgentID) {
 					t.Errorf("%s agent %s", k, got.Agent)
 				}
 				checkResp(t, name, w, got)

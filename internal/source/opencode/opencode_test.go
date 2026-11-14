@@ -38,6 +38,7 @@ func mk(t *testing.T, stmts ...string) (string, *sql.DB) {
 
 func poll(t *testing.T, p *poller, since int64, d *source.Dedup) *sourcetest.Sink {
 	t.Helper()
+	t.Cleanup(p.close) // Windows can't remove a file that is still open
 	s := sourcetest.NewSink()
 	if err := p.Poll(context.Background(), time.UnixMilli(since), time.UnixMilli(at(100)), d, s); err != nil {
 		t.Fatal(err)
