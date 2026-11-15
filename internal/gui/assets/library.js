@@ -3,8 +3,10 @@
 // The skill and MCP library's window. It reads /api/library (every target,
 // every library item with its state in each, and what the agents hold that
 // the library doesn't) and changes the library through the /api/library/*
-// calls; ticking a target is saved at once, and "Apply" writes the
-// agents' files.
+// calls. As in magpie's library, a change takes effect at once: ticking a
+// target writes the item to that agent's files (or takes it out), and a
+// toast says what was written where. "Apply" is left for what is still
+// pending (a write that failed, an item taken out of the library).
 
 Object.assign(STRINGS.en, {
   "lib.title": "Skills & MCP",
@@ -55,9 +57,9 @@ Object.assign(STRINGS.en, {
   "lib.givenTo": "Given to",
   "lib.state.on": "in place",
   "lib.state.off": "",
-  "lib.state.add": "will be written",
-  "lib.state.update": "will be updated",
-  "lib.state.remove": "will be removed",
+  "lib.state.add": "not written yet",
+  "lib.state.update": "not updated yet",
+  "lib.state.remove": "not taken out yet",
   "lib.state.drift": "changed in the agent",
   "lib.state.foreign": "agent has its own",
   "lib.state.link": "link from another tool",
@@ -65,7 +67,6 @@ Object.assign(STRINGS.en, {
   "lib.state.error": "can't read",
   "lib.useAgents": "Use the agent's",
   "lib.overwrite": "Overwrite",
-  "lib.overwriteSet": "will overwrite",
   "lib.results": "Results",
   "lib.close": "Close",
   "lib.res.written": "written",
@@ -86,6 +87,17 @@ Object.assign(STRINGS.en, {
   "lib.restoreConfirm": "Put back the {n} files and folders as they were at {t}?",
   "lib.entries": "{n} files",
   "lib.newServer": "New MCP server",
+  "lib.saving": "Saving…",
+  "lib.all": "All",
+  "lib.notInstalledN": "Not installed ({n})",
+  "lib.toast.written": "Written to {list}",
+  "lib.toast.removed": "Taken out of {list}",
+  "lib.toast.nothing": "Saved. The agents already had it this way.",
+  "lib.toast.imported": "{name} is in the library now. {list} already have it — untick one to take it out.",
+  "lib.toast.addedNone": "{name} is in the library now. Tick the agents to give it to them.",
+  "lib.toast.importedN": "{n} items are in the library now.",
+  "lib.toast.deleted": "{name} is out of the library.",
+  "lib.toast.problem": "{target}: {what} · {reason}",
 });
 Object.assign(STRINGS["zh-CN"], {
   "lib.title": "Skill 与 MCP",
@@ -136,9 +148,9 @@ Object.assign(STRINGS["zh-CN"], {
   "lib.givenTo": "发给",
   "lib.state.on": "已写入",
   "lib.state.off": "",
-  "lib.state.add": "将写入",
-  "lib.state.update": "将更新",
-  "lib.state.remove": "将移除",
+  "lib.state.add": "还未写入",
+  "lib.state.update": "还未更新",
+  "lib.state.remove": "还未移除",
   "lib.state.drift": "已在 agent 中修改",
   "lib.state.foreign": "agent 里有同名的",
   "lib.state.link": "其他工具建的链接",
@@ -146,7 +158,6 @@ Object.assign(STRINGS["zh-CN"], {
   "lib.state.error": "无法读取",
   "lib.useAgents": "采用 agent 的版本",
   "lib.overwrite": "覆盖",
-  "lib.overwriteSet": "将覆盖",
   "lib.results": "结果",
   "lib.close": "关闭",
   "lib.res.written": "已写入",
@@ -167,6 +178,17 @@ Object.assign(STRINGS["zh-CN"], {
   "lib.restoreConfirm": "把这 {n} 个文件和文件夹还原到 {t} 时的样子？",
   "lib.entries": "{n} 个文件",
   "lib.newServer": "新建 MCP server",
+  "lib.saving": "保存中…",
+  "lib.all": "全部",
+  "lib.notInstalledN": "未安装（{n}）",
+  "lib.toast.written": "已写入 {list}",
+  "lib.toast.removed": "已从 {list} 移除",
+  "lib.toast.nothing": "已保存，各 agent 里本来就是这样。",
+  "lib.toast.imported": "{name} 已入库。{list} 里已有它，取消勾选即可移除。",
+  "lib.toast.addedNone": "{name} 已入库。勾选 agent 即可写入。",
+  "lib.toast.importedN": "已导入 {n} 项。",
+  "lib.toast.deleted": "{name} 已从库里删除。",
+  "lib.toast.problem": "{target}：{what} · {reason}",
 });
 
 const $ = (id) => document.getElementById(id);
@@ -186,6 +208,35 @@ function showError(e) {
   box.hidden = !e;
   box.textContent = e ? String(e.message || e) : "";
 }
+let toastTimer = 0;
+// toast shows what a change did, for a few seconds (longer for a problem)
+function toast(lines, warn) {
+  const box = $("lib-toast");
+  box.textContent = "";
+  for (const [i, line] of lines.entries()) box.append(el("div", i ? "muted small" : "", line));
+  box.classList.toggle("warn", !!warn);
+  box.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { box.hidden = true; }, warn ? 9000 : 4500);
+}
+// report turns an item change's results into a toast; only lists the
+// targets in focus when given (the ones the click changed)
+function report(r, focus) {
+  let res = (r && r.results) || [];
+  if (focus) res = res.filter((x) => focus.has(x.target));
+  const by = (a) => [...new Set(res.filter((x) => x.action === a).map((x) => targetName(x.target)))];
+  const lines = [];
+  const w = by("written"), rm = by("removed");
+  if (w.length) lines.push(t("lib.toast.written", { list: w.join("、") }));
+  if (rm.length) lines.push(t("lib.toast.removed", { list: rm.join("、") }));
+  const bad = res.filter((x) => x.action === "skipped" || x.action === "failed");
+  for (const x of bad) lines.push(t("lib.toast.problem", { target: targetName(x.target), what: t("lib.res." + x.action), reason: x.reason || "" }));
+  if (r && r.error) lines.push(r.error);
+  if (!lines.length) lines.push(t("lib.toast.nothing"));
+  if (w.length || rm.length) lines.push(t("lib.restartNote"));
+  toast(lines, bad.length > 0 || !!(r && r.error));
+}
+
 function applyI18n() {
   for (const e of document.querySelectorAll("[data-i18n]")) e.textContent = t(e.dataset.i18n);
   for (const e of document.querySelectorAll("[data-i18n-ph]")) e.placeholder = t(e.dataset.i18nPh);
@@ -194,7 +245,7 @@ function applyI18n() {
 let state = null;
 let view = "mcp";
 let selected = null; // {kind, name} or {found: Found} or {new: "mcp"}
-const overwrite = new Set(); // "kind/name/target"
+let saving = ""; // "kind/name" of the item being written
 
 const kindOf = (v) => (v === "skill" ? "skill" : "mcp");
 const itemsOf = (kind) => (kind === "skill" ? state.skills : state.mcp) || [];
@@ -221,8 +272,8 @@ async function load() {
 function render() {
   if (!state) return;
   const n = state.pending || 0;
-  $("lib-apply").textContent = n ? t("lib.applyN", { n }) : t("lib.apply");
-  $("lib-apply").disabled = !n && overwrite.size === 0;
+  $("lib-apply").textContent = t("lib.applyN", { n });
+  $("lib-apply").hidden = !n; // changes take effect at once; only leftovers wait
   const found = state.found || [];
   $("lib-banner").hidden = found.length === 0;
   $("lib-banner-text").textContent = t("lib.foundBanner", { n: found.length });
@@ -251,7 +302,10 @@ function renderList() {
     li.append(el("span", "badge", String(on)));
     if (cells.some((c) => c.state === "drift" || c.state === "foreign")) li.append(el("span", "badge warn", "!"));
     if (cells.some((c) => ["add", "update", "remove"].includes(c.state))) li.append(el("span", "badge ok", "•"));
-    if (selected && selected.kind === kind && selected.name === it.name) li.setAttribute("aria-current", "true");
+    if (selected && selected.kind === kind && selected.name === it.name) {
+      li.setAttribute("aria-current", "true");
+      requestAnimationFrame(() => li.scrollIntoView({ block: "nearest" }));
+    }
     li.addEventListener("click", () => { selected = { kind, name: it.name }; render(); });
     list.append(li);
   }
@@ -323,6 +377,10 @@ async function doImport(f, as) {
     await post("/api/library/import", { items: [{ kind: f.kind, name: f.name, hash: f.hash, as }] });
     selected = { kind: f.kind, name: as || f.name };
     await load();
+    // imported under its own name it stays where it was, ticked there:
+    // nothing is written, so say so
+    if (as) toast([t("lib.toast.addedNone", { name: as })]);
+    else toast([t("lib.toast.imported", { name: f.name, list: f.in.map(targetName).join("、") })]);
   } catch (e) { showError(e); }
 }
 
@@ -393,11 +451,15 @@ function renderServerForm(box, it) {
     if (tr.value === "stdio") Object.assign(server, { command: cmd.value.trim(), args: args.value.split("\n").map((x) => x.trim()).filter(Boolean), env: parseLines(env.value, "=") });
     else Object.assign(server, { url: url.value.trim(), headers: parseLines(headers.value, ":") });
     const agents = it ? Object.entries(it.cells).filter(([, c]) => c.want).map(([id]) => id) : [];
+    save.disabled = true;
+    save.textContent = t("lib.saving");
     try {
-      await post("/api/library/server", { old: it ? it.name : "", server, agents });
+      const r = await post("/api/library/server", { old: it ? it.name : "", server, agents });
       selected = { kind: "mcp", name: server.name };
       await load();
-    } catch (e) { showError(e); }
+      if (agents.length) report(r);
+      else toast([t("lib.toast.addedNone", { name: server.name })]);
+    } catch (e) { showError(e); save.disabled = false; save.textContent = t("lib.save"); }
   });
   row.append(show, save);
   if (it) row.append(deleteButton(it));
@@ -420,7 +482,7 @@ function renderSkill(box, it) {
     const { path } = await post("/api/library/pick", { title: t("lib.pickSkill") });
     if (!path) return;
     const agents = Object.entries(it.cells).filter(([, c]) => c.want).map(([id]) => id);
-    try { await post("/api/library/skill", { name: it.name, path, agents }); await load(); } catch (e) { showError(e); }
+    try { const r = await post("/api/library/skill", { name: it.name, path, agents }); await load(); report(r); } catch (e) { showError(e); }
   });
   row.append(open, rep, deleteButton(it));
   card.append(row);
@@ -437,7 +499,8 @@ function deleteButton(it) {
       const r = await post("/api/library/delete", { kind: it.kind, name: it.name });
       selected = null;
       await load();
-      showResults(r);
+      if ((r.results || []).length || r.error) report(r);
+      else toast([t("lib.toast.deleted", { name: it.name })]);
     } catch (e) { showError(e); }
   });
   return del;
@@ -448,65 +511,129 @@ function hasSecrets(it) {
   return s && (Object.values(s.env || {}).some(Boolean) || Object.values(s.headers || {}).some(Boolean));
 }
 
+// setAgents gives the item to exactly these targets and writes it at once;
+// changed are the targets the click changed, whose results are reported
+async function setAgents(it, agents, changed) {
+  saving = `${it.kind}/${it.name}`;
+  render();
+  let r = null;
+  try { r = await post("/api/library/agents", { kind: it.kind, name: it.name, agents }); } catch (e) { showError(e); }
+  saving = "";
+  await load();
+  if (r) report(r, changed);
+}
+
 function renderGrid(box, it) {
   const card = el("div", "card");
-  card.append(el("h2", "", t("lib.givenTo")));
+  const busy = saving === `${it.kind}/${it.name}`;
+  const top = el("div", "lib-head");
+  top.append(el("h2", "", t("lib.givenTo")));
+  if (busy) top.append(el("span", "muted small", t("lib.saving")));
+  card.append(top);
+  const wants = () => new Set(Object.entries(it.cells).filter(([, c]) => c.want).map(([id]) => id));
   const groups = new Map();
   for (const x of state.targets || []) {
+    const c = it.cells[x.id];
+    if (!c) continue;
+    const unusable = c.state === "unsupported" || c.state === "error";
+    if (unusable && !c.want && x.skillsVia) continue; // Goose: given through ~/.agents
     const key = x.project || "";
     if (!groups.has(key)) groups.set(key, []);
-    groups.get(key).push(x);
+    groups.get(key).push({ x, c, can: x.installed && !unusable });
   }
-  for (const [project, ts] of groups) {
+  for (const [project, all] of groups) {
     const g = el("div", "grid-group");
-    g.append(el("h3", "", project ? t("lib.project", { p: project }) : t("lib.user")));
-    const grid = el("div", "targets");
-    for (const x of ts) {
-      const c = it.cells[x.id];
-      if (!c) continue;
-      const unusable = c.state === "unsupported" || c.state === "error";
-      if (unusable && !c.want && x.skillsVia) continue; // Goose: given through ~/.agents
-      const cell = el("div", "target" + (!x.installed && !c.want ? " off" : ""));
-      const label = el("label");
-      const cb = el("input"); cb.type = "checkbox"; cb.checked = c.want;
-      cb.disabled = (unusable && !c.want) || (!x.installed && !c.want);
-      cb.addEventListener("change", async () => {
+    // what can be ticked first, then what is ticked but can't be any more;
+    // agents that aren't installed are folded away
+    const shown = all.filter((e) => e.can || e.c.want).sort((a, b) => (b.can - a.can));
+    const hidden = all.filter((e) => !e.can && !e.c.want);
+    const can = all.filter((e) => e.can);
+    const head = el("div", "grid-head");
+    head.append(el("h3", "", project ? t("lib.project", { p: project }) : t("lib.user")));
+    if (can.length > 1) {
+      const lab = el("label", "small all");
+      const cb = el("input"); cb.type = "checkbox";
+      const on = can.filter((e) => e.c.want).length;
+      cb.checked = on === can.length;
+      cb.indeterminate = on > 0 && on < can.length;
+      cb.disabled = busy;
+      cb.addEventListener("change", () => {
         if (cb.checked && project && hasSecrets(it) && !confirm(t("lib.secretProject", { name: it.name, p: project }))) {
           cb.checked = false;
           return;
         }
-        const agents = Object.entries(it.cells).filter(([id, cc]) => (id === x.id ? cb.checked : cc.want)).map(([id]) => id);
-        try { await post("/api/library/agents", { kind: it.kind, name: it.name, agents }); await load(); } catch (e) { showError(e); }
+        const w = wants();
+        const changed = new Set();
+        for (const e of can) {
+          if (cb.checked !== w.has(e.x.id)) changed.add(e.x.id);
+          cb.checked ? w.add(e.x.id) : w.delete(e.x.id);
+        }
+        setAgents(it, [...w], changed);
       });
-      label.append(cb, document.createTextNode(x.label));
-      cell.append(label);
-      const key = `${it.kind}/${it.name}/${x.id}`;
-      let why = c.reason || t("lib.state." + c.state);
-      if (!x.installed) why = t("lib.notInstalled") + (why ? " · " + why : "");
-      if (overwrite.has(key)) why = t("lib.overwriteSet");
-      if (why) {
-        const w = el("span", "why", why);
-        w.title = why;
-        if (c.state === "drift" || c.state === "foreign") w.classList.add("badge", "warn");
-        cell.append(w);
-      }
-      if (c.state === "drift" || c.state === "foreign") {
-        const acts = el("div", "acts");
-        const adopt = el("button", "link", t("lib.useAgents"));
-        adopt.addEventListener("click", async () => {
-          try { await post("/api/library/adopt", { kind: it.kind, name: it.name, target: x.id }); await load(); } catch (e) { showError(e); }
-        });
-        const over = el("button", "link", t("lib.overwrite"));
-        over.addEventListener("click", () => { overwrite.has(key) ? overwrite.delete(key) : overwrite.add(key); render(); });
-        acts.append(adopt, over);
-        cell.append(acts);
-      }
-      grid.append(cell);
+      lab.append(cb, document.createTextNode(" " + t("lib.all")));
+      head.append(lab);
     }
+    g.append(head);
+    const grid = el("div", "targets");
+    for (const e of shown) grid.append(targetCell(it, e, project, busy, wants));
     g.append(grid);
+    if (hidden.length) {
+      const d = el("details", "not-installed");
+      d.append(el("summary", "muted small", t("lib.notInstalledN", { n: hidden.length })));
+      const grid2 = el("div", "targets");
+      for (const e of hidden) grid2.append(targetCell(it, e, project, true, wants));
+      d.append(grid2);
+      g.append(d);
+    }
     card.append(g);
   }
   box.append(card);
+}
+
+function targetCell(it, { x, c, can }, project, busy, wants) {
+  const cell = el("div", "target" + (!can && !c.want ? " off" : "") + (c.state === "on" ? " on" : ""));
+  const label = el("label");
+  const cb = el("input"); cb.type = "checkbox"; cb.checked = c.want;
+  cb.disabled = busy || (!can && !c.want);
+  cb.addEventListener("change", () => {
+    if (cb.checked && project && hasSecrets(it) && !confirm(t("lib.secretProject", { name: it.name, p: project }))) {
+      cb.checked = false;
+      return;
+    }
+    const w = wants();
+    cb.checked ? w.add(x.id) : w.delete(x.id);
+    setAgents(it, [...w], new Set([x.id]));
+  });
+  label.append(cb, document.createTextNode(x.label));
+  cell.append(label);
+  let why = c.reason || t("lib.state." + c.state);
+  if (!x.installed) why = t("lib.notInstalled") + (why ? " · " + why : "");
+  if (why) {
+    const w = el("span", "why", why);
+    w.title = why;
+    if (c.state === "drift" || c.state === "foreign") w.classList.add("badge", "warn");
+    cell.append(w);
+  }
+  if (c.state === "drift" || c.state === "foreign") {
+    const acts = el("div", "acts");
+    const adopt = el("button", "link", t("lib.useAgents"));
+    adopt.disabled = busy;
+    adopt.addEventListener("click", async () => {
+      try { const r = await post("/api/library/adopt", { kind: it.kind, name: it.name, target: x.id }); await load(); report(r); } catch (e) { showError(e); }
+    });
+    const over = el("button", "link", t("lib.overwrite"));
+    over.disabled = busy;
+    over.addEventListener("click", async () => {
+      try {
+        const r = await post("/api/library/apply", { overwrite: [`${it.kind}/${it.name}/${x.id}`], items: [`${it.kind}/${it.name}`], only: [x.id] });
+        await load();
+        report(r);
+      } catch (e) { showError(e); }
+    });
+    acts.append(adopt, over);
+    cell.append(acts);
+  }
+  return cell;
 }
 
 function showResults(r) {
@@ -573,17 +700,23 @@ for (const b of document.querySelectorAll(".lib-tabs button")) {
 }
 $("lib-search").addEventListener("input", renderList);
 $("lib-refresh").addEventListener("click", load);
+$("lib-toast").addEventListener("click", () => { $("lib-toast").hidden = true; });
 $("lib-import-all").addEventListener("click", async () => {
-  try { await post("/api/library/import", { items: [] }); await load(); } catch (e) { showError(e); }
+  const n = (state.found || []).filter((f) => !f.conflict).length;
+  try {
+    await post("/api/library/import", { items: [] });
+    await load();
+    toast([t("lib.toast.importedN", { n })]);
+  } catch (e) { showError(e); }
 });
 $("lib-apply").addEventListener("click", async () => {
   $("lib-apply").disabled = true;
   try {
-    const r = await post("/api/library/apply", { overwrite: [...overwrite] });
-    overwrite.clear();
+    const r = await post("/api/library/apply", {});
     await load();
     showResults(r);
   } catch (e) { showError(e); await load(); }
+  $("lib-apply").disabled = false;
 });
 $("lib-new").addEventListener("click", async () => {
   if (view === "skill") {
@@ -594,6 +727,7 @@ $("lib-new").addEventListener("click", async () => {
       await post("/api/library/skill", { name, path, agents: [] });
       selected = { kind: "skill", name };
       await load();
+      toast([t("lib.toast.addedNone", { name })]);
     } catch (e) { showError(e); }
     return;
   }

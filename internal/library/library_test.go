@@ -389,3 +389,37 @@ func TestCheckName(t *testing.T) {
 		}
 	}
 }
+
+// The window applies one item as soon as it is ticked: other items' changes
+// are left for their own apply.
+func TestApplyLimitedToAnItem(t *testing.T) {
+	m, home := testManager(t)
+	for _, n := range []string{"a", "b"} {
+		if err := m.PutServer("", mcpfmt.Server{Name: n, Transport: "stdio", Command: n}, []string{"claude"}); err != nil {
+			t.Fatal(err)
+		}
+	}
+	res, err := m.Apply(ApplyOptions{Items: []string{"mcp/a"}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !hasResult(res, "claude", "a", "written") || hasResult(res, "claude", "b", "written") {
+		t.Fatalf("results %+v", res)
+	}
+	claude := read(t, filepath.Join(home, ".claude.json"))
+	if !strings.Contains(claude, `"a"`) || strings.Contains(claude, `"b"`) {
+		t.Fatalf("claude file:\n%s", claude)
+	}
+	st, _ := m.State()
+	if st.Pending != 1 {
+		t.Fatalf("pending %d, want b's 1", st.Pending)
+	}
+	// unticking a takes it out, and still leaves b alone
+	if err := m.SetAgents(KindMCP, "a", nil); err != nil {
+		t.Fatal(err)
+	}
+	res, _ = m.Apply(ApplyOptions{Items: []string{"mcp/a"}})
+	if !hasResult(res, "claude", "a", "removed") || len(res) != 1 {
+		t.Fatalf("results %+v", res)
+	}
+}

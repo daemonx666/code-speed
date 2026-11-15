@@ -3,6 +3,8 @@
 package gui
 
 import (
+	"sync"
+
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"github.com/wailsapp/wails/v3/pkg/events"
 )
@@ -13,6 +15,8 @@ import (
 type libraryWindow struct {
 	app *application.App
 	md  *mender
+
+	mu  sync.Mutex
 	win *application.WebviewWindow
 }
 
@@ -20,8 +24,18 @@ func newLibraryWindow(app *application.App, md *mender) *libraryWindow {
 	return &libraryWindow{app: app, md: md}
 }
 
-// open shows the window and brings it forward; on the main thread.
+// window answers the window, nil before it is first opened.
+func (l *libraryWindow) window() *application.WebviewWindow {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	return l.win
+}
+
+// open shows the window and brings it forward. Off the main thread (the
+// tray menu's goroutine, an API request's): what must run on the main
+// thread is sent there.
 func (l *libraryWindow) open() {
+	l.mu.Lock()
 	if l.win == nil {
 		l.win = l.app.Window.NewWithOptions(application.WebviewWindowOptions{
 			Name:      "library",
@@ -42,7 +56,9 @@ func (l *libraryWindow) open() {
 		})
 		l.md.watch(w)
 	}
-	l.app.Show() // a menu bar app on the Mac: come forward with the window
-	l.win.Show()
-	l.win.Focus()
+	w := l.win
+	l.mu.Unlock()
+	application.InvokeSync(l.app.Show) // a menu bar app on the Mac: come forward with the window
+	w.Show()
+	w.Focus()
 }

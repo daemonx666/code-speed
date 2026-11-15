@@ -655,8 +655,8 @@ func (m *Manager) PutSkill(name, path string, agents []string) error {
 	return m.save(l)
 }
 
-// SetAgents sets the targets an item is given to; the next apply writes
-// and takes out accordingly.
+// SetAgents sets the targets an item is given to; an apply (the window's,
+// limited to the item, right after) writes and takes out accordingly.
 func (m *Manager) SetAgents(kind, name string, agents []string) error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
@@ -780,10 +780,17 @@ type Result struct {
 
 // ApplyOptions: Overwrite lists "kind/name/target" cells whose drifted or
 // foreign entry may be replaced or taken out. Only limits the apply to the
-// targets listed (all when empty).
+// targets listed, Items to the "kind/name" items listed (all when empty):
+// the window applies one item as soon as it is ticked or edited.
 type ApplyOptions struct {
 	Overwrite []string `json:"overwrite,omitempty"`
 	Only      []string `json:"only,omitempty"`
+	Items     []string `json:"items,omitempty"`
+}
+
+// item says whether the apply covers the item.
+func (o ApplyOptions) item(kind, name string) bool {
+	return len(o.Items) == 0 || slices.Contains(o.Items, kind+"/"+name)
 }
 
 // Apply writes each ticked item to its targets and takes out each one the
@@ -816,15 +823,15 @@ func (m *Manager) apply(l *Library, opt ApplyOptions, what string) ([]Result, er
 		if len(opt.Only) > 0 && !slices.Contains(opt.Only, t.ID) {
 			continue
 		}
-		res = append(res, m.applyMCP(l, t, b, over)...)
-		res = append(res, m.applySkills(l, t, b, over)...)
+		res = append(res, m.applyMCP(l, t, b, opt, over)...)
+		res = append(res, m.applySkills(l, t, b, opt, over)...)
 	}
 	errs := []error{m.save(l), b.done()}
 	pruneBackups(m.backups(), m.now())
 	return res, errors.Join(errs...)
 }
 
-func (m *Manager) applyMCP(l *Library, t *Target, b *backup, over map[string]bool) []Result {
+func (m *Manager) applyMCP(l *Library, t *Target, b *backup, opt ApplyOptions, over map[string]bool) []Result {
 	var res []Result
 	r := func(name, action, reason string) {
 		res = append(res, Result{Target: t.ID, Label: t.Label, Kind: KindMCP, Name: name, Action: action, Reason: reason})
@@ -832,7 +839,7 @@ func (m *Manager) applyMCP(l *Library, t *Target, b *backup, over map[string]boo
 	a := l.Applied[t.ID]
 	var wants []*Server
 	for _, s := range l.MCP {
-		if slices.Contains(s.Agents, t.ID) {
+		if slices.Contains(s.Agents, t.ID) && opt.item(KindMCP, s.Name) {
 			wants = append(wants, s)
 		}
 	}
@@ -878,6 +885,9 @@ func (m *Manager) applyMCP(l *Library, t *Target, b *backup, over map[string]boo
 	}
 	var removes []string
 	for name, wrote := range app.MCP {
+		if !opt.item(KindMCP, name) {
+			continue
+		}
 		if s := l.server(name); s != nil && slices.Contains(s.Agents, t.ID) {
 			continue
 		}
@@ -933,7 +943,7 @@ func (m *Manager) applyMCP(l *Library, t *Target, b *backup, over map[string]boo
 	return res
 }
 
-func (m *Manager) applySkills(l *Library, t *Target, b *backup, over map[string]bool) []Result {
+func (m *Manager) applySkills(l *Library, t *Target, b *backup, opt ApplyOptions, over map[string]bool) []Result {
 	var res []Result
 	r := func(name, action, reason string) {
 		res = append(res, Result{Target: t.ID, Label: t.Label, Kind: KindSkill, Name: name, Action: action, Reason: reason})
@@ -941,7 +951,7 @@ func (m *Manager) applySkills(l *Library, t *Target, b *backup, over map[string]
 	a := l.Applied[t.ID]
 	var wants []*Skill
 	for _, s := range l.Skills {
-		if slices.Contains(s.Agents, t.ID) {
+		if slices.Contains(s.Agents, t.ID) && opt.item(KindSkill, s.Name) {
 			wants = append(wants, s)
 		}
 	}
@@ -1001,6 +1011,9 @@ func (m *Manager) applySkills(l *Library, t *Target, b *backup, over map[string]
 		r(s.Name, "written", "")
 	}
 	for name, wrote := range app.Skills {
+		if !opt.item(KindSkill, name) {
+			continue
+		}
 		if s := l.skill(name); s != nil && slices.Contains(s.Agents, t.ID) {
 			continue
 		}

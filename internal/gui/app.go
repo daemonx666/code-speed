@@ -206,16 +206,16 @@ func Run(version string) error {
 		app.Quit()
 	}
 	lib := newLibraryWindow(app, md)
-	OpenLibrary = func() { application.InvokeAsync(lib.open) }
+	OpenLibrary = func() { go lib.open() }
+	// Off the main thread (an API request's goroutine): the dialog shows
+	// itself on the main thread and its answer comes back from there, so
+	// waiting for it on the main thread would never end.
 	PickFolder = func(title string) string {
-		var path string
-		application.InvokeSync(func() {
-			d := app.Dialog.OpenFile().CanChooseDirectories(true).CanChooseFiles(false).CanCreateDirectories(false).SetTitle(title)
-			if lib.win != nil {
-				d = d.AttachToWindow(lib.win)
-			}
-			path, _ = d.PromptForSingleSelection()
-		})
+		d := app.Dialog.OpenFile().CanChooseDirectories(true).CanChooseFiles(false).CanCreateDirectories(false).SetTitle(title)
+		if w := lib.window(); w != nil {
+			d = d.AttachToWindow(w)
+		}
+		path, _ := d.PromptForSingleSelection()
 		return path
 	}
 	libItem = menu.Add(t[3]).OnClick(func(*application.Context) { lib.open() })

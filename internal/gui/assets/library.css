@@ -41,10 +41,19 @@ textarea { width: 100%; box-sizing: border-box; font-family: var(--mono); font-s
 .lib-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
 .lib-head h1 { font-size: 16px; margin: 0; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .grid-group { margin-top: 10px; }
-.grid-group h3 { font-size: 12px; margin: 0 0 6px; color: var(--fg-2); font-weight: 600; }
+.grid-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.grid-group h3 { font-size: 12px; margin: 0; color: var(--fg-2); font-weight: 600; }
+.grid-head .all { display: flex; align-items: center; gap: 4px; cursor: pointer; color: var(--fg-2); }
+.not-installed { margin-top: 6px; }
+.not-installed summary { cursor: pointer; padding: 2px 0; }
+.not-installed .targets { margin-top: 6px; }
+.lib-head h2 { margin: 0; flex: 1; }
+.btn[hidden] { display: none; }
 .targets { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 6px; }
 .target { display: flex; flex-direction: column; gap: 3px; padding: 6px 8px; border: .5px solid var(--line); border-radius: 8px; }
 .target.off { opacity: .5; }
+.target.on { border-color: color-mix(in srgb, var(--green) 45%, var(--line)); }
+.target.on .why { color: var(--green); }
 .target label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 560; }
 .target .why { font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; }
 .target .acts { display: flex; gap: 8px; }
@@ -53,3 +62,6 @@ textarea { width: 100%; box-sizing: border-box; font-family: var(--mono); font-s
 .lib-dialog::backdrop { background: rgba(0,0,0,.25); }
 .small { font-size: 11px; }
 .secret { -webkit-text-security: disc; }
+.lib-toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); max-width: min(620px, calc(100vw - 32px)); padding: 10px 14px; border-radius: 10px; background: var(--card); color: var(--fg); box-shadow: 0 6px 24px rgba(0,0,0,.22); border-left: 3px solid var(--green); display: flex; flex-direction: column; gap: 3px; cursor: default; z-index: 10; }
+.lib-toast.warn { border-left-color: var(--amber); }
+.lib-toast[hidden] { display: none; }

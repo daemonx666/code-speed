@@ -50,9 +50,9 @@ project: code-speed
 - 主流程：
   1. 托盘菜单或设置页点「Skill 与 MCP」，打开库窗口。
   2. 首次打开时扫描各 agent，列出「未入库」的条目（及它们所在的 agent）。用户全部或逐项「导入」。
-  3. 在 MCP 或 Skill 标签里选一个条目，右侧勾选要给的 agent（和项目），点「应用」。
-  4. code-speed 备份涉及的文件，按格式写入，显示每个 agent 的结果（成功、跳过及原因）。
-  5. 取消勾选某个 agent 再应用，即从那个 agent 移除；在库里删除条目，即从所有 agent 移除。
+  3. 在 MCP 或 Skill 标签里选一个条目，右侧勾选要给的 agent（和项目），勾上即写入。
+  4. code-speed 备份涉及的文件，按格式写入，底部提示写入了哪些 agent（跳过或失败的写明原因）。
+  5. 取消勾选某个 agent，即从那个 agent 移除；在库里删除条目，即从所有 agent 移除。
   6. 写错了在「备份」里按时间还原。
 
 ## 5. 功能需求
@@ -61,7 +61,7 @@ project: code-speed
 - 描述：列出本机已安装、且已知 skill 目录或 MCP 文件位置的 agent（用户级），每个给出 skill 目录、MCP 文件路径和格式。
 - 规则：
   - 位置和格式取自 magpie `library/targets.go`（只取下表的 agent），尊重各自的 env 覆盖（`CLAUDE_CONFIG_DIR`、`CODEX_HOME`、`QWEN_HOME`、`COPILOT_HOME`、`GOOSE_PATH_ROOT`、`CLINE_DATA_DIR`……）。
-  - 判断「已安装」：其配置目录存在。未安装的 agent 显示为灰色，不能勾选。
+  - 判断「已安装」：其配置目录存在。未安装的 agent 折叠在「未安装（n）」里，不能勾选；已安装的排在前面。
   - 首版 agent（用户级）：
 
     | Agent | Skill 目录 | MCP 文件（格式） |
@@ -101,7 +101,7 @@ project: code-speed
   - Claude Code 插件里的 skill 和 server 只读展示（标「插件」），不能导入或移除。
 - 验收：
   - [ ] Given `~/.claude.json` 和 `~/.cursor/mcp.json` 里都有内容相同的 `github` server，When 扫描，Then 列出一项 `github`，所在 agent 为 Claude Code、Cursor。
-  - [ ] Given 导入 `github` 后取消勾选 Cursor 并应用，Then `~/.cursor/mcp.json` 里没有 `github`，其他 server 和格式不变。
+  - [ ] Given 导入 `github` 后取消勾选 Cursor，Then `~/.cursor/mcp.json` 里没有 `github`，其他 server 和格式不变。
   - [ ] Given 两个 agent 里同名 skill 内容不同，When 导入，Then 提示冲突，让用户选版本。
 
 ### FR-3 新建与编辑条目
@@ -112,10 +112,10 @@ project: code-speed
   - 某 agent 不支持某种传输（如 Goose 不支持 SSE、Codex 项目级不支持 SSE）时，勾选框禁用并说明原因（规则取自 magpie `mcpFile.supports`）。
 - 验收：
   - [ ] Given 新建一个 SSE server，Then Goose 的勾选框禁用并显示原因。
-  - [ ] Given 编辑一个已发给 3 个 agent 的 server 的参数并应用，Then 3 个文件都更新为新参数。
+  - [ ] Given 编辑一个已发给 3 个 agent 的 server 的参数并保存，Then 3 个文件都更新为新参数。
 
 ### FR-4 勾选与应用（同步）
-- 描述：每个条目有一组 agent 勾选（用户级）和项目勾选（FR-6）。「应用」时按差异写入：新勾的写入，内容变了的覆盖，取消勾选的移除。
+- 描述：每个条目有一组 agent 勾选（用户级）和项目勾选（FR-6）。勾选、取消勾选、编辑保存、采用 agent 版本都立即对这一条目生效（像 magpie）：新勾的写入，内容变了的覆盖，取消勾选的移除。每组有「全部」开关，一次勾上或取消该组所有可用的 agent。顶部「应用 N 项变更」只在还有遗留（写入失败、从库里删掉但还在 agent 里）时出现。
 - 规则：
   - 只改涉及的条目；agent 文件里的其他内容、键顺序、注释和缩进保持不变（JSON/JSONC、TOML、YAML 都用 magpie `edit` 包的保格式修改）。
   - skill 写入：把库里的文件夹完整复制到 agent 的 skill 目录（先复制到临时目录再改名替换）。
@@ -124,9 +124,9 @@ project: code-speed
   - 每个 agent 单独报告结果：已写入 / 已移除 / 无变化 / 跳过（原因）/ 失败（错误）。一个失败不影响其他。
   - agent 正在运行时照样写；提示「重启 agent 后生效」。
 - 验收：
-  - [ ] Given 库里 server `fs` 勾选了 Codex，When 应用，Then `~/.codex/config.toml` 多出 `[mcp_servers.fs]`，文件里原有的注释仍在。
-  - [ ] Given 用户在 `~/.claude.json` 里手改了 `fs` 的参数，When 应用，Then 不覆盖，`fs` 在 Claude Code 列显示「已修改」。
-  - [ ] Given `~/.gemini/settings.json` 不是合法 JSON，When 应用，Then Gemini 报「文件无法解析，未修改」，其他 agent 照常写入。
+  - [ ] Given 库里 server `fs` 勾选了 Codex，When 勾选或保存（立即写入），Then `~/.codex/config.toml` 多出 `[mcp_servers.fs]`，文件里原有的注释仍在。
+  - [ ] Given 用户在 `~/.claude.json` 里手改了 `fs` 的参数，When 勾选或保存（立即写入），Then 不覆盖，`fs` 在 Claude Code 列显示「已修改」。
+  - [ ] Given `~/.gemini/settings.json` 不是合法 JSON，When 勾选或保存（立即写入），Then Gemini 报「文件无法解析，未修改」，其他 agent 照常写入。
 
 ### FR-5 删除与备份还原
 - 描述：在库里删除条目，即从所有 agent 和项目移除，并删除库内副本；每次应用前备份所有将被修改的文件和 skill 文件夹，可在「备份」列表里按时间还原。
@@ -146,7 +146,7 @@ project: code-speed
   - 写入项目的文件会进入该项目的 git，界面上提示一次；env/headers 值含密钥时，写入项目前额外确认。
   - 项目扫描与导入同 FR-2，条目标注所属项目。
 - 验收：
-  - [ ] Given 添加项目 `~/code/app` 并给其中的 Claude Code 勾选 `fs`，When 应用，Then `~/code/app/.mcp.json` 里有 `fs`，`~/.claude.json` 不变。
+  - [ ] Given 添加项目 `~/code/app` 并给其中的 Claude Code 勾选 `fs`，When 勾选或保存（立即写入），Then `~/code/app/.mcp.json` 里有 `fs`，`~/.claude.json` 不变。
   - [ ] Given 某 server 的 env 里有值，When 勾选写入项目，Then 先弹出确认。
 
 ### FR-7 入口
@@ -181,8 +181,8 @@ project: code-speed
 - 布局：顶部两个标签「MCP」「Skill」，加上「项目」「备份」入口。左栏是条目列表（搜索、未入库标记、冲突标记），右栏是详情：
   - MCP：表单（名称、传输、命令/参数/env 或 url/headers）。
   - Skill：名称、描述、文件列表、在访达或资源管理器中打开。
-  - 下方是 agent 勾选网格，每格显示状态：✓ 已写入、空、「已修改」（橙色）、灰色加原因（不支持或未安装）。网格下方按项目分组，是项目勾选。
-  - 底部「应用」按钮，显示待写入的变更数；应用后按 agent 列出结果。
+  - 下方是 agent 勾选网格，已安装的在前，未安装的折叠；每组标题旁有「全部」。每格显示状态：已写入（绿色）、空、「已修改」（橙色）、灰色加原因（不支持）。网格下方按项目分组，是项目勾选。
+  - 每次改动后底部弹出提示：写入了哪些 agent、从哪些移除、哪些跳过及原因；导入后提示「已入库，某某里已有它」并选中该条目。
 - 状态：
   - 首次打开时扫描中显示进度。
   - 没有任何 agent 时显示空态，说明支持哪些 agent。
@@ -249,11 +249,10 @@ project: code-speed
   - 「已安装」以配置目录存在为准，不检测可执行文件。
   - Claude Code 插件内的条目只读展示。
   - 首版不支持 WSL 里的 agent；Claude Desktop、Zed、Kiro 等不在首版。
-  - 应用是手动的（点「应用」），不在后台自动同步；agent 文件被外部改动只在打开窗口或应用时检测。
+  - 只在用户改动某条目时写入该条目，不在后台自动同步；agent 文件被外部改动只在打开窗口或改动时检测。
   - skill 目录的 frontmatter 不合法也照样复制，只是名称回退为文件夹名。
 - 待定：
   - Kimi Code 读多个目录中第一个存在的那个：写入时选哪个目录，按 magpie 的规则实现后再核对。
-  - 是否需要「从一个 agent 一键复制全部到另一个 agent」的快捷操作（可在勾选网格上按列全选实现）。
 
 ## 变更记录
 - 2026-11-14 创建
@@ -263,3 +262,4 @@ project: code-speed
   - Claude Code 插件里的 skill 和 server 首版没有只读展示，移到路线图。
   - Cline 的 MCP 按 Cline CLI 的嵌套 `transport` 结构写入，也能读扁平结构。
   - OpenCode、Cursor 不区分 SSE 和 http，判断「已修改」时按格式能表达的内容比较（`mcpfmt.File.Same`）。
+- 2026-11-15 试用反馈后改为点一下就生效（照 magpie）：勾选只保存、点「应用」才写入，用户感觉不到导入和勾选是否成功。现在 `/api/library/agents`、`server`、`skill`、`adopt` 保存后立即做一次只限该条目的应用（`ApplyOptions.Items`）并返回结果；界面加了提示条、「全部」开关，已安装的 agent 在前、未安装的折叠。

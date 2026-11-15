@@ -21,11 +21,14 @@ var PickFolder func(title string) string
 //
 //	GET  /api/library            targets, items with their state in each, found items
 //	POST /api/library/import     {items:[{kind,name,hash,as}]} (none: every one without a conflict)
-//	POST /api/library/server     {old, server, agents}  add or edit a server
-//	POST /api/library/skill      {name, path, agents}   add or replace a skill from a folder
-//	POST /api/library/agents     {kind, name, agents}   tick targets
-//	POST /api/library/adopt      {kind, name, target}   take an agent's version
-//	POST /api/library/apply      {overwrite, only}      → results
+//	POST /api/library/server     {old, server, agents}  add or edit a server   → results
+//	POST /api/library/skill      {name, path, agents}   add or replace a skill → results
+//	POST /api/library/agents     {kind, name, agents}   tick targets           → results
+//	POST /api/library/adopt      {kind, name, target}   take an agent's version → results
+//	POST /api/library/apply      {overwrite, only, items} → results
+//
+// A change to one item is written to the agents at once (an apply limited
+// to it), as magpie's library does, and answers what was written where.
 //	POST /api/library/delete     {kind, name}           → results
 //	POST /api/library/project    {add | remove}         → results
 //	GET  /api/library/backups;   POST /api/library/restore {id}
@@ -45,6 +48,11 @@ func libraryRoutes(mux *http.ServeMux, m *library.Manager, post func(http.Respon
 			v["error"] = err.Error()
 		}
 		writeJSON(w, v)
+	}
+	// applyItems writes the items just changed and answers the results
+	applyItems := func(w http.ResponseWriter, items ...string) {
+		res, err := m.Apply(library.ApplyOptions{Items: items})
+		results(w, res, err)
 	}
 	mux.HandleFunc("/api/library", func(w http.ResponseWriter, r *http.Request) {
 		st, err := m.State()
@@ -78,7 +86,11 @@ func libraryRoutes(mux *http.ServeMux, m *library.Manager, post func(http.Respon
 			fail(w, err)
 			return
 		}
-		w.WriteHeader(http.StatusNoContent)
+		items := []string{library.KindMCP + "/" + body.Server.Name}
+		if body.Old != "" && body.Old != body.Server.Name {
+			items = append(items, library.KindMCP+"/"+body.Old) // out of the agents under its old name
+		}
+		applyItems(w, items...)
 	})
 	mux.HandleFunc("/api/library/skill", func(w http.ResponseWriter, r *http.Request) {
 		var body struct {
@@ -95,7 +107,7 @@ func libraryRoutes(mux *http.ServeMux, m *library.Manager, post func(http.Respon
 			fail(w, err)
 			return
 		}
-		w.WriteHeader(http.StatusNoContent)
+		applyItems(w, library.KindSkill+"/"+body.Name)
 	})
 	mux.HandleFunc("/api/library/agents", func(w http.ResponseWriter, r *http.Request) {
 		var body struct {
@@ -109,7 +121,7 @@ func libraryRoutes(mux *http.ServeMux, m *library.Manager, post func(http.Respon
 			fail(w, err)
 			return
 		}
-		w.WriteHeader(http.StatusNoContent)
+		applyItems(w, body.Kind+"/"+body.Name)
 	})
 	mux.HandleFunc("/api/library/adopt", func(w http.ResponseWriter, r *http.Request) {
 		var body struct{ Kind, Name, Target string }
@@ -120,7 +132,8 @@ func libraryRoutes(mux *http.ServeMux, m *library.Manager, post func(http.Respon
 			fail(w, err)
 			return
 		}
-		w.WriteHeader(http.StatusNoContent)
+		// the library's version changed: the other agents given it get it
+		applyItems(w, body.Kind+"/"+body.Name)
 	})
 	mux.HandleFunc("/api/library/apply", func(w http.ResponseWriter, r *http.Request) {
 		var body library.ApplyOptions
