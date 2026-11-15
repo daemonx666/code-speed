@@ -1,0 +1,8 @@
+[
+ {"ts":999000,"type":"say","say":"task","text":"fix the bug"},
+ {"ts":1000000,"type":"say","say":"api_req_started","text":"{\"request\":\"x\",\"tokensIn\":100,\"tokensOut\":120,\"cacheWrites\":10,\"cacheReads\":50,\"cost\":0.01}","modelInfo":{"providerId":"anthropic","modelId":"claude-sonnet-4","mode":"act"},"conversationHistoryIndex":0},
+ {"ts":1010500,"type":"say","say":"text","text":"ok"},
+ {"ts":1020000,"type":"say","say":"api_req_started","text":"{\"request\":\"y\",\"tokensIn\":20,\"tokensOut\":143,\"cacheWrites\":0,\"cacheReads\":0,\"cost\":0.02}","conversationHistoryIndex":2},
+ {"ts":1030000,"type":"say","say":"api_req_started","text":"{\"request\":\"z\"}"},
+ {"ts":1040000,"type":"say","say":"api_req_started","partial":true,"text":"{\"tokensIn\":5,\"tokensOut\":5}"}
+]

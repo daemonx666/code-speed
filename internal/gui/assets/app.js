@@ -1652,6 +1652,7 @@ $("set-homes").addEventListener("change", (e) => changeSetting({ homes: lines(e.
 $("update-get").addEventListener("click", () => post("/api/open", { target: "releases" }).catch(() => {}));
 $("open-plugins").addEventListener("click", () => post("/api/open", { target: "plugins" }).catch(() => {}));
 $("open-data").addEventListener("click", () => post("/api/open", { target: "data" }).catch(() => {}));
+$("open-library").addEventListener("click", () => post("/api/library/open").catch(() => {}));
 $("prices-editor").addEventListener("toggle", (e) => { if (e.target.open) loadPrices(); });
 $("price-add").addEventListener("click", () => { priceDoc.models.push({ id: "", prices: {} }); renderPrices(); });
 $("prices-save").addEventListener("click", async () => {

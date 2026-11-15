@@ -46,16 +46,90 @@ jobs:
             dist/*.zip
 
   windows:
-    # WebView2 needs no cgo, so Windows cross-compiles; NSIS builds the installer
+    # WebView2 needs no cgo, so Windows cross-compiles; NSIS builds the
+    # installer. With SignPath set up (secret SIGNPATH_API_TOKEN, variables
+    # SIGNPATH_ORG_ID, SIGNPATH_PROJECT, SIGNPATH_POLICY, SIGNPATH_CONFIG_EXE,
+    # SIGNPATH_CONFIG_SETUP; build/windows/signpath/), the exes are signed
+    # before they are packed, then the installers; each request waits for
+    # its approval in SignPath. Without the secret the signing steps skip.
     runs-on: ubuntu-22.04
-    timeout-minutes: 20
+    timeout-minutes: 90
+    permissions:
+      contents: read
+      actions: read
+    env:
+      SIGN: ${{ secrets.SIGNPATH_API_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
       - run: sudo apt-get update && sudo apt-get install -y nsis zip
-      - run: make release-windows VERSION=${{ github.ref_name }}
+      - run: make windows-exe VERSION=${{ github.ref_name }}
+      # the x.y.z.0 in the exes' and installers' version resources, which the
+      # SignPath artifact configurations require as their version parameter
+      - run: echo "PE_VERSION=$(make -s numver VERSION=${{ github.ref_name }}).0" >> "$GITHUB_ENV"
+
+      - name: upload the unsigned exes
+        if: env.SIGN == 'true'
+        id: unsigned-exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-exe
+          path: dist/windows/*/code-speed.exe
+      - name: sign the exes
+        if: env.SIGN == 'true'
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORG_ID }}
+          project-slug: ${{ vars.SIGNPATH_PROJECT }}
+          signing-policy-slug: ${{ vars.SIGNPATH_POLICY }}
+          artifact-configuration-slug: ${{ vars.SIGNPATH_CONFIG_EXE }}
+          github-artifact-id: ${{ steps.unsigned-exe.outputs.artifact-id }}
+          parameters: |
+            version: "${{ env.PE_VERSION }}"
+          wait-for-completion: true
+          wait-for-completion-timeout-in-seconds: 3600
+          output-artifact-directory: signed-exe
+      - name: put the signed exes in place
+        if: env.SIGN == 'true'
+        run: |
+          for arch in amd64 arm64; do
+            test -f "signed-exe/$arch/code-speed.exe" || { echo "signed-exe/$arch/code-speed.exe missing"; find signed-exe; exit 1; }
+            cp "signed-exe/$arch/code-speed.exe" "dist/windows/$arch/code-speed.exe"
+          done
+
+      - run: make windows-package VERSION=${{ github.ref_name }}
+
+      - name: upload the unsigned installers
+        if: env.SIGN == 'true'
+        id: unsigned-setup
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-setup
+          path: dist/*-setup.exe
+      - name: sign the installers
+        if: env.SIGN == 'true'
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORG_ID }}
+          project-slug: ${{ vars.SIGNPATH_PROJECT }}
+          signing-policy-slug: ${{ vars.SIGNPATH_POLICY }}
+          artifact-configuration-slug: ${{ vars.SIGNPATH_CONFIG_SETUP }}
+          github-artifact-id: ${{ steps.unsigned-setup.outputs.artifact-id }}
+          parameters: |
+            version: "${{ env.PE_VERSION }}"
+          wait-for-completion: true
+          wait-for-completion-timeout-in-seconds: 3600
+          output-artifact-directory: signed-setup
+      - name: put the signed installers in place
+        if: env.SIGN == 'true'
+        run: |
+          ls signed-setup/*-setup.exe >/dev/null || { find signed-setup; exit 1; }
+          cp signed-setup/*-setup.exe dist/
+
       - uses: actions/upload-artifact@v4
         with:
           name: windows

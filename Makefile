@@ -31,7 +31,7 @@ ifeq ($(shell uname -s),Linux)
   TAGS += gtk3
 endif
 
-.PHONY: build cli test dev-ui icons app dmg release-cli release-windows release-linux release-mac clean dist/mac/code-speed
+.PHONY: build cli test dev-ui icons app dmg release-cli release-windows windows-exe windows-package numver release-linux release-mac clean dist/mac/code-speed
 
 build:
 	go build -tags "$(TAGS)" -trimpath -ldflags="$(LDFLAGS)" -o code-speed .
@@ -113,7 +113,16 @@ release-cli:
 # as a GUI program (no console window), with the icon, version and manifest
 # (per-monitor DPI, long paths, Windows 10 on) from build/windows/winres.json
 # by go-winres. The installer is built by makensis where it is installed.
-release-windows:
+release-windows: windows-exe windows-package
+
+# windows-exe and windows-package are the two halves of release-windows, run
+# apart in the release workflow so the exes can be signed (SignPath) before
+# they go into the portable zips and the installers, which are signed after.
+# numver prints the x.y.z the Windows version resources carry (as x.y.z.0).
+numver:
+	@echo $(NUMVER)
+
+windows-exe:
 	@mkdir -p dist/windows
 	$(WINRES) make --in build/windows/winres.json --arch amd64,arm64 --out rsrc \
 		--file-version $(NUMVER).0 --product-version $(NUMVER).0
@@ -121,14 +130,19 @@ release-windows:
 		echo "  windows/$$arch"; \
 		CGO_ENABLED=0 GOOS=windows GOARCH=$$arch go build -tags production -trimpath \
 			-ldflags="$(LDFLAGS) -H windowsgui" -o dist/windows/$$arch/code-speed.exe . || exit 1; \
+	done
+	@rm -f rsrc_windows_*.syso
+
+windows-package:
+	@for arch in amd64 arm64; do \
 		cp LICENSE THIRD_PARTY_NOTICES.md dist/windows/$$arch/; \
+		rm -f dist/code-speed-$(VERSION)-windows-$$arch-portable.zip; \
 		(cd dist/windows/$$arch && zip -qr ../../code-speed-$(VERSION)-windows-$$arch-portable.zip .); \
 		if command -v makensis >/dev/null; then \
 			makensis -V2 -DVERSION=$(NUMVER) -DARCH=$$arch -DSRC=../../dist/windows/$$arch \
 				-DOUT=../../dist/code-speed-$(VERSION)-windows-$$arch-setup.exe build/windows/installer.nsi || exit 1; \
 		else echo "  makensis not found: no installer for $$arch, portable zip only"; fi; \
 	done
-	@rm -f rsrc_windows_*.syso
 
 # --- Linux (native) --------------------------------------------------------
 

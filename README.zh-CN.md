@@ -34,6 +34,7 @@
 | **日志目录** | 可以为每个 Agent 添加更多日志目录，添加更多主目录（其他用户的、挂载的机器、备份，会像你自己的主目录一样查找），Windows 上还能读取 WSL 里的 Agent。修改某个 Agent 的目录后会重新读取一次它的历史。 |
 | **订阅 vs API 价格** | 填写每个订阅的月费后，概览会显示近 30 天的用量按 API 价格折算是月费的多少倍。 |
 | **上下文** | 每个活跃会话的上下文占用（已用 / 上限）。 |
+| **Skill 与 MCP** | 所有 agent 共用一个 skill 和 MCP server 库，在单独的窗口里管理（托盘菜单或设置页进入）：导入各 agent 已有的，勾选每项要给哪些 agent（以及哪些项目），code-speed 按各 agent 自己的位置和格式写入（`~/.claude.json`、Codex 的 `config.toml`、Goose 的 `config.yaml` 等），保留文件里的其他内容、注释和顺序。取消勾选就会移除；你在某个 agent 里改过的条目，在你选择之前不会被覆盖。每次改动前都会备份，可以还原。终端里可以用 `code-speed library` 查看。 |
 | **额度** | Claude 的 5 小时和每周额度（通过 Claude Code 状态栏，需手动开启）、Codex 的 5 小时和每周额度、Grok Build 的额度，以及 Cursor 的每月包含用量（开启 Cursor 后），附重置时间和**消耗配速**：用得比时间进度快还是慢，以及按当前速度何时用完。 |
 
 每个 Agent 在面板里都有固定的颜色。设置里可以选择语言（English、简体中文或跟随系统）、菜单栏显示内容（实时速度、速度 + 今日费用、今日费用或仅图标）、外观、读取哪些 Agent、它们的排列顺序，以及概览里隐藏哪些（仍计入总数）。仍在写入的回复会单独标出，因为它们的数字还可能变化。
@@ -58,6 +59,12 @@
 | ZCode | `~/.zcode/cli/db/db.sqlite`，只读 | ✓ | ✓ | — | — |
 | Hermes Agent | `~/.hermes/logs`（`HERMES_HOME`） | ✓ | ✓ | — | — |
 | OpenClaw | `~/.openclaw/agents/*/agent/openclaw-agent.sqlite` | ✓ | ✓ | — | — |
+| Qwen Code | `~/.qwen/projects/*/chats`（`QWEN_HOME`、`QWEN_RUNTIME_DIR`） | ✓ | ✓ | ✓ | — |
+| Copilot CLI | `~/.copilot/session-store.db`（`COPILOT_HOME`），只读；CLI 1.0.69 起 | ✓ | ✓ | ✓ | — |
+| Goose | Goose 数据目录下的 `sessions.db`（`GOOSE_PATH_ROOT`），只读 | ✓ | ✓ | ✓ | — |
+| Cline | VS Code 系编辑器的 `globalStorage/saoudrizwan.claude-dev/tasks`、`~/.cline/data`（`CLINE_DATA_DIR`） | ✓ | ✓ | — | — |
+| Roo Code、Kilo Code | 各自 VS Code `globalStorage` 里的 tasks（Cline 的格式） | 能配对时 | ✓ | — | — |
+| Devin | `~/.local/share/devin/cli/sessions.db`（`CHISEL_SESSION_DB`），只读 | ✓ | ✓ | — | — |
 | 自己写（插件） | 你指定的位置，见 [docs/plugins.md](docs/plugins.md) | 有计时即可 | ✓ | 有记录即可 | 有上报即可 |
 | Cursor *（联网，默认关闭）* | cursor.com，使用 Cursor 在本机保存的登录状态 | —（Cursor 不记录耗时） | ✓ | — | 每月 |
 
@@ -182,7 +189,7 @@ code-speed 不代理 Agent 的 API 请求，只读取 Agent 自己写的日志�
 
 ## 隐私
 
-code-speed 只读取 Agent 的日志和数据库，从不写入（数据库以只读方式打开）。除非你开启了 Cursor（会访问 cursor.com）、更新检查（会访问 api.github.com）、每日价格表更新（会访问 raw.githubusercontent.com 或 jsDelivr 镜像，获取 Agent Speed 公开的价格表）、服务状态检查（默认开启，会访问各服务商公开的状态页，可在设置里关闭）或安装更新（会访问 github.com），它不发任何网络请求。价格表请求对所有人都是同一个文件的普通 GET；只有通过自身测试、且比内置版本更新的价格表才会被采用。
+code-speed 只读取 Agent 的日志和数据库，从不写入（数据库以只读方式打开）。唯一的例外是「Skill 与 MCP」库：只有你在它的窗口里点「应用」（或删除、还原）时，它才会写你勾选的 skill 文件夹和 MCP 配置文件，写之前先把要改的每个文件备份到 `backups/`；不是它写入的、也不是你导入的条目，它从不改动。除非你开启了 Cursor（会访问 cursor.com）、更新检查（会访问 api.github.com）、每日价格表更新（会访问 raw.githubusercontent.com 或 jsDelivr 镜像，获取 Agent Speed 公开的价格表）、服务状态检查（默认开启，会访问各服务商公开的状态页，可在设置里关闭）或安装更新（会访问 github.com），它不发任何网络请求。价格表请求对所有人都是同一个文件的普通 GET；只有通过自身测试、且比内置版本更新的价格表才会被采用。
 
 它只写自己的目录（`~/Library/Application Support/code-speed`、`%AppData%\code-speed`、`~/.config/code-speed`；可用 `CODE_SPEED_HOME` 改位置）：
 
@@ -192,6 +199,8 @@ code-speed 只读取 Agent 的日志和数据库，从不写入（数据库以�
 | `history.json` | 已结束日期的按天汇总（每个 Agent、模型、项目、小时的 token、费用和请求数）；不含任何提示词或回复内容 |
 | `alerts.json` | 已经发过的提醒，避免重启后重复提醒 |
 | `prices/` | 仅在开启价格表更新时：下载的价格表和上次检查的时间 |
+| `library.json`、`library/skills/` | 仅在使用「Skill 与 MCP」库后：库里的 server（含环境变量和请求头，文件只有你能读）、skill 的文件，以及写到了哪里 |
+| `backups/` | 每次库改动前各 agent 文件的样子（保留最近 30 次或 30 天） |
 | `quota/` | 仅在开启 Claude 额度时：Claude Code 最近报告的额度、你原来的状态栏，以及 Claude Code `settings.json` 的备份 |
 
 桌面 App 用的系统 WebView 会自己保存一个很小的站点数据目录，所有基于 WebView 的 App 都会这样（Wails 没有提供关闭它的选项）：
@@ -236,6 +245,8 @@ internal/service    设置和正在运行的 monitor
 internal/gui        托盘、面板窗口、悬浮球、面板页面（assets/：中英文）
 internal/status     各服务商公开的状态页
 internal/update     新版本检查和原地安装
+internal/library    Skill 与 MCP 库：各 agent 的位置、应用、备份；mcpfmt：各 agent 的 MCP 格式
+internal/edit       保留格式地修改 JSON、TOML、YAML（移植自 magpie）
 internal/cli        命令和格式化
 build/              图标、Info.plist、.desktop、nfpm、NSIS 安装脚本、devui
 packaging/          Homebrew cask、Scoop、winget 和 AUR 清单（render.sh）
@@ -243,9 +254,21 @@ packaging/          Homebrew cask、Scoop、winget 和 AUR 清单（render.sh）
 
 ## 路线图
 
+- 签名的 Windows 安装包（已申请 SignPath Foundation）；macOS 的 Developer ID 签名和公证。
 - 在一个视图里合并多台机器的用量，借助你已经在同步的文件夹（不需要服务器）。
-- macOS 的 Developer ID 签名和公证；签名的 Windows 安装包。
-- 更多 Agent：Copilot CLI、Qwen Code、Cline、Goose。
+- Skill 与 MCP：WSL 里的 agent，Claude Code 插件自带的 skill 和 server。
+
+## 代码签名政策
+
+Windows 安装包将由 [SignPath.io](https://about.signpath.io) 免费签名，证书由 [SignPath Foundation](https://signpath.org) 提供（申请中；获批前 Windows 版本没有签名）。每个签名的文件都由 GitHub Actions 从本公开仓库构建（[`.github/workflows/release.yml`](.github/workflows/release.yml)），每次签名请求都由人工批准。
+
+- 提交者与审阅者：[daemonx666](https://github.com/daemonx666)
+- 批准者：[daemonx666](https://github.com/daemonx666)
+
+隐私：除非用户或安装、运行它的人明确要求，本程序不会向其他联网系统传送任何信息；它可能发出的每一种请求以及开启它的设置，见[隐私](#隐私)一节。
+
+macOS 版本只做了 ad-hoc 签名（没有 Developer ID）：第一次打开时右键 → 打开，或者用 Homebrew 安装。
+
 
 ## 致谢
 

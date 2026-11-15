@@ -5,10 +5,14 @@ package sources
 import (
 	_ "github.com/daemonx666/code-speed/internal/source" // Claude Code, Codex
 	_ "github.com/daemonx666/code-speed/internal/source/antigravity"
+	_ "github.com/daemonx666/code-speed/internal/source/cline"
+	_ "github.com/daemonx666/code-speed/internal/source/copilot"
 	_ "github.com/daemonx666/code-speed/internal/source/cursor"
+	_ "github.com/daemonx666/code-speed/internal/source/devin"
 	_ "github.com/daemonx666/code-speed/internal/source/droid"
 	_ "github.com/daemonx666/code-speed/internal/source/dsh"
 	_ "github.com/daemonx666/code-speed/internal/source/gemini"
+	_ "github.com/daemonx666/code-speed/internal/source/goose"
 	_ "github.com/daemonx666/code-speed/internal/source/grok"
 	_ "github.com/daemonx666/code-speed/internal/source/hermes"
 	_ "github.com/daemonx666/code-speed/internal/source/kimi"
@@ -16,6 +20,7 @@ import (
 	_ "github.com/daemonx666/code-speed/internal/source/opencode"
 	_ "github.com/daemonx666/code-speed/internal/source/pi"
 	_ "github.com/daemonx666/code-speed/internal/source/qoder"
+	_ "github.com/daemonx666/code-speed/internal/source/qwen"
 	_ "github.com/daemonx666/code-speed/internal/source/workbuddy"
 	_ "github.com/daemonx666/code-speed/internal/source/zcode"
 )

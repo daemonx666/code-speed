@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SignPath artifact configuration "setup" (repo variable SIGNPATH_CONFIG_SETUP):
+     the release workflow uploads dist/code-speed-<version>-windows-{amd64,arm64}-setup.exe
+     as one artifact, which GitHub zips flat. The exes inside were signed
+     before makensis packed them. The pe-file-set's attributes are the
+     metadata restrictions SignPath Foundation asks for, matching the
+     VIProductVersion/VIAddVersionKey lines in build/windows/installer.nsi;
+     version is the release's x.y.z.0, passed by the workflow. -->
+<artifact-configuration xmlns="http://signpath.io/artifact-configuration/v1">
+  <parameters>
+    <parameter name="version" required="true" />
+  </parameters>
+  <zip-file>
+    <pe-file-set product-name="code-speed" product-version="${version}" file-version="${version}"
+                 company-name="code-speed" copyright="MIT License">
+      <include path="code-speed-*-windows-amd64-setup.exe" />
+      <include path="code-speed-*-windows-arm64-setup.exe" />
+      <for-each>
+        <authenticode-sign />
+      </for-each>
+    </pe-file-set>
+  </zip-file>
+</artifact-configuration>

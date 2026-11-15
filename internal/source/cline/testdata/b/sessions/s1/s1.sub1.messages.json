@@ -1,0 +1,4 @@
+{"version":1,"sessionId":"s1","messages":[
+ {"id":"m1","role":"user","ts":2000,"content":[]},
+ {"id":"m2","role":"assistant","ts":4000,"content":[],"metrics":{"inputTokens":10,"outputTokens":20,"cacheReadTokens":0,"cacheWriteTokens":0}}
+]}

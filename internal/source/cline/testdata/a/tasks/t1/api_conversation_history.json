@@ -1,0 +1,7 @@
+[
+ {"role":"user","content":[{"type":"text","text":"fix"}],"ts":999500},
+ {"role":"assistant","content":[{"type":"text","text":"a"}],"ts":1010000,"modelInfo":{"providerId":"anthropic","modelId":"claude-sonnet-4"},"metrics":{"tokens":{"prompt":160,"completion":120,"cached":50}}},
+ {"role":"user","content":[{"type":"text","text":"r"}],"ts":1015000},
+ {"role":"assistant","content":[{"type":"text","text":"no metrics"}],"ts":1016000},
+ {"role":"assistant","content":[{"type":"text","text":"b"}],"ts":1027900,"metrics":{"tokens":{"prompt":20,"completion":143,"cached":0}}}
+]

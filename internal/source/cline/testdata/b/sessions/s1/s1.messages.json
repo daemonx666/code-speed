@@ -1,0 +1,6 @@
+{"version":1,"sessionId":"s1","messages":[
+ {"id":"m1","role":"user","ts":1783376868634,"content":[{"type":"text","text":"hi"}]},
+ {"id":"m2","role":"assistant","ts":1783376873493,"content":[{"type":"text","text":"a"}],"modelInfo":{"id":"anthropic/claude-opus-4.8-fast","provider":"cline"},"metrics":{"inputTokens":34334,"outputTokens":741,"cacheReadTokens":0,"cacheWriteTokens":0,"cost":0.48}},
+ {"id":"m3","role":"user","ts":1783376873501,"content":[{"type":"text","text":"tool result"}]},
+ {"id":"m4","role":"assistant","ts":1783376878360,"content":[{"type":"text","text":"b"}],"modelInfo":{"id":"anthropic/claude-opus-4.8-fast","provider":"cline"},"metrics":{"inputTokens":35912,"outputTokens":164,"cacheReadTokens":34332,"cacheWriteTokens":7,"cost":0.06}}
+]}

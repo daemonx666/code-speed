@@ -34,6 +34,7 @@
 | **Where logs are read** | More log folders per agent, more home folders (another user's, a mounted machine's, a backup) searched like your own, and on Windows the agents inside WSL. Changing an agent's folders rereads its history once. |
 | **Plans vs API price** | Enter what each plan costs a month; the overview shows how much API-priced use the last 30 days bought, as a multiple of the fee. |
 | **Context** | How full each active session's context window is (used / limit), per session. |
+| **Skills & MCP** | One library of skills and MCP servers for every agent, in its own window (tray menu or Settings): import what your agents already have, tick which agents (and which projects) get each one, and code-speed writes it in each agent's own place and format — `~/.claude.json`, Codex's `config.toml`, Goose's `config.yaml`, … — keeping the rest of the file, its comments and order. Unticking takes it out again; a server or skill you changed in an agent is left alone until you choose. Every change is backed up first and can be restored. `code-speed library` lists it in the terminal. |
 | **Quotas** | Claude's 5-hour and weekly limits (through Claude Code's status line, when turned on), Codex's 5-hour and weekly limits, Grok Build's credits and Cursor's monthly included usage (when Cursor is turned on), with when each resets and its **pace**: whether you use it faster than time passes, and when it runs out at that rate. |
 
 Every agent has its own colour across the panel. Settings choose the language (English, 简体中文 or the system's), what the menu bar shows (live speed, speed and today's cost, today's cost, or the icon alone), the appearance, and which agents are read, in what order they are listed and which ones the overview leaves out (still counted). Replies still being written are flagged, since their numbers can change.
@@ -58,6 +59,12 @@ Every agent has its own colour across the panel. Settings choose the language (E
 | ZCode | `~/.zcode/cli/db/db.sqlite`, read-only | yes | yes | — | — |
 | Hermes Agent | `~/.hermes/logs` (`HERMES_HOME`) | yes | yes | — | — |
 | OpenClaw | `~/.openclaw/agents/*/agent/openclaw-agent.sqlite` | yes | yes | — | — |
+| Qwen Code | `~/.qwen/projects/*/chats` (`QWEN_HOME`, `QWEN_RUNTIME_DIR`) | yes | yes | yes | — |
+| Copilot CLI | `~/.copilot/session-store.db` (`COPILOT_HOME`), read-only; CLI 1.0.69 and later | yes | yes | yes | — |
+| Goose | `sessions.db` under Goose's data folder (`GOOSE_PATH_ROOT`), read-only | yes | yes | yes | — |
+| Cline | VS Code-family `globalStorage/saoudrizwan.claude-dev/tasks`, `~/.cline/data` (`CLINE_DATA_DIR`) | yes | yes | — | — |
+| Roo Code, Kilo Code | their VS Code `globalStorage` tasks (Cline's format) | if paired | yes | — | — |
+| Devin | `~/.local/share/devin/cli/sessions.db` (`CHISEL_SESSION_DB`), read-only | yes | yes | — | — |
 | Your own (plugins) | wherever you say, see [docs/plugins.md](docs/plugins.md) | if timed | yes | if logged | if reported |
 | Cursor *(online, off by default)* | cursor.com, with the sign-in Cursor keeps locally | — (Cursor logs no timing) | yes | — | monthly |
 
@@ -182,7 +189,7 @@ It polls instead of watching the file system, identically on every OS: the few f
 
 ## Privacy
 
-code-speed reads the agents' logs and databases and never writes to them (databases are opened read-only). It makes no network requests, except to cursor.com when you turn Cursor on, to api.github.com when you turn the update check on, to raw.githubusercontent.com (or its jsDelivr mirror) for Agent Speed's public price table when you turn the price-table update on, to the providers' public status pages while status checks are on (the default; off in Settings), and to github.com when you install an update. That one is a plain GET of the same file for everyone; a table is used only if it passes its own tests and is newer than the built-in one.
+code-speed reads the agents' logs and databases and never writes to them (databases are opened read-only). The one exception is the Skills & MCP library, which writes the skill folders and MCP config files you tick for it, only when you click Apply (or delete or restore) in its window, after backing up every file it changes to `backups/`; it never touches an entry it didn't write or that you didn't import. It makes no network requests, except to cursor.com when you turn Cursor on, to api.github.com when you turn the update check on, to raw.githubusercontent.com (or its jsDelivr mirror) for Agent Speed's public price table when you turn the price-table update on, to the providers' public status pages while status checks are on (the default; off in Settings), and to github.com when you install an update. That one is a plain GET of the same file for everyone; a table is used only if it passes its own tests and is newer than the built-in one.
 
 It writes only its own folder (`~/Library/Application Support/code-speed`, `%AppData%\code-speed`, `~/.config/code-speed`; `CODE_SPEED_HOME` moves it):
 
@@ -193,6 +200,8 @@ It writes only its own folder (`~/Library/Application Support/code-speed`, `%App
 | `alerts.json` | which reminders have fired, so a restart doesn't repeat them |
 | `prices/` | only with the price-table update on: the downloaded table and when it was last checked |
 | `quota/` | only with Claude limits on: the limits Claude Code last reported, your previous status line and a backup of Claude Code's `settings.json` |
+| `library.json`, `library/skills/` | only once you use the Skills & MCP library: its servers (with their env and headers; the file is readable by you only), its skills' files, and what it wrote where |
+| `backups/` | the agents' files as they were before each library change (the last 30, or 30 days) |
 
 The desktop app's system webview keeps its own small site-data folder, as every app built on it does (Wails has no switch to turn it off):
 
@@ -236,6 +245,8 @@ internal/service    settings and the running monitor
 internal/gui        tray, panel window, floating orb, the panel's page (assets/: en and zh-CN)
 internal/status     providers' public status pages
 internal/update     release check and in-place install
+internal/library    the Skills & MCP library: targets, apply, backups; mcpfmt: each agent's MCP format
+internal/edit       format-preserving JSON, TOML and YAML edits (from magpie)
 internal/cli        commands and formatting
 build/              icons, Info.plist, .desktop, nfpm, NSIS installer, devui
 packaging/          Homebrew cask, Scoop, winget and AUR manifests (render.sh)
@@ -243,9 +254,21 @@ packaging/          Homebrew cask, Scoop, winget and AUR manifests (render.sh)
 
 ## Roadmap
 
+- A signed Windows installer (SignPath Foundation, applied for); Developer ID signing and notarisation on macOS.
 - Usage of several machines in one view, through a folder you already sync (no server).
-- Developer ID signing and notarisation; a signed Windows installer.
-- More agents: Copilot CLI, Qwen Code, Cline, Goose.
+- Skills & MCP: agents in WSL, Claude Code plugins' own skills and servers.
+
+## Code signing policy
+
+Windows releases are to be signed with free code signing provided by [SignPath.io](https://about.signpath.io), with a certificate by the [SignPath Foundation](https://signpath.org) (application in progress; until it is approved, Windows builds are unsigned). Every signed file is built by GitHub Actions from this public repository ([`.github/workflows/release.yml`](.github/workflows/release.yml)), and each signing request is approved by hand.
+
+- Committers and reviewers: [daemonx666](https://github.com/daemonx666)
+- Approvers: [daemonx666](https://github.com/daemonx666)
+
+Privacy: this program will not transfer any information to other networked systems unless specifically requested by the user or the person installing or operating it; see [Privacy](#privacy) for each request it can make and the setting that turns it on.
+
+macOS builds are ad-hoc signed only (no Developer ID): open the app the first time with right-click → Open, or install it with Homebrew.
+
 
 ## Credits
 

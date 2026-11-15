@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Code Speed · Skill &amp; MCP</title>
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="library.css">
+</head>
+<body class="lib">
+<header class="lib-top">
+  <div class="brand"><span class="logo" aria-hidden="true"></span><span data-i18n="lib.title"></span></div>
+  <div class="seg lib-tabs" role="tablist">
+    <button role="tab" id="ltab-mcp" aria-selected="true" data-view="mcp" data-i18n="lib.tab.mcp"></button>
+    <button role="tab" id="ltab-skill" aria-selected="false" data-view="skill" data-i18n="lib.tab.skill"></button>
+    <button role="tab" id="ltab-projects" aria-selected="false" data-view="projects" data-i18n="lib.tab.projects"></button>
+    <button role="tab" id="ltab-backups" aria-selected="false" data-view="backups" data-i18n="lib.tab.backups"></button>
+  </div>
+  <div class="row lib-actions">
+    <button id="lib-refresh" class="btn" type="button" data-i18n="lib.refresh"></button>
+    <button id="lib-apply" class="btn primary" type="button"></button>
+  </div>
+</header>
+
+<div id="lib-banner" class="lib-banner" hidden>
+  <span id="lib-banner-text"></span>
+  <button id="lib-import-all" class="btn" type="button" data-i18n="lib.importAll"></button>
+</div>
+<div id="lib-error" class="lib-error" role="alert" hidden></div>
+
+<main id="lib-items" class="lib-main">
+  <aside class="lib-list">
+    <div class="row lib-list-top">
+      <input id="lib-search" type="search" data-i18n-ph="lib.search">
+      <button id="lib-new" class="btn" type="button" data-i18n="lib.new"></button>
+    </div>
+    <ul id="lib-list" class="lib-ul"></ul>
+    <h3 id="lib-found-h" class="lib-h" data-i18n="lib.found" hidden></h3>
+    <ul id="lib-found" class="lib-ul"></ul>
+  </aside>
+  <section id="lib-detail" class="lib-detail">
+    <p class="muted lib-empty" data-i18n="lib.pick"></p>
+  </section>
+</main>
+
+<main id="lib-projects" class="lib-page" hidden>
+  <div class="card">
+    <h2 data-i18n="lib.tab.projects"></h2>
+    <p class="muted small" data-i18n="lib.projects.note"></p>
+    <ul id="lib-project-list" class="lib-ul plain"></ul>
+    <div class="row"><button id="lib-project-add" class="btn" type="button" data-i18n="lib.projects.add"></button></div>
+  </div>
+</main>
+
+<main id="lib-backups" class="lib-page" hidden>
+  <div class="card">
+    <h2 data-i18n="lib.tab.backups"></h2>
+    <p class="muted small" data-i18n="lib.backups.note"></p>
+    <ul id="lib-backup-list" class="lib-ul plain"></ul>
+  </div>
+</main>
+
+<dialog id="lib-results" class="lib-dialog">
+  <h2 data-i18n="lib.results"></h2>
+  <ul id="lib-results-list" class="lib-ul plain"></ul>
+  <form method="dialog" class="row end"><button class="btn" data-i18n="lib.close"></button></form>
+</dialog>
+
+<script src="i18n.js"></script>
+<script src="library.js"></script>
+</body>
+</html>

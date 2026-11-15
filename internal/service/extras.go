@@ -140,6 +140,31 @@ func (s *Service) Open(target string) error {
 	return exec.Command("xdg-open", path).Start()
 }
 
+// Reveal shows path in Finder, Explorer or the file manager: a folder
+// opened, a file selected in its folder.
+func Reveal(path string) error {
+	st, err := os.Stat(path)
+	if err != nil {
+		return err
+	}
+	if st.IsDir() {
+		switch runtime.GOOS {
+		case "darwin":
+			return exec.Command("open", path).Start()
+		case "windows":
+			return exec.Command("explorer", path).Start()
+		}
+		return exec.Command("xdg-open", path).Start()
+	}
+	switch runtime.GOOS {
+	case "darwin":
+		return exec.Command("open", "-R", path).Start()
+	case "windows":
+		return exec.Command("explorer", "/select,", path).Start()
+	}
+	return exec.Command("xdg-open", filepath.Dir(path)).Start()
+}
+
 func openURL(u string) error {
 	switch runtime.GOOS {
 	case "darwin":

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SignPath artifact configuration "exe" (repo variable SIGNPATH_CONFIG_EXE):
+     the release workflow uploads dist/windows/{amd64,arm64}/code-speed.exe as
+     one artifact, which GitHub zips with those folders at its root.
+     The pe-file-set's attributes are the metadata restrictions SignPath
+     Foundation asks for: each exe must carry these version-resource values
+     (set by build/windows/winres.json and `make windows-exe`), and version
+     is the release's x.y.z.0, passed by the workflow. -->
+<artifact-configuration xmlns="http://signpath.io/artifact-configuration/v1">
+  <parameters>
+    <parameter name="version" required="true" />
+  </parameters>
+  <zip-file>
+    <directory-set>
+      <include path="amd64" />
+      <include path="arm64" />
+      <for-each>
+        <pe-file-set product-name="code-speed" product-version="${version}" file-version="${version}"
+                     company-name="code-speed" copyright="MIT License" original-filename="code-speed.exe">
+          <include path="code-speed.exe" />
+          <for-each>
+            <authenticode-sign />
+          </for-each>
+        </pe-file-set>
+      </for-each>
+    </directory-set>
+  </zip-file>
+</artifact-configuration>

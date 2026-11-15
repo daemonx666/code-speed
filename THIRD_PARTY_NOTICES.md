@@ -16,6 +16,17 @@ Agent Speed's specification (`spec/METRICS.md`, `spec/QUOTAS.md`).
     MIT License
     Copyright (c) 2026 zoefix
 
+## magpie — Skills & MCP library
+
+The Skills & MCP library follows magpie's library (https://github.com/yetone/magpie,
+commit 27e43ed, `internal/library`): its model (one library, ticked per agent,
+taking back only what it wrote), the agents' places and formats
+(`internal/library/targets.go`), the MCP codecs (`internal/library/mcpfmt/`) and
+the format-preserving JSON, TOML and YAML editing (`internal/edit/`, ported).
+
+    MIT License
+    Copyright (c) 2026 yetone
+
 ## magpie — Windows WebView2 handling
 
 The Windows desktop app's WebView2 handling is ported from magpie

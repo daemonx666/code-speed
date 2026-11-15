@@ -21,8 +21,10 @@ RequestExecutionLevel user
 SetCompressor /SOLID lzma
 VIProductVersion "${VERSION}.0"
 VIAddVersionKey "ProductName" "code-speed"
+VIAddVersionKey "ProductVersion" "${VERSION}.0"
+VIAddVersionKey "CompanyName" "code-speed"
 VIAddVersionKey "FileDescription" "code-speed installer"
-VIAddVersionKey "FileVersion" "${VERSION}"
+VIAddVersionKey "FileVersion" "${VERSION}.0"
 VIAddVersionKey "LegalCopyright" "MIT License"
 
 !define UNINSTKEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\code-speed"

@@ -45,9 +45,9 @@ var trayColorICO []byte
 var appIcon []byte
 
 // the tray menu's words
-var menuText = map[string][3]string{
-	settings.LangEN: {"Open Code Speed", "Quit", "Floating speed orb"},
-	settings.LangZH: {"打开 Code Speed", "退出", "悬浮球"},
+var menuText = map[string][4]string{
+	settings.LangEN: {"Open Code Speed", "Quit", "Floating speed orb", "Skills & MCP…"},
+	settings.LangZH: {"打开 Code Speed", "退出", "悬浮球", "Skill 与 MCP…"},
 }
 
 // instanceID is the single instance lock's id.
@@ -64,6 +64,7 @@ func Run(version string) error {
 		openItem *application.MenuItem
 		quitItem *application.MenuItem
 		orbItem  *application.MenuItem
+		libItem  *application.MenuItem
 		mu       sync.Mutex
 		pageLang = os.Getenv("LANG") // until the panel tells its own
 	)
@@ -80,6 +81,7 @@ func Run(version string) error {
 		application.InvokeAsync(func() {
 			openItem.SetLabel(t[0])
 			orbItem.SetLabel(t[2])
+			libItem.SetLabel(t[3])
 			quitItem.SetLabel(t[1])
 		})
 	}
@@ -203,6 +205,20 @@ func Run(version string) error {
 		}
 		app.Quit()
 	}
+	lib := newLibraryWindow(app, md)
+	OpenLibrary = func() { application.InvokeAsync(lib.open) }
+	PickFolder = func(title string) string {
+		var path string
+		application.InvokeSync(func() {
+			d := app.Dialog.OpenFile().CanChooseDirectories(true).CanChooseFiles(false).CanCreateDirectories(false).SetTitle(title)
+			if lib.win != nil {
+				d = d.AttachToWindow(lib.win)
+			}
+			path, _ = d.PromptForSingleSelection()
+		})
+		return path
+	}
+	libItem = menu.Add(t[3]).OnClick(func(*application.Context) { lib.open() })
 	menu.AddSeparator()
 	quitItem = menu.Add(t[1]).OnClick(func(*application.Context) { app.Quit() })
 	tray.SetMenu(menu)

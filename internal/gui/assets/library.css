@@ -1,0 +1,55 @@
+/* The skill and MCP library's window (library.html), on app.css's tokens. */
+body.lib { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+.lib-top { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: .5px solid var(--line); background: var(--bg); }
+.lib-top .brand { white-space: nowrap; }
+.lib-tabs { flex: 0 1 420px; }
+.lib-actions { margin-left: auto; gap: 8px; }
+.btn.primary { background: var(--accent); color: #fff; border-color: transparent; }
+:root[data-theme="dark"] .btn.primary { color: #1a1a1e; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn.primary { color: #1a1a1e; } }
+.btn:disabled { opacity: .45; cursor: default; }
+.btn.danger { color: var(--red); }
+.lib-banner, .lib-error { display: flex; align-items: center; gap: 10px; margin: 10px 16px 0; padding: 8px 12px; border-radius: 8px; background: var(--accent-soft); }
+.lib-banner[hidden], .lib-error[hidden] { display: none; }
+.lib-error { background: color-mix(in srgb, var(--red) 14%, transparent); color: var(--red); white-space: pre-wrap; }
+.lib-main { flex: 1; min-height: 0; display: grid; grid-template-columns: 300px 1fr; gap: 12px; padding: 12px 16px 16px; }
+.lib-main[hidden], .lib-page[hidden] { display: none; }
+.lib-page { flex: 1; overflow: auto; padding: 0 16px 16px; }
+.lib-list { display: flex; flex-direction: column; min-height: 0; overflow: auto; background: var(--card); border-radius: 10px; box-shadow: var(--shadow); padding: 8px; }
+.lib-list-top { gap: 6px; margin-bottom: 6px; }
+.lib-list-top input { flex: 1; min-width: 0; }
+input[type="search"], input[type="text"], select, textarea { font: inherit; color: var(--fg); background: var(--pill); border: .5px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+textarea { width: 100%; box-sizing: border-box; font-family: var(--mono); font-size: 12px; resize: vertical; }
+.lib-ul { list-style: none; margin: 0; padding: 0; }
+.lib-ul > li.item { display: flex; align-items: center; gap: 6px; padding: 6px 8px; border-radius: 6px; cursor: pointer; }
+.lib-ul > li.item:hover { background: var(--pill); }
+.lib-ul > li.item[aria-current="true"] { background: var(--accent-soft); }
+.lib-ul > li .name { font-weight: 560; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
+.lib-ul.plain > li { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: .5px solid var(--line); }
+.lib-ul.plain > li:last-child { border-bottom: 0; }
+.lib-h { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin: 12px 8px 4px; }
+.badge { font-size: 10px; padding: 1px 6px; border-radius: 99px; background: var(--pill); color: var(--fg-2); white-space: nowrap; }
+.badge.warn { background: color-mix(in srgb, var(--amber) 18%, transparent); color: var(--amber); }
+.badge.ok { background: color-mix(in srgb, var(--green) 16%, transparent); color: var(--green); }
+.badge.bad { background: color-mix(in srgb, var(--red) 16%, transparent); color: var(--red); }
+.lib-detail { overflow: auto; min-height: 0; }
+.lib-empty { padding: 24px; }
+.lib-detail .card:first-child { margin-top: 0; }
+.lib-form { display: grid; grid-template-columns: 110px 1fr; gap: 8px 12px; align-items: start; }
+.lib-form > label { padding-top: 5px; color: var(--fg-2); }
+.lib-form .hint { grid-column: 2; margin-top: -4px; }
+.lib-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.lib-head h1 { font-size: 16px; margin: 0; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.grid-group { margin-top: 10px; }
+.grid-group h3 { font-size: 12px; margin: 0 0 6px; color: var(--fg-2); font-weight: 600; }
+.targets { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 6px; }
+.target { display: flex; flex-direction: column; gap: 3px; padding: 6px 8px; border: .5px solid var(--line); border-radius: 8px; }
+.target.off { opacity: .5; }
+.target label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 560; }
+.target .why { font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; }
+.target .acts { display: flex; gap: 8px; }
+.end { justify-content: flex-end; }
+.lib-dialog { border: 0; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,.25); background: var(--card); color: var(--fg); min-width: 420px; max-width: 640px; max-height: 70vh; }
+.lib-dialog::backdrop { background: rgba(0,0,0,.25); }
+.small { font-size: 11px; }
+.secret { -webkit-text-security: disc; }

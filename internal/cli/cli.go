@@ -39,11 +39,13 @@ Usage:
   code-speed plugin test <folder> [sample.jsonl]
                         check a plugin: parse a sample file, or run its command once
   code-speed prices     custom prices: where the file is and what it holds
+  code-speed library    the skill and MCP library: each item and the agents that have it
   code-speed json       everything above as one JSON snapshot
   code-speed version    print the version
 
-Reads the local logs of Claude Code, Codex, Gemini CLI, Grok Build, Kimi Code,
-OpenCode, Pi and Oh My Pi (Cursor, online, when turned on in the app's Settings).
+Reads the local logs of Claude Code, Codex, Gemini CLI, Qwen Code, Copilot CLI,
+Grok Build, Kimi Code, OpenCode, Pi, Oh My Pi, Goose, Cline, Devin and more
+(Cursor, online, when turned on in the app's Settings).
 Finished days are kept in the history file, so later starts read only what is new.
 `
 
@@ -88,6 +90,8 @@ func Run(args []string, version string, gui func() error) int {
 		return testPlugin(out, args[1:])
 	case "prices":
 		return showPrices(out)
+	case "library":
+		return listLibrary(out)
 	case "claude-quota":
 		return claudeQuota(out, version, args[1:])
 	case "stats":

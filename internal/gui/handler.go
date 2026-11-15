@@ -15,6 +15,7 @@ import (
 	"github.com/daemonx666/code-speed/internal/claudebridge"
 	"github.com/daemonx666/code-speed/internal/cli"
 	"github.com/daemonx666/code-speed/internal/engine"
+	"github.com/daemonx666/code-speed/internal/library"
 	"github.com/daemonx666/code-speed/internal/plugin"
 	"github.com/daemonx666/code-speed/internal/pricing"
 	"github.com/daemonx666/code-speed/internal/service"
@@ -184,6 +185,7 @@ func writeJSON(w http.ResponseWriter, v any) {
 //	POST /api/settings           save settings (JSON body)
 //	POST /api/locale             the page's own language, for "auto"
 //	POST /api/quit               quit the app
+//	/api/library/…               the skill and MCP library (library_api.go)
 func Handler(s *service.Service, quit func(), locale func(string)) http.Handler {
 	mux := http.NewServeMux()
 	sub, _ := fs.Sub(assets, "assets")
@@ -308,6 +310,7 @@ func Handler(s *service.Service, quit func(), locale func(string)) http.Handler 
 		}
 		return true
 	}
+	libraryRoutes(mux, library.New(appdir.Dir()), post)
 	mux.HandleFunc("/api/alerts", func(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, s.Alerts().Recent())
 	})
