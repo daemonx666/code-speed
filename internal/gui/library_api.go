@@ -26,15 +26,15 @@ var PickFolder func(title string) string
 //	POST /api/library/agents     {kind, name, agents}   tick targets           → results
 //	POST /api/library/adopt      {kind, name, target}   take an agent's version → results
 //	POST /api/library/apply      {overwrite, only, items} → results
-//
-// A change to one item is written to the agents at once (an apply limited
-// to it), as magpie's library does, and answers what was written where.
 //	POST /api/library/delete     {kind, name}           → results
 //	POST /api/library/project    {add | remove}         → results
 //	GET  /api/library/backups;   POST /api/library/restore {id}
 //	POST /api/library/pick       {title} → {path}       the system's folder dialog
 //	POST /api/library/reveal     {path}                 a path the library knows, in Finder/Explorer
 //	POST /api/library/open                              the library window
+//
+// A change to one item is written to the agents at once (an apply limited
+// to it), as magpie's library does, and answers what was written where.
 func libraryRoutes(mux *http.ServeMux, m *library.Manager, post func(http.ResponseWriter, *http.Request, any) bool) {
 	fail := func(w http.ResponseWriter, err error) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
